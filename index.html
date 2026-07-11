@@ -585,6 +585,20 @@ section{position:relative;padding:clamp(70px,12vw,130px) 6vw;}
 .reserve-wrap .glow{inset:-20%;opacity:.45;}
 .reserve-wrap .corner{border-color:var(--cyan-dim);opacity:.85;}
 
+.gate{text-align:center;padding:1rem 0 .5rem;}
+.gate-label{font-family:'JetBrains Mono',monospace;font-size:.78rem;letter-spacing:.1em;color:var(--ink-dim);margin-bottom:1.2rem;text-transform:uppercase;}
+.gate-row{display:flex;gap:.7rem;max-width:360px;margin:0 auto;flex-wrap:wrap;justify-content:center;}
+.gate-row input{
+  flex:1;min-width:140px;
+  background:#ffffff;border:1px solid rgba(8,38,45,.2);border-radius:6px;
+  padding:12px 14px;color:var(--ink);font-size:.95rem;outline:none;
+  transition:border-color .3s ease;
+}
+.gate-row input:focus{border-color:var(--cyan-dim);}
+.gate-row .btn{padding:12px 24px;}
+.gate-error{display:none;margin-top:.9rem;font-family:'JetBrains Mono',monospace;font-size:.76rem;color:#c23b3b;}
+.gate-hint{margin-top:1.1rem;font-size:.78rem;color:var(--ink-dim);line-height:1.7;}
+
 .service-toggle{display:flex;gap:.7rem;margin-bottom:2.4rem;}
 .service-btn{
   flex:1;text-align:center;cursor:pointer;padding:.9rem 1rem;border-radius:8px;
@@ -868,6 +882,17 @@ footer .copyright{font-family:'JetBrains Mono',monospace;font-size:.65rem;color:
     <span class="corner bl"></span>
     <span class="corner br"></span>
 
+    <div class="gate" id="reserve-gate">
+      <p class="gate-label">合言葉を入力してください</p>
+      <div class="gate-row">
+        <input type="text" id="gate-input" placeholder="合言葉" autocomplete="off">
+        <button type="button" class="btn btn-primary" id="gate-submit">進む</button>
+      </div>
+      <p class="gate-error" id="gate-error">合言葉が違います。もう一度お試しください。</p>
+      <p class="gate-hint">合言葉が分からない場合は、担当までLINEなどでお問い合わせください。</p>
+    </div>
+
+    <div class="gated-content" id="gated-content" hidden>
     <div class="service-toggle" role="tablist" aria-label="ご希望のサービス">
       <button type="button" class="service-btn active" id="toggle-aqua" role="tab" aria-selected="true">
         パーソナルアクア<span>プール貸切</span>
@@ -962,6 +987,7 @@ footer .copyright{font-family:'JetBrains Mono',monospace;font-size:.65rem;color:
           <p id="confirm-msg-training" class="confirm-msg"></p>
         </div>
       </form>
+    </div>
     </div>
   </div>
 </section>
@@ -1107,10 +1133,48 @@ document.querySelectorAll('[data-reveal]').forEach((el, i) => {
   revealObserver.observe(el);
 });
 
-/* ===== 7. Reservation: service toggle, slot data, picker, submit =====
+/* ===== 7. Reservation: passphrase gate, service toggle, slot data, picker, submit =====
    Facility rental is pool-only (パーソナルアクア). Personal training is a
    separate coached service with no fixed slot calendar, handled as a
-   simple date/time request that gets a personal reply. */
+   simple date/time request that gets a personal reply.
+
+   The passphrase gate is a lightweight social filter, not real security —
+   it's readable in this file's source. It just keeps casual/bot traffic
+   from submitting the form; only people told the word by the operator
+   get through. */
+const GATE_PASSWORD = 'およぎたい';
+const GATE_STORAGE_KEY = 'personalAquaGateUnlocked';
+const gateEl = document.getElementById('reserve-gate');
+const gatedContent = document.getElementById('gated-content');
+const gateInput = document.getElementById('gate-input');
+const gateSubmit = document.getElementById('gate-submit');
+const gateError = document.getElementById('gate-error');
+
+function unlockGate() {
+  gateEl.hidden = true;
+  gatedContent.hidden = false;
+  localStorage.setItem(GATE_STORAGE_KEY, '1');
+}
+
+function tryUnlockGate() {
+  if (gateInput.value.trim() === GATE_PASSWORD) {
+    unlockGate();
+  } else {
+    gateError.style.display = 'block';
+  }
+}
+
+if (localStorage.getItem(GATE_STORAGE_KEY) === '1') {
+  unlockGate();
+}
+gateSubmit.addEventListener('click', tryUnlockGate);
+gateInput.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') {
+    e.preventDefault();
+    tryUnlockGate();
+  }
+  gateError.style.display = 'none';
+});
 
 const toggleAqua = document.getElementById('toggle-aqua');
 const toggleTraining = document.getElementById('toggle-training');
