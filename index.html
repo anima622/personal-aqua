@@ -140,13 +140,14 @@ button{font-family:inherit;}
   pointer-events:none;
   background:radial-gradient(circle, var(--violet) 0%, var(--cyan-a4) 45%, transparent 72%);
 }
-/* subtle water-bend on the two signature panels only (About / Reserve) —
-   distorts whatever is sampled behind via the SVG displacement filter */
+/* subtle, constantly-moving water-bend on the hero panel and the About
+   visual — distorts whatever is sampled behind via an SVG displacement
+   filter whose turbulence pattern keeps shifting (see the SVG defs). */
 .refract{
   position:absolute;
   inset:0;
   border-radius:inherit;
-  backdrop-filter:url(#glass-refract);
+  backdrop-filter:url(#glass-refract-lg);
   pointer-events:none;
 }
 
@@ -755,6 +756,7 @@ footer .copyright{font-family:'JetBrains Mono',monospace;font-size:.65rem;color:
   .nav-toggle{display:flex;}
   .about-grid{grid-template-columns:1fr;gap:3rem;}
   .stat-row{grid-template-columns:repeat(3,1fr);gap:1rem;}
+  .refract{backdrop-filter:url(#glass-refract-md);}
 }
 @media (max-width:700px){
   .program-grid{grid-template-columns:1fr;}
@@ -775,6 +777,7 @@ footer .copyright{font-family:'JetBrains Mono',monospace;font-size:.65rem;color:
   .cta-row .btn{width:100%;text-align:center;}
   .chip-row{gap:.5rem;}
   .brand{font-size:1.15rem;}
+  .refract{backdrop-filter:url(#glass-refract-sm);}
 }
 </style>
 </head>
@@ -794,11 +797,35 @@ footer .copyright{font-family:'JetBrains Mono',monospace;font-size:.65rem;color:
     </feTurbulence>
     <feDisplacementMap in="SourceGraphic" in2="noise" scale="34" xChannelSelector="R" yChannelSelector="G"/>
   </filter>
-  <filter id="glass-refract" x="-40%" y="-40%" width="180%" height="180%">
+  <!-- A single filter, constantly animated via the baseFrequency SMIL
+       animation (this one reliably repaints), at a fixed moderate scale.
+       Earlier attempts to "settle" from a strong scale down to a calm one
+       either didn't repaint (animating scale directly) or looked like blur
+       instead of movement (cross-fading two static filters). Real water
+       waviness needs the distortion pattern itself to keep moving, so
+       instead this stays at one constant, legible intensity throughout. -->
+  <!-- Fixed pixel-scale distortion reads much stronger on a small panel
+       than a large one, so three strengths are defined here and CSS media
+       queries pick the right one per viewport (a plain backdrop-filter
+       value swap, which repaints reliably, unlike mutating one filter's
+       internal attributes). Each still animates once for 3s then freezes. -->
+  <filter id="glass-refract-lg" x="-30%" y="-30%" width="160%" height="160%">
     <feTurbulence type="fractalNoise" baseFrequency="0.008 0.016" numOctaves="2" seed="3" result="n">
-      <animate attributeName="baseFrequency" values="0.008 0.016;0.013 0.021;0.008 0.016" dur="14s" repeatCount="indefinite"/>
+      <animate attributeName="baseFrequency" values="0.008 0.016;0.013 0.021;0.008 0.016" dur="3s" repeatCount="1" fill="freeze"/>
     </feTurbulence>
-    <feDisplacementMap in="SourceGraphic" in2="n" scale="46" xChannelSelector="R" yChannelSelector="G"/>
+    <feDisplacementMap in="SourceGraphic" in2="n" scale="18" xChannelSelector="R" yChannelSelector="G"/>
+  </filter>
+  <filter id="glass-refract-md" x="-30%" y="-30%" width="160%" height="160%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.008 0.016" numOctaves="2" seed="3" result="n">
+      <animate attributeName="baseFrequency" values="0.008 0.016;0.013 0.021;0.008 0.016" dur="3s" repeatCount="1" fill="freeze"/>
+    </feTurbulence>
+    <feDisplacementMap in="SourceGraphic" in2="n" scale="8" xChannelSelector="R" yChannelSelector="G"/>
+  </filter>
+  <filter id="glass-refract-sm" x="-30%" y="-30%" width="160%" height="160%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.008 0.016" numOctaves="2" seed="3" result="n">
+      <animate attributeName="baseFrequency" values="0.008 0.016;0.013 0.021;0.008 0.016" dur="3s" repeatCount="1" fill="freeze"/>
+    </feTurbulence>
+    <feDisplacementMap in="SourceGraphic" in2="n" scale="3" xChannelSelector="R" yChannelSelector="G"/>
   </filter>
 </svg>
 
@@ -1191,6 +1218,11 @@ if (supportsHover) {
   const waterBg = document.getElementById('water-bg');
   const caustics = document.getElementById('caustics');
   hero.addEventListener('mousemove', rafThrottle((e) => {
+    /* a narrow window (phone, or a resized desktop browser) has too little
+       room for the panel to absorb a 3D tilt gracefully — it just reads as
+       the panel being crooked/off-center. Skip the effect below this width,
+       independent of whether a mouse is present. */
+    if (window.innerWidth < 900) return;
     const rect = hero.getBoundingClientRect();
     const x = (e.clientX - rect.left) / rect.width - 0.5;
     const y = (e.clientY - rect.top) / rect.height - 0.5;
