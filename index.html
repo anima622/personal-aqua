@@ -763,11 +763,11 @@ footer .copyright{font-family:'JetBrains Mono',monospace;font-size:.65rem;color:
     </feTurbulence>
     <feDisplacementMap in="SourceGraphic" in2="noise" scale="34" xChannelSelector="R" yChannelSelector="G"/>
   </filter>
-  <filter id="glass-refract" x="-20%" y="-20%" width="140%" height="140%">
-    <feTurbulence type="fractalNoise" baseFrequency="0.015 0.03" numOctaves="2" seed="3" result="n">
-      <animate attributeName="baseFrequency" values="0.015 0.03;0.022 0.038;0.015 0.03" dur="14s" repeatCount="indefinite"/>
+  <filter id="glass-refract" x="-40%" y="-40%" width="180%" height="180%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.008 0.016" numOctaves="2" seed="3" result="n">
+      <animate attributeName="baseFrequency" values="0.008 0.016;0.013 0.021;0.008 0.016" dur="14s" repeatCount="indefinite"/>
     </feTurbulence>
-    <feDisplacementMap in="SourceGraphic" in2="n" scale="14" xChannelSelector="R" yChannelSelector="G"/>
+    <feDisplacementMap in="SourceGraphic" in2="n" scale="46" xChannelSelector="R" yChannelSelector="G"/>
   </filter>
 </svg>
 
@@ -1274,7 +1274,7 @@ toggleTraining.addEventListener('click', () => setService('training'));
 
 /* --- パーソナルアクア: slot data, picker, submit ---
    SLOTS mirrors Notion's 「空き状況カレンダー」データベースを、最後に手動で
-   同期した時点の内容（2026-07-11、Claude経由）です。
+   同期した時点の内容（2026-07-12、Claude経由）です。
    TODO: サーバー構築後は、この配列を手動同期する代わりに、同データベースを
    裏で参照するライブAPIから取得するように差し替えてください。 */
 const SLOTS = [
@@ -1285,7 +1285,6 @@ const SLOTS = [
   { id: 's5', date: '7/21(火)', time: '14:00〜15:00' },
   { id: 's6', date: '7/21(火)', time: '15:00〜16:00' },
   { id: 's7', date: '7/23(木)', time: '14:00〜15:00' },
-  { id: 's8', date: '7/23(木)', time: '15:00〜16:00' },
   { id: 's9', date: '7/24(金)', time: '13:00〜14:00' },
   { id: 's10', date: '7/24(金)', time: '14:00〜15:00' },
   { id: 's11', date: '7/25(土)', time: '13:00〜14:00' },
@@ -1293,7 +1292,6 @@ const SLOTS = [
   { id: 's13', date: '7/26(日)', time: '12:00〜13:00' },
   { id: 's14', date: '7/30(木)', time: '13:00〜14:00' },
   { id: 's15', date: '7/30(木)', time: '14:00〜15:00' },
-  { id: 's16', date: '7/30(木)', time: '15:00〜16:00' },
   { id: 's17', date: '7/31(金)', time: '13:00〜14:00' },
   { id: 's18', date: '7/31(金)', time: '14:00〜15:00' },
 ];
