@@ -280,6 +280,25 @@ button{font-family:inherit;}
   50%{opacity:.85;transform:scale(1.08);}
 }
 
+/* cursor-triggered water ripples on the hero glass panel */
+.cursor-ripple{
+  position:absolute;
+  left:0;top:0;
+  width:12px;height:12px;
+  margin:-6px 0 0 -6px;
+  border-radius:50%;
+  border:1.5px solid var(--cyan-a5);
+  background:radial-gradient(circle, var(--pearl-a2), transparent 70%);
+  pointer-events:none;
+  transform:scale(.3);
+  opacity:.85;
+  animation:cursorRipple 1s ease-out forwards;
+}
+@keyframes cursorRipple{
+  0%{transform:scale(.3);opacity:.85;}
+  100%{transform:scale(9);opacity:0;}
+}
+
 /* ===== 5. Header / nav ===== */
 header{
   position:fixed;
@@ -1171,6 +1190,21 @@ if (supportsHover) {
     heroContent.style.transform = 'rotateY(0deg) rotateX(0deg)';
     waterBg.style.transform = 'translate(0,0) scale(1)';
     caustics.style.transform = 'translate(0,0)';
+  });
+
+  /* water ripples that spread out from the cursor while it's over the glass panel */
+  let lastRippleTime = 0;
+  heroContent.addEventListener('mousemove', (e) => {
+    const now = performance.now();
+    if (now - lastRippleTime < 140) return;
+    lastRippleTime = now;
+    const rect = heroContent.getBoundingClientRect();
+    const ripple = document.createElement('div');
+    ripple.className = 'cursor-ripple';
+    ripple.style.left = (e.clientX - rect.left) + 'px';
+    ripple.style.top = (e.clientY - rect.top) + 'px';
+    heroContent.appendChild(ripple);
+    setTimeout(() => ripple.remove(), 1000);
   });
 
   /* ===== 5. Card / visual tilt ===== */
