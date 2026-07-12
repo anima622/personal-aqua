@@ -913,7 +913,7 @@ footer .copyright{font-family:'JetBrains Mono',monospace;font-size:.65rem;color:
   <div class="section-head" data-reveal>
     <div class="kicker">Reservation</div>
     <h2>ご予約</h2>
-    <p>パーソナルアクアとパーソナルトレーニング、ご希望のサービスをお選びのうえ必要事項をご入力ください。内容を確認のうえ、担当より直接ご連絡いたします。</p>
+    <p>パーソナルアクアとパーソナルトレーニング、ご希望のサービスをお選びのうえ必要事項をご入力ください。送信後24時間以内に、担当より確定のご連絡をいたします。</p>
   </div>
 
   <div class="process-row">
@@ -930,7 +930,7 @@ footer .copyright{font-family:'JetBrains Mono',monospace;font-size:.65rem;color:
     <div class="process-step glass" data-reveal>
       <div class="step-num">STEP 03</div>
       <h4>ご連絡</h4>
-      <p>内容を確認のうえ、担当より直接ご連絡いたします。</p>
+      <p>送信後24時間以内に、担当より直接ご連絡いたします。</p>
     </div>
   </div>
 
@@ -1008,7 +1008,7 @@ footer .copyright{font-family:'JetBrains Mono',monospace;font-size:.65rem;color:
         </div>
         <div class="reserve-submit">
           <button type="submit" class="btn btn-primary">予約をリクエストする</button>
-          <p class="pay-note">料金：1名 ¥11,000〜4名 ¥24,500（55分利用・税込、人数別の詳細は上記「ご利用シーン」をご覧ください）。お支払い方法（銀行振込／手渡し／PayPay）は、確定のご連絡と合わせてご案内いたします。初回のご連絡後は、LINEでのやり取りにご案内する場合があります。</p>
+          <p class="pay-note">料金：1名 ¥11,000〜4名 ¥24,500（55分利用・税込、人数別の詳細は上記「ご利用シーン」をご覧ください）。送信後24時間以内に確定のご連絡をいたします。お支払い方法（銀行振込／手渡し／PayPay）は、確定のご連絡と合わせてご案内いたします。初回のご連絡後は、LINEでのやり取りにご案内する場合があります。</p>
           <p id="confirm-msg" class="confirm-msg"></p>
         </div>
       </form>
@@ -1042,7 +1042,7 @@ footer .copyright{font-family:'JetBrains Mono',monospace;font-size:.65rem;color:
         </div>
         <div class="reserve-submit">
           <button type="submit" class="btn btn-primary">パーソナルトレーニングを申し込む</button>
-          <p class="pay-note">料金：¥8,800（60分・税込、マンツーマン）。内容を確認のうえ、担当より直接ご連絡いたします（LINEまたはお電話・メールにて）。</p>
+          <p class="pay-note">料金：¥8,800（60分・税込、マンツーマン）。送信後24時間以内に、担当より直接ご連絡いたします（LINEまたはお電話・メールにて）。</p>
           <p id="confirm-msg-training" class="confirm-msg"></p>
         </div>
       </form>
@@ -1377,7 +1377,7 @@ form.addEventListener('submit', async (e) => {
   confirmMsg.style.display = 'block';
   confirmMsg.classList.toggle('error', !ok);
   if (ok) {
-    confirmMsg.textContent = `${name} 様、以下の日時でご予約リクエストを承りました：${chosen}。レーンの確保状況を確認のうえ、担当より確定のご連絡をいたします。`;
+    confirmMsg.textContent = `${name} 様、以下の日時でご予約リクエストを承りました：${chosen}。24時間以内に、担当より確定のご連絡をいたします。`;
     form.reset();
     selectedSlots.clear();
     slotGrid.querySelectorAll('.slot.selected').forEach((el) => el.classList.remove('selected'));
@@ -1408,7 +1408,7 @@ trainingForm.addEventListener('submit', async (e) => {
   confirmMsgTraining.style.display = 'block';
   confirmMsgTraining.classList.toggle('error', !ok);
   if (ok) {
-    confirmMsgTraining.textContent = `${name} 様、パーソナルトレーニングのご希望日時（${dates}）を承りました。内容を確認のうえ、担当より直接ご連絡いたします。`;
+    confirmMsgTraining.textContent = `${name} 様、パーソナルトレーニングのご希望日時（${dates}）を承りました。24時間以内に、担当より直接ご連絡いたします。`;
     trainingForm.reset();
   } else {
     confirmMsgTraining.textContent = ERROR_MESSAGE;
