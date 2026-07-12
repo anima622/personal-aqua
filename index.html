@@ -736,6 +736,7 @@ section{position:relative;padding:clamp(70px,12vw,130px) 6vw;}
 }
 .confirm-msg.error{color:#c23b3b;}
 .btn[disabled]{opacity:.6;cursor:not-allowed;}
+.btn.sent[disabled]{opacity:1;background:var(--cyan-dim);color:#ffffff;cursor:default;}
 
 /* ===== 11. Footer ===== */
 footer{background:var(--bg-black);color:var(--text-dim);padding:60px 6vw 30px;text-align:center;border-top:1px solid var(--line);}
@@ -1413,11 +1414,10 @@ form.addEventListener('submit', async (e) => {
   document.getElementById('selected-slots-field').value = chosen;
 
   const submitBtn = form.querySelector('button[type="submit"]');
+  const originalLabel = submitBtn.textContent;
   submitBtn.disabled = true;
   submitBtn.textContent = '送信中…';
   const ok = await submitToFormspree(form);
-  submitBtn.disabled = false;
-  submitBtn.textContent = '予約をリクエストする';
 
   confirmMsg.style.display = 'block';
   confirmMsg.classList.toggle('error', !ok);
@@ -1426,8 +1426,17 @@ form.addEventListener('submit', async (e) => {
     form.reset();
     selectedSlots.clear();
     slotGrid.querySelectorAll('.slot.selected').forEach((el) => el.classList.remove('selected'));
+    submitBtn.textContent = '送信完了 ✓';
+    submitBtn.classList.add('sent');
+    setTimeout(() => {
+      submitBtn.textContent = originalLabel;
+      submitBtn.classList.remove('sent');
+      submitBtn.disabled = false;
+    }, 2600);
   } else {
     confirmMsg.textContent = ERROR_MESSAGE;
+    submitBtn.textContent = originalLabel;
+    submitBtn.disabled = false;
   }
 });
 
@@ -1444,19 +1453,27 @@ trainingForm.addEventListener('submit', async (e) => {
     .join(' / ');
 
   const submitBtn = trainingForm.querySelector('button[type="submit"]');
+  const originalLabel = submitBtn.textContent;
   submitBtn.disabled = true;
   submitBtn.textContent = '送信中…';
   const ok = await submitToFormspree(trainingForm);
-  submitBtn.disabled = false;
-  submitBtn.textContent = 'パーソナルトレーニングを申し込む';
 
   confirmMsgTraining.style.display = 'block';
   confirmMsgTraining.classList.toggle('error', !ok);
   if (ok) {
     confirmMsgTraining.textContent = `${name} 様、パーソナルトレーニングのご希望日時（${dates}）を承りました。24時間以内に、担当より直接ご連絡いたします。`;
     trainingForm.reset();
+    submitBtn.textContent = '送信完了 ✓';
+    submitBtn.classList.add('sent');
+    setTimeout(() => {
+      submitBtn.textContent = originalLabel;
+      submitBtn.classList.remove('sent');
+      submitBtn.disabled = false;
+    }, 2600);
   } else {
     confirmMsgTraining.textContent = ERROR_MESSAGE;
+    submitBtn.textContent = originalLabel;
+    submitBtn.disabled = false;
   }
 });
 </script>
