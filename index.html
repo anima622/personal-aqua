@@ -418,7 +418,6 @@ header.menu-open .nav-toggle span:nth-child(3){transform:translateY(-7px) rotate
   display:flex;
   flex-direction:column;
   align-items:center;
-  transform-style:preserve-3d;
   transition:transform .25s ease-out, opacity 1.4s ease-out, filter 1.4s ease-out;
   will-change:transform;
   opacity:0;
@@ -431,7 +430,16 @@ header.menu-open .nav-toggle span:nth-child(3){transform:translateY(-7px) rotate
 }
 .hero-content .glow{inset:-25%;filter:blur(80px);}
 .hero-content.loaded{opacity:1;filter:blur(0);}
-.hero-content h1, .hero-content p, .hero-content .cta-row, .hero-content .chip-row{transform:translateZ(20px);}
+/* the layered 3D tilt (preserve-3d + translateZ) only ever gets driven by the
+   mousemove JS, which itself only runs on hover-capable pointers — so keep
+   these transforms out of touch/tablet rendering entirely. Some mobile/tablet
+   browsers mishandle preserve-3d + overflow + backdrop-filter together and
+   silently clip content, and there's no interaction there to justify the
+   extra compositing cost anyway. */
+@media (hover: hover) and (pointer: fine){
+  .hero-content{transform-style:preserve-3d;}
+  .hero-content h1, .hero-content p, .hero-content .cta-row, .hero-content .chip-row{transform:translateZ(20px);}
+}
 .hero .kicker{margin-bottom:1.8rem;}
 .hero h1{
   font-size:clamp(2.6rem, 8vw, 6rem);
@@ -590,7 +598,6 @@ section{position:relative;padding:clamp(70px,12vw,130px) 6vw;}
   padding:2.6rem 2.2rem;
   box-shadow:0 20px 50px rgba(0,0,0,.3);
   transition:transform .15s ease-out, box-shadow .4s ease, border-color .4s ease;
-  transform-style:preserve-3d;
   will-change:transform;
   position:relative;
   overflow:hidden;
@@ -609,10 +616,14 @@ section{position:relative;padding:clamp(70px,12vw,130px) 6vw;}
 .program-card:hover{border-color:var(--cyan-dim);box-shadow:0 30px 70px var(--cyan-a3);}
 .program-card .num{
   font-family:'JetBrains Mono',monospace;font-size:2.6rem;font-weight:500;
-  color:transparent;-webkit-text-stroke:1px var(--cyan);transform:translateZ(30px);
+  color:transparent;-webkit-text-stroke:1px var(--cyan);
 }
-.program-card h3, .program-card p, .program-card .price-table-label, .program-card .price-table{transform:translateZ(20px);}
 .program-card h3{font-size:1.4rem;margin:.9rem 0 .8rem;color:var(--ice);font-weight:600;}
+@media (hover: hover) and (pointer: fine){
+  .program-card{transform-style:preserve-3d;}
+  .program-card .num{transform:translateZ(30px);}
+  .program-card h3, .program-card p, .program-card .price-table-label, .program-card .price-table{transform:translateZ(20px);}
+}
 .program-card p{color:var(--text-dim);font-weight:300;line-height:1.85;font-size:.93rem;}
 .price-table-label{
   margin-top:1.4rem;padding-top:1rem;border-top:1px solid var(--line);
