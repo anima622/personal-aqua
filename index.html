@@ -666,6 +666,21 @@ section{position:relative;padding:clamp(70px,12vw,130px) 6vw;}
 .programs-note{text-align:center;max-width:600px;margin:2.6rem auto 0;color:var(--text-dim);font-size:.82rem;line-height:1.8;}
 
 /* ===== 10. Reserve ===== */
+/* cancellation policy: shown above the gate/form so it's visible before
+   anyone commits to booking, not buried in a post-submit confirmation */
+.policy-card{
+  --glass-bg:linear-gradient(160deg, var(--cyan-a2), var(--cyan-a1));
+  --glass-blur:6px;
+  border-radius:8px;
+  padding:1.8rem 2rem;
+  max-width:640px;
+  margin:0 auto 3rem;
+}
+.policy-intro{margin-top:.5rem;color:var(--text-dim);font-weight:300;line-height:1.85;font-size:.86rem;}
+.policy-card .price-table{margin-top:1rem;}
+.policy-card .price-row span{color:var(--text-dim);}
+.policy-card .price-note{margin-top:.8rem;}
+@media (max-width:640px){.policy-card{padding:1.5rem 1.4rem;}}
 #reserve{background:linear-gradient(180deg, var(--bg-panel), var(--bg-black));}
 .process-row{display:grid;grid-template-columns:repeat(3,1fr);gap:1.4rem;max-width:900px;margin:0 auto 3.5rem;}
 .process-step{text-align:center;padding:1.5rem 1.1rem;border-radius:8px;--glass-bg:var(--cyan-a1);--glass-blur:4px;}
@@ -1021,6 +1036,17 @@ footer .copyright{font-family:'JetBrains Mono',monospace;font-size:.65rem;color:
     <div class="kicker">Reservation</div>
     <h2>ご予約</h2>
     <p>パーソナルアクアとパーソナルトレーニング、ご希望のサービスをお選びのうえ必要事項をご入力ください。送信後24時間以内に、担当より確定のご連絡をいたします。</p>
+  </div>
+
+  <div class="policy-card glass glass-edge" data-reveal>
+    <div class="price-table-label">キャンセルポリシー</div>
+    <p class="policy-intro">施設利用料 4,950円（枠1件あたり）に対し、ご予約日の前日を起点に数えたキャンセル時期に応じて、キャンセル料をご請求いたします。あらかじめご了承のうえご予約ください。</p>
+    <div class="price-table">
+      <div class="price-row"><span>30日前 〜 14日前</span><strong>30%（1,485円）</strong></div>
+      <div class="price-row"><span>13日前 〜 7日前</span><strong>50%（2,475円）</strong></div>
+      <div class="price-row"><span>6日前 〜 当日</span><strong>100%（4,950円）</strong></div>
+    </div>
+    <div class="price-note">複数枠のご予約は、キャンセルする枠数分を合算してご請求します。</div>
   </div>
 
   <div class="process-row">
