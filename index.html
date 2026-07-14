@@ -585,24 +585,30 @@ section{position:relative;padding:clamp(70px,12vw,130px) 6vw;}
   height:clamp(260px,42vw,420px);
   border-radius:10px;
   overflow:hidden;
-  --glass-bg:linear-gradient(165deg, var(--pearl-a2), var(--cyan-a1) 55%, var(--violet-a2));
-  --glass-blur:7px;
+  /* deliberately dark + near-opaque (unlike the pearl-tinted glass used
+     elsewhere in this light section) so the lane rope reads with real
+     contrast; .refract + .surface-sweep still carry the glass shimmer */
+  --glass-bg:linear-gradient(165deg, rgba(15,60,84,.92), rgba(8,38,56,.94) 55%, rgba(6,28,42,.96));
+  --glass-blur:9px;
+  --lane-red:#e2543e;
 }
-.about-visual .ring{position:absolute;border:1px solid var(--cyan-a4);border-radius:50%;animation:spin linear infinite;}
-.ring1{width:70%;height:70%;top:15%;left:15%;animation-duration:26s;}
-.ring2{width:45%;height:45%;top:27%;left:27%;animation-duration:18s;animation-direction:reverse;}
-@keyframes spin{from{transform:rotate(0deg);} to{transform:rotate(360deg);}}
-.about-visual .ripple{
-  position:absolute;top:50%;left:50%;width:36%;height:36%;margin:-18% 0 0 -18%;
-  border:1px solid var(--cyan-a5);border-radius:50%;
-  animation:rippleOut 4.5s ease-out infinite;
+.about-visual .private-lane-label{
+  position:absolute;top:16px;left:18px;
+  font-family:'Fraunces',serif;font-weight:700;font-style:italic;
+  font-size:clamp(1.3rem,4vw,1.9rem);line-height:1.05;color:var(--ice);
+  text-shadow:0 2px 20px rgba(0,0,0,.35);
 }
-.ripple.delay{animation-delay:2.25s;}
-@keyframes rippleOut{0%{transform:scale(.25);opacity:.9;} 100%{transform:scale(2.1);opacity:0;}}
+/* lane-rope: five course ropes crossing the panel (the pool has more than
+   one lane), the other four dimmed so the reserved lane in the middle -
+   picked out with a slow pulse - reads as "yours" among several */
+.about-visual .lane-rope{position:absolute;top:50%;left:8%;right:8%;aspect-ratio:400/90;max-height:170px;margin:0 auto;transform:translateY(-50%);}
+.about-visual .lane-rope svg{width:100%;height:100%;display:block;overflow:visible;}
+.about-visual .lane-rope circle.mine{animation:lanePulse 3.2s ease-in-out infinite;transform-origin:center;transform-box:fill-box;filter:drop-shadow(0 0 5px var(--lane-red));}
+@keyframes lanePulse{0%,100%{opacity:1;transform:scale(1);} 50%{opacity:.65;transform:scale(1.35);}}
 .about-visual .readout{
   position:absolute;bottom:18px;left:18px;right:18px;
   font-family:'JetBrains Mono',monospace;font-size:.64rem;letter-spacing:.08em;
-  color:var(--ink);opacity:.7;display:flex;justify-content:space-between;
+  color:var(--pearl);opacity:.8;display:flex;justify-content:space-between;
 }
 .about-text p{color:var(--ink-dim);font-weight:300;line-height:2;margin-bottom:1.4rem;}
 .stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:1.6rem;margin-top:2.6rem;}
@@ -975,11 +981,87 @@ footer .copyright{font-family:'JetBrains Mono',monospace;font-size:.65rem;color:
       <div class="glow"></div>
       <div class="about-visual glass reveal-focus" id="about-visual" data-reveal>
         <div class="refract"></div>        <div class="surface-sweep"></div>
-        <div class="ripple"></div>
-        <div class="ripple delay"></div>
-        <div class="ring ring1"></div>
-        <div class="ring ring2"></div>
-        <div class="readout"><span>PRIVATE LANE</span><span>RESERVATION ONLY</span></div>
+        <div class="private-lane-label">PRIVATE<br>Lane</div>
+        <div class="lane-rope">
+          <svg viewBox="0 0 400 90" preserveAspectRatio="xMidYMid meet">
+            <g>
+              <line x1="0" y1="9" x2="400" y2="9" stroke="var(--text-dim)" stroke-opacity="0.18" stroke-width="1.5"/>
+              <circle cx="17" cy="9" r="2.6" fill="var(--text-dim)" fill-opacity="0.4"/>
+              <circle cx="51" cy="9" r="2.6" fill="var(--text-dim)" fill-opacity="0.4"/>
+              <circle cx="85" cy="9" r="2.6" fill="var(--text-dim)" fill-opacity="0.4"/>
+              <circle cx="119" cy="9" r="2.6" fill="var(--text-dim)" fill-opacity="0.4"/>
+              <circle cx="153" cy="9" r="2.6" fill="var(--text-dim)" fill-opacity="0.4"/>
+              <circle cx="187" cy="9" r="2.6" fill="var(--text-dim)" fill-opacity="0.4"/>
+              <circle cx="221" cy="9" r="2.6" fill="var(--text-dim)" fill-opacity="0.4"/>
+              <circle cx="255" cy="9" r="2.6" fill="var(--text-dim)" fill-opacity="0.4"/>
+              <circle cx="289" cy="9" r="2.6" fill="var(--text-dim)" fill-opacity="0.4"/>
+              <circle cx="323" cy="9" r="2.6" fill="var(--text-dim)" fill-opacity="0.4"/>
+              <circle cx="357" cy="9" r="2.6" fill="var(--text-dim)" fill-opacity="0.4"/>
+              <circle cx="391" cy="9" r="2.6" fill="var(--text-dim)" fill-opacity="0.4"/>
+            </g>
+            <g>
+              <line x1="0" y1="27" x2="400" y2="27" stroke="var(--text-dim)" stroke-opacity="0.18" stroke-width="1.5"/>
+              <circle cx="17" cy="27" r="2.6" fill="var(--text-dim)" fill-opacity="0.4"/>
+              <circle cx="51" cy="27" r="2.6" fill="var(--text-dim)" fill-opacity="0.4"/>
+              <circle cx="85" cy="27" r="2.6" fill="var(--text-dim)" fill-opacity="0.4"/>
+              <circle cx="119" cy="27" r="2.6" fill="var(--text-dim)" fill-opacity="0.4"/>
+              <circle cx="153" cy="27" r="2.6" fill="var(--text-dim)" fill-opacity="0.4"/>
+              <circle cx="187" cy="27" r="2.6" fill="var(--text-dim)" fill-opacity="0.4"/>
+              <circle cx="221" cy="27" r="2.6" fill="var(--text-dim)" fill-opacity="0.4"/>
+              <circle cx="255" cy="27" r="2.6" fill="var(--text-dim)" fill-opacity="0.4"/>
+              <circle cx="289" cy="27" r="2.6" fill="var(--text-dim)" fill-opacity="0.4"/>
+              <circle cx="323" cy="27" r="2.6" fill="var(--text-dim)" fill-opacity="0.4"/>
+              <circle cx="357" cy="27" r="2.6" fill="var(--text-dim)" fill-opacity="0.4"/>
+              <circle cx="391" cy="27" r="2.6" fill="var(--text-dim)" fill-opacity="0.4"/>
+            </g>
+            <g>
+              <line x1="0" y1="45" x2="400" y2="45" stroke="var(--lane-red)" stroke-opacity="0.35" stroke-width="1.5"/>
+              <circle cx="17" cy="45" r="4" fill="var(--lane-red)"/>
+              <circle cx="51" cy="45" r="4" fill="var(--pearl)"/>
+              <circle cx="85" cy="45" r="4" fill="var(--lane-red)"/>
+              <circle cx="119" cy="45" r="4" fill="var(--pearl)"/>
+              <circle cx="153" cy="45" r="4" fill="var(--lane-red)"/>
+              <circle cx="187" cy="45" r="5.5" fill="var(--pearl)" class="mine"/>
+              <circle cx="221" cy="45" r="4" fill="var(--lane-red)"/>
+              <circle cx="255" cy="45" r="4" fill="var(--pearl)"/>
+              <circle cx="289" cy="45" r="4" fill="var(--lane-red)"/>
+              <circle cx="323" cy="45" r="4" fill="var(--pearl)"/>
+              <circle cx="357" cy="45" r="4" fill="var(--lane-red)"/>
+              <circle cx="391" cy="45" r="4" fill="var(--pearl)"/>
+            </g>
+            <g>
+              <line x1="0" y1="63" x2="400" y2="63" stroke="var(--text-dim)" stroke-opacity="0.18" stroke-width="1.5"/>
+              <circle cx="17" cy="63" r="2.6" fill="var(--text-dim)" fill-opacity="0.4"/>
+              <circle cx="51" cy="63" r="2.6" fill="var(--text-dim)" fill-opacity="0.4"/>
+              <circle cx="85" cy="63" r="2.6" fill="var(--text-dim)" fill-opacity="0.4"/>
+              <circle cx="119" cy="63" r="2.6" fill="var(--text-dim)" fill-opacity="0.4"/>
+              <circle cx="153" cy="63" r="2.6" fill="var(--text-dim)" fill-opacity="0.4"/>
+              <circle cx="187" cy="63" r="2.6" fill="var(--text-dim)" fill-opacity="0.4"/>
+              <circle cx="221" cy="63" r="2.6" fill="var(--text-dim)" fill-opacity="0.4"/>
+              <circle cx="255" cy="63" r="2.6" fill="var(--text-dim)" fill-opacity="0.4"/>
+              <circle cx="289" cy="63" r="2.6" fill="var(--text-dim)" fill-opacity="0.4"/>
+              <circle cx="323" cy="63" r="2.6" fill="var(--text-dim)" fill-opacity="0.4"/>
+              <circle cx="357" cy="63" r="2.6" fill="var(--text-dim)" fill-opacity="0.4"/>
+              <circle cx="391" cy="63" r="2.6" fill="var(--text-dim)" fill-opacity="0.4"/>
+            </g>
+            <g>
+              <line x1="0" y1="81" x2="400" y2="81" stroke="var(--text-dim)" stroke-opacity="0.18" stroke-width="1.5"/>
+              <circle cx="17" cy="81" r="2.6" fill="var(--text-dim)" fill-opacity="0.4"/>
+              <circle cx="51" cy="81" r="2.6" fill="var(--text-dim)" fill-opacity="0.4"/>
+              <circle cx="85" cy="81" r="2.6" fill="var(--text-dim)" fill-opacity="0.4"/>
+              <circle cx="119" cy="81" r="2.6" fill="var(--text-dim)" fill-opacity="0.4"/>
+              <circle cx="153" cy="81" r="2.6" fill="var(--text-dim)" fill-opacity="0.4"/>
+              <circle cx="187" cy="81" r="2.6" fill="var(--text-dim)" fill-opacity="0.4"/>
+              <circle cx="221" cy="81" r="2.6" fill="var(--text-dim)" fill-opacity="0.4"/>
+              <circle cx="255" cy="81" r="2.6" fill="var(--text-dim)" fill-opacity="0.4"/>
+              <circle cx="289" cy="81" r="2.6" fill="var(--text-dim)" fill-opacity="0.4"/>
+              <circle cx="323" cy="81" r="2.6" fill="var(--text-dim)" fill-opacity="0.4"/>
+              <circle cx="357" cy="81" r="2.6" fill="var(--text-dim)" fill-opacity="0.4"/>
+              <circle cx="391" cy="81" r="2.6" fill="var(--text-dim)" fill-opacity="0.4"/>
+            </g>
+          </svg>
+        </div>
+        <div class="readout"><span>貸切レーン</span><span>RESERVATION ONLY</span></div>
       </div>
     </div>
     <div class="about-text" data-reveal>
@@ -1427,7 +1509,7 @@ toggleTraining.addEventListener('click', () => setService('training'));
 
 /* --- パーソナルアクア: slot data, picker, submit ---
    SLOTS mirrors Notion's 「空き状況カレンダー」データベースを、最後に手動で
-   同期した時点の内容（2026-07-12、Claude経由）です。
+   同期した時点の内容（2026-07-15、Claude経由）です。
    TODO: サーバー構築後は、この配列を手動同期する代わりに、同データベースを
    裏で参照するライブAPIから取得するように差し替えてください。 */
 const SLOTS = [
@@ -1437,14 +1519,12 @@ const SLOTS = [
   { id: 's4', date: '7/21(火)', time: '13:00〜14:00' },
   { id: 's5', date: '7/21(火)', time: '14:00〜15:00' },
   { id: 's6', date: '7/21(火)', time: '15:00〜16:00' },
-  { id: 's7', date: '7/23(木)', time: '14:00〜15:00' },
   { id: 's9', date: '7/24(金)', time: '13:00〜14:00' },
   { id: 's10', date: '7/24(金)', time: '14:00〜15:00' },
   { id: 's11', date: '7/25(土)', time: '13:00〜14:00' },
   { id: 's12', date: '7/26(日)', time: '11:00〜12:00' },
   { id: 's13', date: '7/26(日)', time: '12:00〜13:00' },
   { id: 's14', date: '7/30(木)', time: '13:00〜14:00' },
-  { id: 's15', date: '7/30(木)', time: '14:00〜15:00' },
   { id: 's17', date: '7/31(金)', time: '13:00〜14:00' },
   { id: 's18', date: '7/31(金)', time: '14:00〜15:00' },
 ];
