@@ -654,6 +654,7 @@ section{position:relative;padding:clamp(70px,12vw,130px) 6vw;}
   .program-card h3, .program-card p, .program-card .price-table-label, .program-card .price-table{transform:translateZ(20px);}
 }
 .program-card p{color:var(--text-dim);font-weight:300;line-height:1.85;font-size:.93rem;}
+.program-card p strong{color:var(--cyan-dim);font-weight:600;}
 .price-table-label{
   margin-top:1.4rem;padding-top:1rem;border-top:1px solid var(--line);
   font-family:'JetBrains Mono',monospace;font-size:.68rem;letter-spacing:.1em;
@@ -1080,7 +1081,7 @@ footer .copyright{font-family:'JetBrains Mono',monospace;font-size:.65rem;color:
   <div class="section-head" data-reveal>
     <div class="kicker">Use Cases</div>
     <h2>ご利用シーンに合わせて</h2>
-    <p>プールでの貸切スイミングと、コーチによるパーソナルトレーニング。目的に合わせてお選びいただけます。</p>
+    <p>水中でコーチのマンツーマン指導を受けながら泳ぎ方を身につけたい方は「パーソナルアクア」、陸上のレンタルルームでトレーニングをしたい方は「パーソナルトレーニング」。目的に合わせてお選びいただけます。</p>
   </div>
   <div class="program-grid">
     <div class="glow"></div>
@@ -1088,21 +1089,28 @@ footer .copyright{font-family:'JetBrains Mono',monospace;font-size:.65rem;color:
       <div class="landing-ripple"></div>
       <div class="num">01</div>
       <h3>パーソナルアクア</h3>
-      <p>プールレーンを貸切利用。マンツーマンから最大4名まで、レーンを貸切るので水中では、自分のペースで集中できます。</p>
-      <div class="price-table-label">料金（税込）</div>
+      <p><strong>マンツーマン指導。</strong>プールレーンを貸切り、コーチが直接泳ぎ方を指導するプランです。1〜4名まで対応可能で、人数が増えるほどお一人あたりの指導時間は短くなりますが（1名55分／2名27分30秒／3名約18分／4名約12分）、コーチがつきっきりで指導します。</p>
+      <div class="price-table-label">料金（税込・平日）</div>
       <div class="price-table">
         <div class="price-row"><span>1名</span><strong>¥11,000</strong></div>
         <div class="price-row"><span>2名</span><strong>¥16,500</strong></div>
         <div class="price-row"><span>3名</span><strong>¥21,000</strong></div>
         <div class="price-row"><span>4名</span><strong>¥24,500</strong></div>
       </div>
-      <div class="price-note">55分利用（10分前から入場可）</div>
+      <div class="price-table-label">料金（税込・土日祝）</div>
+      <div class="price-table">
+        <div class="price-row"><span>1名</span><strong>¥12,500</strong></div>
+        <div class="price-row"><span>2名</span><strong>¥18,000</strong></div>
+        <div class="price-row"><span>3名</span><strong>¥22,500</strong></div>
+        <div class="price-row"><span>4名</span><strong>¥26,000</strong></div>
+      </div>
+      <div class="price-note">55分利用（10分前から入場可）・土日祝はプールコース代の値上がり分（+¥1,500）を反映しています</div>
     </div>
     <div class="program-card glass reveal-surface" data-reveal>
       <div class="landing-ripple"></div>
       <div class="num">02</div>
       <h3>パーソナルトレーニング</h3>
-      <p>コーチとマンツーマンで、泳法時の身体の動きやトレーニング、身体の使い方、メニュー作成などをサポート。ご希望の日時をお伺いし、個別にご連絡します。</p>
+      <p><strong>陸上トレーニング。</strong>ダンベルなどの器具を備えたレンタルルームで行う、コーチによるマンツーマントレーニングです。ご希望の日時をお伺いし、個別にご連絡します。</p>
       <div class="price-table-label">料金（税込）</div>
       <div class="price-table">
         <div class="price-row"><span>マンツーマン</span><strong>¥8,800</strong></div>
@@ -1122,11 +1130,18 @@ footer .copyright{font-family:'JetBrains Mono',monospace;font-size:.65rem;color:
 
   <div class="policy-card glass glass-edge" data-reveal>
     <div class="price-table-label">キャンセルポリシー</div>
-    <p class="policy-intro">施設利用料 4,950円（枠1件あたり）に対し、ご予約日の前日を起点に数えたキャンセル時期に応じて、キャンセル料をご請求いたします。あらかじめご了承のうえご予約ください。</p>
+    <p class="policy-intro">施設利用料（枠1件あたり、税込・平日4,950円／土日祝6,600円）に対し、ご予約日の前日を起点に数えたキャンセル時期に応じて、キャンセル料をご請求いたします。あらかじめご了承のうえご予約ください。</p>
+    <div class="price-table-label">平日（税込）</div>
     <div class="price-table">
       <div class="price-row"><span>30日前 〜 14日前</span><strong>30%（1,485円）</strong></div>
       <div class="price-row"><span>13日前 〜 7日前</span><strong>50%（2,475円）</strong></div>
       <div class="price-row"><span>6日前 〜 当日</span><strong>100%（4,950円）</strong></div>
+    </div>
+    <div class="price-table-label">土日祝（税込）</div>
+    <div class="price-table">
+      <div class="price-row"><span>30日前 〜 14日前</span><strong>30%（1,980円）</strong></div>
+      <div class="price-row"><span>13日前 〜 7日前</span><strong>50%（3,300円）</strong></div>
+      <div class="price-row"><span>6日前 〜 当日</span><strong>100%（6,600円）</strong></div>
     </div>
     <div class="price-note">複数枠のご予約は、キャンセルする枠数分を合算してご請求します。</div>
   </div>
@@ -1169,10 +1184,10 @@ footer .copyright{font-family:'JetBrains Mono',monospace;font-size:.65rem;color:
     <div class="gated-content" id="gated-content" hidden>
     <div class="service-toggle" role="tablist" aria-label="ご希望のサービス">
       <button type="button" class="service-btn active" id="toggle-aqua" role="tab" aria-selected="true">
-        パーソナルアクア<span>プール貸切</span>
+        パーソナルアクア<span>コーチ指導・水中で泳ぐ</span>
       </button>
       <button type="button" class="service-btn" id="toggle-training" role="tab" aria-selected="false">
-        パーソナルトレーニング<span>コーチと個別に</span>
+        パーソナルトレーニング<span>コーチ指導・陸上トレーニング</span>
       </button>
     </div>
 
@@ -1509,7 +1524,7 @@ toggleTraining.addEventListener('click', () => setService('training'));
 
 /* --- パーソナルアクア: slot data, picker, submit ---
    SLOTS mirrors Notion's 「空き状況カレンダー」データベースを、最後に手動で
-   同期した時点の内容（2026-07-16、Claude経由）です。
+   同期した時点の内容（2026-07-17、Claude経由）です。
    TODO: サーバー構築後は、この配列を手動同期する代わりに、同データベースを
    裏で参照するライブAPIから取得するように差し替えてください。 */
 const SLOTS = [
@@ -1518,7 +1533,6 @@ const SLOTS = [
   { id: 's6', date: '7/21(火)', time: '15:00〜16:00' },
   { id: 's9', date: '7/24(金)', time: '13:00〜14:00' },
   { id: 's10', date: '7/24(金)', time: '14:00〜15:00' },
-  { id: 's11', date: '7/25(土)', time: '13:00〜14:00' },
   { id: 's12', date: '7/26(日)', time: '11:00〜12:00' },
   { id: 's13', date: '7/26(日)', time: '12:00〜13:00' },
   { id: 's14', date: '7/30(木)', time: '13:00〜14:00' },
