@@ -751,6 +751,10 @@ section{position:relative;padding:clamp(70px,12vw,130px) 6vw;}
 .field input::placeholder, .field textarea::placeholder{color:var(--ink-dim);opacity:.75;}
 .field input:focus, .field select:focus, .field textarea:focus{border-color:var(--cyan-dim);box-shadow:0 6px 12px -8px var(--cyan-a5);}
 
+.checkbox-row{display:flex;align-items:flex-start;gap:.7rem;font-family:'Noto Sans JP',sans-serif;font-size:.9rem;color:var(--ink);line-height:1.65;}
+.checkbox-row input[type="checkbox"]{margin-top:.3rem;width:1.05rem;height:1.05rem;accent-color:var(--cyan-dim);flex-shrink:0;cursor:pointer;}
+.checkbox-row label{cursor:pointer;}
+
 .slot-grid{display:flex;flex-direction:column;gap:1.1rem;margin-top:.3rem;}
 .slot-day{display:flex;align-items:baseline;gap:1rem;flex-wrap:wrap;}
 .slot-day-label{
@@ -1144,6 +1148,8 @@ footer .copyright{font-family:'JetBrains Mono',monospace;font-size:.65rem;color:
       <div class="price-row"><span>6日前 〜 当日</span><strong>100%（6,600円）</strong></div>
     </div>
     <div class="price-note">複数枠のご予約は、キャンセルする枠数分を合算してご請求します。</div>
+    <div class="price-table-label">ご予約の「キープ」について</div>
+    <p class="policy-intro">プールコースのキャンセル料は予約の30日前から発生するため、ご予定がまだ確定しきっていない場合は、ご利用日の1週間前を目安に枠を「キープ」いただけます（コースの予約手続きは、進めてよいタイミングになってから行います）。キープの間はまだコースを確定させていないため、直前になって空きがなくなっている可能性がある点はご了承ください。皆様に気持ちよくご利用いただけるよう、必要以上に多くの枠を長期間キープすることは控えていただけますと幸いです。</p>
   </div>
 
   <div class="process-row">
@@ -1230,6 +1236,13 @@ footer .copyright{font-family:'JetBrains Mono',monospace;font-size:.65rem;color:
           </div>
           <div class="field full">
             <span class="hint">※ 時間変更の可否は、ご希望の枠が確保できなかった場合、前後の時間へ変更できるかの確認です。</span>
+          </div>
+          <div class="field full">
+            <div class="checkbox-row">
+              <input type="checkbox" id="course-ok" name="course_ok" value="はい、進めてOKです">
+              <label for="course-ok">このままコースの予約手続きを進めてOKです（キープではなく確定希望）</label>
+            </div>
+            <span class="hint">※ チェックなしの場合は「キープ」として承ります。ご利用日の1週間前を目安に、あらためてコース予約を進めてよいかご連絡します。複数の日時をまとめてご予約の場合、一部の枠だけキープをご希望のときは、下の備考欄に対象の日時をご記入ください。</span>
           </div>
           <div class="field full">
             <label for="note">備考（任意）</label>
