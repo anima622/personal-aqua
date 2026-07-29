@@ -755,6 +755,45 @@ section{position:relative;padding:clamp(70px,12vw,130px) 6vw;}
 .checkbox-row input[type="checkbox"]{margin-top:.3rem;width:1.05rem;height:1.05rem;accent-color:var(--cyan-dim);flex-shrink:0;cursor:pointer;}
 .checkbox-row label{cursor:pointer;}
 
+.confirm-modal-overlay{
+  position:fixed;inset:0;z-index:200;padding:1.5rem;
+  background:rgba(4,20,28,.72);backdrop-filter:blur(4px);
+  display:flex;align-items:center;justify-content:center;
+}
+.confirm-modal-overlay[hidden]{display:none;}
+.confirm-modal{
+  --glass-bg:linear-gradient(165deg, rgba(15,60,84,.97), rgba(8,38,56,.98) 55%, rgba(6,28,42,.99));
+  width:100%;max-width:480px;max-height:85vh;overflow-y:auto;
+  border-radius:10px;padding:2.2rem;box-shadow:0 40px 90px rgba(0,0,0,.5);
+}
+.confirm-modal h3{
+  font-family:'Fraunces',serif;font-style:italic;font-weight:600;
+  font-size:1.35rem;margin-bottom:.6rem;color:var(--pearl);
+}
+.confirm-modal .confirm-modal-note{font-size:.82rem;color:var(--text-dim);margin-bottom:1.6rem;line-height:1.7;}
+.confirm-modal dl{margin-bottom:1.8rem;border-top:1px solid var(--line);}
+.confirm-modal div.confirm-modal-row{
+  display:flex;justify-content:space-between;align-items:baseline;gap:1.2rem;
+  padding:.75rem 0;border-bottom:1px solid var(--line);
+}
+.confirm-modal dt{
+  color:var(--cyan);font-family:'JetBrains Mono',monospace;font-size:.66rem;
+  letter-spacing:.08em;text-transform:uppercase;white-space:nowrap;flex:0 0 auto;
+}
+.confirm-modal dd{
+  color:var(--ice);font-size:.92rem;text-align:right;
+  white-space:pre-wrap;word-break:break-word;
+}
+.confirm-modal-actions{display:flex;gap:.8rem;flex-wrap:wrap;}
+.confirm-modal-actions .btn{flex:1;min-width:160px;text-align:center;padding:14px 18px;}
+.confirm-modal-actions .btn-ghost{background:var(--cyan-a1);color:var(--text);border-color:var(--line);}
+.confirm-modal-actions .btn-ghost:hover{background:var(--cyan-a2);}
+@media(max-width:480px){
+  .confirm-modal{padding:1.6rem;}
+  .confirm-modal div.confirm-modal-row{flex-direction:column;align-items:flex-start;gap:.3rem;}
+  .confirm-modal dd{text-align:left;}
+}
+
 .slot-grid{display:flex;flex-direction:column;gap:1.1rem;margin-top:.3rem;}
 .slot-day{display:flex;align-items:baseline;gap:1rem;flex-wrap:wrap;}
 .slot-day-label{
@@ -1310,6 +1349,18 @@ footer .copyright{font-family:'JetBrains Mono',monospace;font-size:.65rem;color:
   <div class="copyright">&copy; 2026 Personal Aqua — パーソナルアクア. All rights reserved.</div>
 </footer>
 
+<div class="confirm-modal-overlay" id="confirm-modal-overlay" hidden>
+  <div class="confirm-modal glass glass-edge">
+    <h3>この内容でお送りします</h3>
+    <p class="confirm-modal-note">内容をご確認のうえ、よろしければ「この内容で送信する」を押してください。修正したい場合は「戻って修正する」からフォームに戻れます。</p>
+    <dl id="confirm-modal-body"></dl>
+    <div class="confirm-modal-actions">
+      <button type="button" class="btn btn-ghost" id="confirm-modal-back">戻って修正する</button>
+      <button type="button" class="btn btn-primary" id="confirm-modal-send">この内容で送信する</button>
+    </div>
+  </div>
+</div>
+
 <script>
 /*
   CONTENTS
@@ -1623,6 +1674,43 @@ async function submitToFormspree(form) {
 
 const ERROR_MESSAGE = '送信に失敗しました。お手数ですがLINEまたはお電話で直接ご連絡ください。';
 
+/* --- 送信前の最終確認モーダル ---
+   フォームの内容をいったんモーダルに要約表示し、「この内容で送信する」を
+   押した時点で初めてFormspreeへ送る。「戻って修正する」はモーダルを閉じるだけ。 */
+const confirmModalOverlay = document.getElementById('confirm-modal-overlay');
+const confirmModalBody = document.getElementById('confirm-modal-body');
+const confirmModalBack = document.getElementById('confirm-modal-back');
+const confirmModalSend = document.getElementById('confirm-modal-send');
+let pendingSend = null; // 「送信する」が押されたときに実行する関数
+
+function openConfirmModal(rows, onSend) {
+  confirmModalBody.innerHTML = rows
+    .map(([label, value]) => `<div class="confirm-modal-row"><dt>${label}</dt><dd>${value}</dd></div>`)
+    .join('');
+  pendingSend = onSend;
+  confirmModalOverlay.hidden = false;
+}
+
+function closeConfirmModal() {
+  confirmModalOverlay.hidden = true;
+  pendingSend = null;
+}
+
+confirmModalBack.addEventListener('click', closeConfirmModal);
+confirmModalOverlay.addEventListener('click', (e) => {
+  if (e.target === confirmModalOverlay) closeConfirmModal();
+});
+confirmModalSend.addEventListener('click', async () => {
+  const run = pendingSend;
+  if (!run) return;
+  confirmModalSend.disabled = true;
+  confirmModalBack.disabled = true;
+  await run();
+  confirmModalSend.disabled = false;
+  confirmModalBack.disabled = false;
+  closeConfirmModal();
+});
+
 const form = document.getElementById('reserve-form');
 const confirmMsg = document.getElementById('confirm-msg');
 form.addEventListener('submit', async (e) => {
@@ -1635,11 +1723,30 @@ form.addEventListener('submit', async (e) => {
   }
 
   const name = document.getElementById('name').value;
+  const people = document.getElementById('people').value;
+  const flex = document.getElementById('flex').value;
+  const courseOk = document.getElementById('course-ok').checked;
+  const note = document.getElementById('note').value;
   const chosen = SLOTS.filter((s) => selectedSlots.has(s.id))
     .map((s) => `${s.date} ${s.time}`)
     .join(' / ');
   document.getElementById('selected-slots-field').value = chosen;
 
+  openConfirmModal(
+    [
+      ['サービス', 'パーソナルアクア'],
+      ['日時', chosen],
+      ['お名前', name],
+      ['人数', people],
+      ['時間変更の可否', flex],
+      ['コース予約', courseOk ? 'このまま進めてOK' : 'キープ（1週間前を目安に確認）'],
+      ...(note ? [['備考', note]] : []),
+    ],
+    () => sendReserveForm(name, chosen)
+  );
+});
+
+async function sendReserveForm(name, chosen) {
   const submitBtn = form.querySelector('button[type="submit"]');
   const originalLabel = submitBtn.textContent;
   submitBtn.disabled = true;
@@ -1665,7 +1772,7 @@ form.addEventListener('submit', async (e) => {
     submitBtn.textContent = originalLabel;
     submitBtn.disabled = false;
   }
-});
+}
 
 /* --- パーソナルトレーニング: freeform request, submit --- */
 const trainingForm = document.getElementById('training-form');
@@ -1678,7 +1785,20 @@ trainingForm.addEventListener('submit', async (e) => {
     .map((id) => document.getElementById(id).value)
     .filter(Boolean)
     .join(' / ');
+  const note = document.getElementById('t-note').value;
 
+  openConfirmModal(
+    [
+      ['サービス', 'パーソナルトレーニング'],
+      ['お名前', name],
+      ['ご希望日時', dates],
+      ...(note ? [['備考', note]] : []),
+    ],
+    () => sendTrainingForm(name, dates)
+  );
+});
+
+async function sendTrainingForm(name, dates) {
   const submitBtn = trainingForm.querySelector('button[type="submit"]');
   const originalLabel = submitBtn.textContent;
   submitBtn.disabled = true;
@@ -1702,7 +1822,7 @@ trainingForm.addEventListener('submit', async (e) => {
     submitBtn.textContent = originalLabel;
     submitBtn.disabled = false;
   }
-});
+}
 </script>
 
 </body>
