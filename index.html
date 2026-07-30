@@ -814,6 +814,12 @@ section{position:relative;padding:clamp(70px,12vw,130px) 6vw;}
 .slot.selected::after{content:'✓';position:absolute;right:.7rem;top:50%;transform:translateY(-50%);color:var(--cyan-dim);font-size:.8rem;font-weight:700;}
 .slot-hint{margin-top:.7rem;font-size:.76rem;color:var(--ink-dim);line-height:1.7;}
 .slot-error{display:none;margin-top:.5rem;font-family:'JetBrains Mono',monospace;font-size:.72rem;color:#c23b3b;font-weight:500;}
+.slot-notice{
+  margin-bottom:1rem;padding:.9rem 1.1rem;border-radius:6px;
+  background:var(--cyan-a1);border:1px solid var(--line);border-left:3px solid var(--cyan-dim);
+  font-size:.82rem;color:var(--ink-dim);line-height:1.75;
+}
+.slot-notice strong{color:var(--ink);font-weight:600;}
 
 .reserve-submit{margin-top:2.6rem;text-align:center;}
 .reserve-submit .btn{width:100%;max-width:300px;}
@@ -1244,6 +1250,7 @@ footer .copyright{font-family:'JetBrains Mono',monospace;font-size:.65rem;color:
         <div class="form-grid">
           <div class="field full">
             <label>ご希望の日時（複数選択可）</label>
+            <div class="slot-notice"><strong>先着順のご予約です。</strong>空き状況は自動更新ではないため、表示されている日時でも、他のお客様が同じ枠を先にご予約済みの場合があります。その際は先にご予約いただいた方を優先し、後からのお申し込みには別日時をご相談させていただきます。あらかじめご了承ください。</div>
             <div class="slot-grid" id="slot-grid"></div>
             <p class="slot-hint">※ 表示されている日時のみご予約可能です。複数選択いただいても構いません。見つからない場合は担当までお問い合わせください。<br>※ ご利用時間は各枠55分間です（例：15:00の枠は15:00〜15:55利用、入場は10分前の14:50から可能です）。</p>
             <p class="slot-error" id="slot-error">日時を1つ以上選択してください。</p>
