@@ -784,10 +784,20 @@ section{position:relative;padding:clamp(70px,12vw,130px) 6vw;}
   color:var(--ice);font-size:.92rem;text-align:right;
   white-space:pre-wrap;word-break:break-word;
 }
-.confirm-modal-actions{display:flex;gap:.8rem;flex-wrap:wrap;}
-.confirm-modal-actions .btn{flex:1;min-width:160px;text-align:center;padding:14px 18px;}
-.confirm-modal-actions .btn-ghost{background:var(--cyan-a1);color:var(--text);border-color:var(--line);}
-.confirm-modal-actions .btn-ghost:hover{background:var(--cyan-a2);}
+.confirm-modal-actions{display:flex;flex-direction:column;gap:.9rem;}
+.confirm-modal-actions #confirm-modal-send{
+  width:100%;padding:20px 18px;font-size:.86rem;letter-spacing:.1em;font-weight:700;
+  animation:confirmSendPulse 1.8s ease-in-out infinite;
+}
+@keyframes confirmSendPulse{
+  0%, 100%{box-shadow:0 0 0 0 var(--cyan-a4), 0 0 24px var(--cyan-a3);}
+  50%{box-shadow:0 0 0 12px transparent, 0 0 40px var(--cyan-a4);}
+}
+.confirm-modal-actions #confirm-modal-back{
+  background:none;border:none;color:var(--text-dim);text-decoration:underline;
+  font-size:.78rem;letter-spacing:.06em;padding:6px;text-align:center;cursor:pointer;
+}
+.confirm-modal-actions #confirm-modal-back:hover{color:var(--text);}
 @media(max-width:480px){
   .confirm-modal{padding:1.6rem;}
   .confirm-modal div.confirm-modal-row{flex-direction:column;align-items:flex-start;gap:.3rem;}
@@ -1358,12 +1368,12 @@ footer .copyright{font-family:'JetBrains Mono',monospace;font-size:.65rem;color:
 
 <div class="confirm-modal-overlay" id="confirm-modal-overlay" hidden>
   <div class="confirm-modal glass glass-edge">
-    <h3>この内容でお送りします</h3>
-    <p class="confirm-modal-note">内容をご確認のうえ、よろしければ「この内容で送信する」を押してください。修正したい場合は「戻って修正する」からフォームに戻れます。</p>
+    <h3>まだ送信されていません</h3>
+    <p class="confirm-modal-note">内容をご確認のうえ、下の「送信する」ボタンを押して初めて予約リクエストが送られます。押さないと、このまま閉じても送信されませんのでご注意ください。</p>
     <dl id="confirm-modal-body"></dl>
     <div class="confirm-modal-actions">
-      <button type="button" class="btn btn-ghost" id="confirm-modal-back">戻って修正する</button>
-      <button type="button" class="btn btn-primary" id="confirm-modal-send">この内容で送信する</button>
+      <button type="button" class="btn btn-primary" id="confirm-modal-send">✓ この内容で送信する</button>
+      <button type="button" id="confirm-modal-back">内容を修正する</button>
     </div>
   </div>
 </div>
@@ -1704,9 +1714,9 @@ function closeConfirmModal() {
 }
 
 confirmModalBack.addEventListener('click', closeConfirmModal);
-confirmModalOverlay.addEventListener('click', (e) => {
-  if (e.target === confirmModalOverlay) closeConfirmModal();
-});
+/* 枠外タップやEscでの誤クローズは行わない。
+   必ず「戻って修正する」か「この内容で送信する」を明示的に押させる
+   (誤って閉じただけで「送信したつもり」になる事故を防ぐため)。 */
 confirmModalSend.addEventListener('click', async () => {
   const run = pendingSend;
   if (!run) return;
