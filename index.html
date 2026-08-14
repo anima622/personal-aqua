@@ -1163,7 +1163,7 @@ footer .copyright{font-family:'JetBrains Mono',monospace;font-size:.65rem;color:
         <div class="price-row"><span>3名</span><strong>¥22,500</strong></div>
         <div class="price-row"><span>4名</span><strong>¥26,000</strong></div>
       </div>
-      <div class="price-note">55分利用（10分前から入場可）・土日祝はプールコース代の値上がり分（+¥1,500）を反映しています</div>
+      <div class="price-note">55分利用（15分前から入場可）・土日祝はプールコース代の値上がり分（+¥1,500）を反映しています</div>
     </div>
     <div class="program-card glass reveal-surface" data-reveal>
       <div class="landing-ripple"></div>
@@ -1262,7 +1262,7 @@ footer .copyright{font-family:'JetBrains Mono',monospace;font-size:.65rem;color:
             <label>ご希望の日時（複数選択可）</label>
             <div class="slot-notice"><strong>先着順のご予約です。</strong>空き状況は自動更新ではないため、表示されている日時でも、他のお客様が同じ枠を先にご予約済みの場合があります。その際は先にご予約いただいた方を優先し、後からのお申し込みには別日時をご相談させていただきます。あらかじめご了承ください。</div>
             <div class="slot-grid" id="slot-grid"></div>
-            <p class="slot-hint">※ 表示されている日時のみご予約可能です。複数選択いただいても構いません。見つからない場合は担当までお問い合わせください。<br>※ ご利用時間は各枠55分間です（例：15:00の枠は15:00〜15:55利用、入場は10分前の14:50から可能です）。</p>
+            <p class="slot-hint">※ 表示されている日時のみご予約可能です。複数選択いただいても構いません。見つからない場合は担当までお問い合わせください。<br>※ ご利用時間は各枠55分間です（例：15:00の枠は15:00〜15:55利用、入場は15分前の14:45から可能です）。</p>
             <p class="slot-error" id="slot-error">日時を1つ以上選択してください。</p>
           </div>
           <div class="field">
@@ -1609,9 +1609,9 @@ toggleTraining.addEventListener('click', () => setService('training'));
    TODO: サーバー構築後は、この配列を手動同期する代わりに、同データベースを
    裏で参照するライブAPIから取得するように差し替えてください。 */
 const SLOTS = [
-  { id: 's45', date: '8/20(木)', time: '12:00〜13:00' },
-  { id: 's46', date: '8/20(木)', time: '13:00〜14:00' },
-  { id: 's47', date: '8/20(木)', time: '14:00〜15:00' },
+  { id: 's45', date: '8/20(木)', time: '15:00〜16:00' },
+  { id: 's46', date: '8/20(木)', time: '16:00〜17:00' },
+  { id: 's47', date: '8/20(木)', time: '17:00〜18:00' },
   { id: 's50b', date: '8/22(土)', time: '13:00〜14:00' },
   { id: 's51', date: '8/22(土)', time: '14:00〜15:00' },
   { id: 's52', date: '8/22(土)', time: '15:00〜16:00' },
