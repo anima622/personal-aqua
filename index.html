@@ -811,6 +811,8 @@ section{position:relative;padding:clamp(70px,12vw,130px) 6vw;}
   font-family:'JetBrains Mono',monospace;font-size:.78rem;font-weight:600;
   color:var(--ink);letter-spacing:.02em;
 }
+.slot-day-label.is-sat{color:#1a6fd4;}
+.slot-day-label.is-sun, .slot-day-label.is-holiday{color:#d43a3a;}
 .slot-day-times{display:flex;flex-wrap:wrap;gap:.6rem;flex:1;}
 .slot{
   position:relative;display:inline-flex;align-items:center;cursor:pointer;
@@ -1615,6 +1617,45 @@ const SLOTS = [
   { id: 's58b', date: '8/27(木)', time: '17:00〜18:00' },
   { id: 's60', date: '8/27(木)', time: '20:00〜21:00' },
   { id: 's60b', date: '8/28(金)', time: '14:00〜15:00' },
+  { id: 's901', date: '9/1(火)', time: '16:00〜17:00' },
+  { id: 's902', date: '9/1(火)', time: '17:00〜18:00' },
+  { id: 's903', date: '9/3(木)', time: '16:00〜17:00' },
+  { id: 's904', date: '9/3(木)', time: '17:00〜18:00' },
+  { id: 's905', date: '9/5(土)', time: '12:00〜13:00' },
+  { id: 's906', date: '9/5(土)', time: '13:00〜14:00' },
+  { id: 's907', date: '9/5(土)', time: '14:00〜15:00' },
+  { id: 's908', date: '9/6(日)', time: '11:00〜12:00' },
+  { id: 's909', date: '9/6(日)', time: '12:00〜13:00' },
+  { id: 's910', date: '9/8(火)', time: '16:00〜17:00' },
+  { id: 's911', date: '9/8(火)', time: '17:00〜18:00' },
+  { id: 's913', date: '9/11(金)', time: '20:00〜21:00' },
+  { id: 's914', date: '9/13(日)', time: '11:00〜12:00' },
+  { id: 's915', date: '9/13(日)', time: '12:00〜13:00' },
+  { id: 's916', date: '9/17(木)', time: '16:00〜17:00' },
+  { id: 's917', date: '9/17(木)', time: '17:00〜18:00' },
+  { id: 's918', date: '9/18(金)', time: '19:00〜20:00' },
+  { id: 's919', date: '9/18(金)', time: '20:00〜21:00' },
+  { id: 's920', date: '9/19(土)', time: '13:00〜14:00' },
+  { id: 's921', date: '9/19(土)', time: '14:00〜15:00' },
+  { id: 's922', date: '9/20(日)', time: '11:00〜12:00' },
+  { id: 's923', date: '9/20(日)', time: '12:00〜13:00' },
+  { id: 's924', date: '9/21(月)', time: '12:00〜13:00' },
+  { id: 's925', date: '9/21(月)', time: '13:00〜14:00' },
+  { id: 's926', date: '9/21(月)', time: '14:00〜15:00' },
+  { id: 's927', date: '9/21(月)', time: '15:00〜16:00' },
+  { id: 's928', date: '9/22(火)', time: '12:00〜13:00' },
+  { id: 's929', date: '9/22(火)', time: '13:00〜14:00' },
+  { id: 's930', date: '9/22(火)', time: '14:00〜15:00' },
+  { id: 's931', date: '9/22(火)', time: '15:00〜16:00' },
+  { id: 's932', date: '9/24(木)', time: '16:00〜17:00' },
+  { id: 's933', date: '9/24(木)', time: '17:00〜18:00' },
+  { id: 's934', date: '9/24(木)', time: '18:00〜19:00' },
+  { id: 's935', date: '9/24(木)', time: '20:00〜21:00' },
+  { id: 's940', date: '9/25(金)', time: '19:00〜20:00' },
+  { id: 's941', date: '9/25(金)', time: '20:00〜21:00' },
+  { id: 's937', date: '9/27(日)', time: '12:00〜13:00' },
+  { id: 's938', date: '9/29(火)', time: '16:00〜17:00' },
+  { id: 's939', date: '9/29(火)', time: '17:00〜18:00' },
 ];
 
 const selectedSlots = new Set();
@@ -1627,10 +1668,18 @@ const slotsByDate = SLOTS.reduce((acc, slot) => {
   return acc;
 }, {});
 
+/* 祝日（曜日だけでは分からない日）を「M/D(曜)」の形でここに追加してください */
+/* 9/21(月)=敬老の日、9/23(水)=秋分の日 に挟まれる9/22(火)は「国民の休日」として祝日扱い */
+const HOLIDAYS = new Set(['9/21(月)', '9/22(火)']);
+
 Object.entries(slotsByDate).forEach(([date, daySlots]) => {
   const dayEl = document.createElement('div');
   dayEl.className = 'slot-day';
-  dayEl.innerHTML = `<div class="slot-day-label">${date}</div><div class="slot-day-times"></div>`;
+  const dayClass = HOLIDAYS.has(date) ? 'is-holiday'
+    : date.includes('(土)') ? 'is-sat'
+    : date.includes('(日)') ? 'is-sun'
+    : '';
+  dayEl.innerHTML = `<div class="slot-day-label ${dayClass}">${date}</div><div class="slot-day-times"></div>`;
   const timesEl = dayEl.querySelector('.slot-day-times');
 
   daySlots.forEach((slot) => {
