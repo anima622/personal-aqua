@@ -201,8 +201,11 @@ button{font-family:inherit;}
   100%{transform:scale(2.2);opacity:0;}
 }
 
-/* Reserve — 水面が凪いでガラスが結晶化する */
-.reveal-crystallize{--ry:26px; --rsy:.94; --rb:10px; --rd:1s;}
+/* Reserve — 水面が凪いでガラスが結晶化する
+   (blur (--rb) 意図的に使わない: backdrop-filterを持つ.glass要素と
+   filter:blur()をtransformと同時に動かすと、一部のモバイルブラウザで
+   合成に失敗し要素ごと表示されなくなることがあるため) */
+.reveal-crystallize{--ry:26px; --rsy:.94; --rd:1s;}
 .reveal-crystallize .corner{opacity:0;transform:scale(.4);}
 .reveal-crystallize.in-view .corner{animation:cornerPop .5s cubic-bezier(.2,.8,.3,1.3) .35s both;}
 .reveal-crystallize.in-view .corner.tr,
@@ -1543,6 +1546,9 @@ const revealObserver = new IntersectionObserver((entries) => {
 document.querySelectorAll('[data-reveal]').forEach((el, i) => {
   if (el.closest('.program-grid')) el.style.transitionDelay = (i % 3) * 0.12 + 's';
   revealObserver.observe(el);
+  /* 保険: 何らかの理由でIntersectionObserverが発火しなかった場合に備え、
+     一定時間後は強制的に表示する（要素が永久に見えないままになるのを防ぐ）。 */
+  setTimeout(() => el.classList.add('in-view'), 2500);
 });
 
 /* ===== 7. Reservation: passphrase gate, service toggle, slot data, picker, submit =====
