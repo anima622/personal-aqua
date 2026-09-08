@@ -2,1556 +2,1290 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>パーソナルアクア | プライベートプール予約</title>
-<link rel="icon" type="image/png" href="favicon.png">
-<link rel="apple-touch-icon" href="logo-icon.png">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#f8fbfc">
+<title>パーソナルアクア | Personal Aqua — 貸切プール予約</title>
+<meta name="description" content="マンツーマンから最大4名まで。貸切レーンでのプール時間を完全予約制でご用意します。パーソナルアクア／パーソナルトレーニングのご予約はこちらから。">
+<link rel="icon" href="favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Shippori+Mincho:wght@500;600;700&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:wght@300;400&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<!--
+  Visual assets:
+  · logo-icon.png — the project's own brand mark, preserved unchanged. The page
+    references logo-icon-96.png, the same mark at the size it actually renders:
+    the 760px master was 220KB for a 34px slot, the largest asset on the page.
+  · assets/photos/*.jpg — licensed by the site owner from photo-AC
+    (https://www.photo-ac.com/), paid plan: commercial use permitted, no
+    attribution required, so nothing is credited on the page. Converted to a
+    Three photographs, each used exactly once: the school of fish in the hero's
+    circular window (swim the way they do — the owner's reading), the lane and
+    the arm in the 01 About composition, and the open-water swimmer as the one
+    full-bleed moment. All kept in colour on purpose against an otherwise
+    monochrome page. They are atmosphere, NOT photographs of the venue —
+    never caption or present it as the actual pool.
+  · Everything else is code-native SVG/CSS geometry. The ▽ (the elemental sign
+    for water) and the W wave mark are the site owner's own Illustrator
+    drawings, rebuilt as paths.
+-->
 <style>
-/*
-  CONTENTS
-  1. Tokens & reset       6. Wave divider / particles
-  2. Background FX        7. Section shared / HUD frame
-  3. Glass utility         8. About
-  4. Reveal system         9. Programs
-  5. Header / nav          10. Reserve
-                            11. Footer
-                            12. Responsive
-*/
+/* tastemaker · macrostructure: Poster Fold → Editorial Index (dna-source: https://academy.onecareer.jp/) · mood: elegant/monochrome · page: landing
+ * arc: hook(H1) -> problem(01 lane diagram + P4 real stats) -> solution(02 F6 compact spec rows) -> how(03 F4 steps + F6 policy) -> close(04 C1 gated form) · proof: skipped, none real
+ * nav: N2 · hero: H1 · footer: Ft4 · knobs: hero=statement/xxl/right-bias + pool-geometry marks (lane block · ripple · droplet)
+ * palette: OKLCH ramps — neutral H225, accent H215, roles solved against their contrast floors (see .tastemaker/style-lock.md)
+ * critique: ShowTell 4 · Phil 5 · Hier 5 · Spec 5 · Restr 5 · Var 5 */
 
-/* ===== 1. Tokens & reset ===== */
+/* ===== 0. Tokens =====
+   Two tiers. Primitives name a value and are never used in a rule below.
+   Semantic tokens name a job and are the only tier components reference. */
 :root{
-  --bg-deep:#0a2f42;
-  --bg-panel:#123a52;
-  --bg-black:#082638;
-  --cyan:#6ee7d4;
-  --cyan-dim:#3fb8ad;
-  --violet:#8fd8ff;
-  --pearl:#d4fff0;
-  --ice:#f2fbf9;
-  --text:#d7ece7;
-  --text-dim:#8fb5ad;
-  --line:rgba(160,255,230,.22);
-  --ink:#0c2b30;
-  --ink-dim:#4a7a72;
-  --white:#ffffff;
-  --cyan-a1:color-mix(in srgb, var(--cyan) 8%, transparent);
-  --cyan-a2:color-mix(in srgb, var(--cyan) 14%, transparent);
-  --cyan-a3:color-mix(in srgb, var(--cyan) 22%, transparent);
-  --cyan-a4:color-mix(in srgb, var(--cyan) 35%, transparent);
-  --cyan-a5:color-mix(in srgb, var(--cyan) 55%, transparent);
-  --violet-a2:color-mix(in srgb, var(--violet) 16%, transparent);
-  --pearl-a2:color-mix(in srgb, var(--pearl) 18%, transparent);
-}
-*{margin:0;padding:0;box-sizing:border-box;}
-html{scroll-behavior:smooth;}
-body{
-  font-family:'Noto Sans JP', sans-serif;
-  color:var(--text);
-  background:var(--bg-deep);
-  overflow-x:hidden;
-}
-h1,h2,h3,h4{font-family:'Fraunces','Shippori Mincho',serif;text-wrap:balance;}
-.nowrap{white-space:nowrap;}
-a{text-decoration:none;color:inherit;}
-ul{list-style:none;}
-button{font-family:inherit;}
+  /* -- primitives: neutral ramp, OKLCH hue 225, even perceived-lightness steps -- */
+  --n-1:#f8fbfc; --n-2:#f0f4f6; --n-3:#e6ecef; --n-4:#dce3e6; --n-5:#d1dade; --n-6:#c4ced3;
+  --n-7:#b3bfc4; --n-8:#859197; --n-9:#68777d; --n-10:#5a696f; --n-11:#687479; --n-12:#15252b;
+  /* -- primitives: accent ramp, OKLCH hue 215 (the logo's own hue family) -- */
+  --a-2:#e7f7fb; --a-6:#9ad8e7; --a-9:#008096; --a-10:#007286; --a-11:#067d92;
+  /* -- primitives: status hues, both clear of the accent by >45deg -- */
+  --blue-9:#5772a5; --red-9:#924540;
 
-@media (prefers-reduced-motion: reduce){
-  *{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important;}
-}
+  /* -- semantic: the only tier the rules below reference -- */
+  --color-bg:var(--n-1);
+  --color-surface:#fff;
+  --color-text:var(--n-12);
+  --color-text-muted:var(--n-11);
+  --color-text-on-fill:#fff;
+  --color-fill-solid:var(--n-12);
+  --color-fill-hover:var(--color-surface);
+  --color-accent-solid:var(--a-9);
+  --color-accent-hover:var(--a-10);
+  --color-accent-text:var(--a-11);
+  --color-accent-wash:var(--a-2);
+  --color-border:var(--n-6);
+  --color-border-strong:var(--n-8);
+  --color-border-ink:var(--n-12);
+  --color-focus:var(--a-9);
+  --color-text-on-fill-muted:var(--n-2);
+  --color-border-on-fill:var(--n-9);
+  --color-scrim:var(--n-12);
+  --color-sat:var(--blue-9);
+  --color-sun:var(--red-9);
+  --color-danger:var(--red-9);
 
-/* ===== 2. Background FX ===== */
-.water-bg{
-  position:fixed;
-  inset:0;
-  z-index:-3;
-  background:
-    linear-gradient(rgba(160,255,230,.05) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(160,255,230,.05) 1px, transparent 1px),
-    radial-gradient(ellipse 60% 45% at 18% 15%, rgba(110,231,212,.20), transparent 60%),
-    radial-gradient(ellipse 55% 40% at 85% 75%, rgba(143,216,255,.16), transparent 60%),
-    linear-gradient(180deg, #0a2f42 0%, #0e3648 50%, #0a2f42 100%);
-  background-size:64px 64px, 64px 64px, auto, auto, auto;
-  mask-image:radial-gradient(ellipse 90% 70% at 50% 20%, black 40%, transparent 92%);
-  transition:transform .3s ease-out;
-  will-change:transform;
-}
-.caustics{
-  position:fixed;
-  inset:-8%;
-  z-index:-2;
-  opacity:.55;
-  pointer-events:none;
-  transition:transform .4s ease-out;
-  will-change:transform;
-}
-.caustics .blob{
-  position:absolute;
-  border-radius:50%;
-  filter:url(#water-caustic) blur(4px);
-  mix-blend-mode:screen;
-}
-.caustics .blob-a{width:55%;height:45%;top:8%;left:6%;background:radial-gradient(circle, var(--pearl), var(--cyan-a3) 60%, transparent 75%);}
-.caustics .blob-b{width:50%;height:42%;bottom:6%;right:4%;background:radial-gradient(circle, var(--violet), var(--cyan-a2) 60%, transparent 75%);}
-
-/* ===== 3. Glass utility =====
-   Real water/glass reads as transparent when: (a) the blur is light enough
-   to still show shape/color moving behind it, not mashed into flat frost,
-   (b) there's something worth seeing through (a .glow blob placed behind),
-   and (c) a light glint sweeps the surface like it would on wet glass. */
-.glass{
-  position:relative;
-  background:var(--glass-bg, var(--cyan-a1));
-  border:1px solid var(--line);
-  backdrop-filter:blur(var(--glass-blur, 6px)) saturate(1.6);
-}
-.glass::before{
-  content:'';
-  position:absolute;
-  inset:0;
-  border-radius:inherit;
-  background:linear-gradient(115deg, transparent 38%, rgba(255,255,255,.4) 49%, transparent 60%);
-  background-size:260% 260%;
-  background-position:0% 100%;
-  opacity:.4;
-  mix-blend-mode:screen;
-  pointer-events:none;
-  animation:glint 8s ease-in-out infinite;
-}
-@keyframes glint{
-  0%,100%{background-position:0% 100%;}
-  50%{background-position:100% 0%;}
-}
-.glass-edge{
-  box-shadow:
-    inset 0 1px 0 rgba(255,255,255,.28),
-    inset 0 -1px 0 var(--cyan-a2);
-}
-/* a soft light source placed behind a glass panel, so the panel has
-   something with real color/shape to refract instead of flat backdrop */
-.glow{
-  position:absolute;
-  z-index:-1;
-  border-radius:50%;
-  filter:blur(46px);
-  opacity:.6;
-  pointer-events:none;
-  background:radial-gradient(circle, var(--violet) 0%, var(--cyan-a4) 45%, transparent 72%);
-}
-/* subtle, constantly-moving water-bend on the hero panel and the About
-   visual — distorts whatever is sampled behind via an SVG displacement
-   filter whose turbulence pattern keeps shifting (see the SVG defs). */
-.refract{
-  position:absolute;
-  inset:0;
-  border-radius:inherit;
-  backdrop-filter:url(#glass-refract-lg);
-  pointer-events:none;
-}
-/* ===== 4. Reveal system (unified) ===== */
-[data-reveal]{
-  --ry:36px; --rs:1; --rsy:1; --rr:0deg; --rb:0px; --rsat:1; --rhue:0deg; --rd:.9s;
-  opacity:0;
-  transform:translateY(var(--ry)) scale(var(--rs)) scaleY(var(--rsy)) rotate(var(--rr));
-  filter:blur(var(--rb)) saturate(var(--rsat)) hue-rotate(var(--rhue));
-  transition:
-    opacity var(--rd) cubic-bezier(.2,.7,.3,1),
-    transform var(--rd) cubic-bezier(.2,.7,.3,1),
-    filter var(--rd) cubic-bezier(.2,.7,.3,1);
-}
-[data-reveal].in-view{
-  opacity:1;
-  --ry:0px; --rs:1; --rsy:1; --rr:0deg; --rb:0px; --rsat:1; --rhue:0deg;
+  /* type scale — one ramp, named. Before this the page carried 22 hand-written
+     sizes, nine of them consecutive (9,10,11,12,13,14,15,16,17px), which is a
+     gradient rather than a scale. */
+  --t-2xs:11px; --t-xs:12px; --t-sm:14px; --t-base:16px; --t-md:18px; --t-lg:22px;
+  --t-xl:26px; --t-2xl:34px; --t-3xl:40px; --t-4xl:64px;
+  /* tracking — five steps, by role, instead of twelve ad-hoc values */
+  --ls-display:.01em; --ls-body:.02em; --ls-head:.06em; --ls-label:.14em; --ls-wide:.3em;
+  --font-display:"Cormorant","Noto Sans JP",serif;
+  --font-body:"Noto Sans JP",system-ui,sans-serif;
+  --s1:4px; --s2:8px; --s3:12px; --s4:16px; --s6:24px; --s8:32px; --s12:48px; --s16:64px; --s24:96px; --s32:128px; --s40:160px;
+  --max:none; --gutter:clamp(24px,3.125vw,96px);
+  --measure:38em;            /* prose never runs wider than this */
+  --measure-wide:52em;       /* intro/lede copy */
+  --ease-out:cubic-bezier(.23,1,.32,1);
+  --d-press:120ms; --d-pop:180ms; --d-panel:240ms;
 }
 
-/* About — 水中から視界のピントが合っていく */
-.reveal-focus{--ry:30px; --rs:1.05; --rb:18px; --rsat:1.6; --rhue:-8deg; --rd:1.1s;}
-.about-visual .surface-sweep{
-  position:absolute;
-  left:0;right:0;top:-40%;
-  height:40%;
-  background:linear-gradient(180deg, transparent, var(--cyan-a4), transparent);
-  opacity:0;
-  pointer-events:none;
+/* ===== 1. Base ===== */
+*,*::before,*::after{box-sizing:border-box}
+html{overflow-x:clip;scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--color-bg);color:var(--color-text);font-family:var(--font-body);font-size:var(--t-base);line-height:1.9;letter-spacing:var(--ls-body);overflow-x:clip;-webkit-font-smoothing:antialiased;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+h1,h2,h3,h4{margin:0;font-weight:300;text-wrap:balance;overflow-wrap:anywhere;min-width:0}
+p{margin:0}
+a{color:inherit;text-decoration:none}
+img{max-width:100%;display:block}
+button,input,select,textarea{font:inherit;color:inherit;letter-spacing:inherit}
+button{cursor:pointer;background:none;border:0;padding:0}
+:focus-visible{outline:2px solid var(--color-focus);outline-offset:3px}
+.skip{position:absolute;left:-999px;top:var(--s2);background:var(--color-fill-solid);color:var(--color-text-on-fill);padding:var(--s2) var(--s4);z-index:100}
+.skip:focus{left:8px}
+.nowrap{white-space:nowrap}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+[hidden]{display:none!important}
+
+
+/* ===== 2. Type roles =====
+   Cormorant ships oldstyle figures by default (3/4/5 drop below the baseline,
+   so "55" and "2" read as different sizes at the same font-size). Every
+   numeral on this page is set in lining + tabular figures instead. */
+.display{font-family:var(--font-display);font-weight:300;text-transform:uppercase;line-height:1.02;letter-spacing:var(--ls-display)}
+.figs{font-variant-numeric:lining-nums tabular-nums;font-feature-settings:"lnum" 1,"tnum" 1}
+.label{font-size:var(--t-2xs);font-weight:700;letter-spacing:var(--ls-label);text-transform:uppercase}
+.measure{max-width:var(--measure)}
+
+/* ===== 3. Buttons ===== */
+.pill{display:inline-flex;align-items:center;gap:var(--s3);min-height:52px;padding:0 var(--s8);border:1px solid var(--color-border-ink);border-radius:999px;font-size:var(--t-sm);font-weight:500;white-space:nowrap;background:var(--color-surface);color:var(--color-text);transition:transform var(--d-press) var(--ease-out),background-color var(--d-pop) var(--ease-out),color var(--d-pop) var(--ease-out)}
+.pill svg{width:16px;height:16px;flex:none;fill:currentColor}
+.pill.solid{background:var(--color-fill-solid);color:var(--color-text-on-fill)}
+.pill:active{transform:scale(.97)}
+.pill:disabled{opacity:.5;cursor:not-allowed}
+.pill.sent{background:var(--color-accent-solid);border-color:var(--color-accent-solid);color:var(--color-text-on-fill)}
+@media (hover:hover) and (pointer:fine){
+  .pill:hover{background:var(--color-fill-solid);color:var(--color-text-on-fill)}
+  .pill.solid:hover{background:var(--color-fill-hover);color:var(--color-text)}
 }
-.reveal-focus.in-view .surface-sweep{animation:sweepDown 1.3s ease-out .15s both;}
-@keyframes sweepDown{
-  0%{top:-40%;opacity:0;}
-  15%{opacity:.9;}
-  100%{top:100%;opacity:0;}
+.textlink{display:inline-flex;align-items:center;min-height:44px;gap:var(--s3);font-size:var(--t-xs);font-weight:700;letter-spacing:var(--ls-label);text-transform:uppercase}
+.textlink::before{content:"";width:64px;height:1px;background:var(--color-border-ink);transform-origin:right;transition:transform var(--d-pop) var(--ease-out)}
+@media (hover:hover) and (pointer:fine){.textlink:hover::before{transform:scaleX(1.3)}}
+
+/* ===== 4. Header (N2) ===== */
+#site-header{position:fixed;inset:0 0 auto 0;z-index:50;display:flex;align-items:center;justify-content:space-between;gap:var(--s6);padding:var(--s4) var(--gutter);transition:background-color var(--d-panel) var(--ease-out)}
+#site-header.scrolled{background:color-mix(in oklab,var(--color-bg) 88%,transparent);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--color-border)}
+.brand{display:flex;align-items:center;min-height:44px;gap:var(--s3)}
+.brand img{width:34px;height:34px}
+.brand .wordmark{font-family:var(--font-display);font-weight:400;font-size:var(--t-lg);letter-spacing:var(--ls-head);text-transform:uppercase;line-height:1}
+#site-header nav ul{display:flex;gap:var(--s8);margin:0;padding:0;list-style:none}
+#site-header nav a{display:inline-flex;align-items:baseline;gap:var(--s2);font-size:var(--t-xs);font-weight:500;letter-spacing:var(--ls-label);text-transform:uppercase;white-space:nowrap;padding:var(--s2) 0;position:relative}
+#site-header nav a small{font-size:var(--t-2xs);font-weight:700;color:var(--color-text-muted);font-variant-numeric:lining-nums tabular-nums}
+#site-header nav a::after{content:"";position:absolute;left:0;bottom:0;height:1px;width:100%;background:var(--color-border-ink);transform:scaleX(0);transform-origin:left;transition:transform var(--d-pop) var(--ease-out)}
+@media (hover:hover) and (pointer:fine){#site-header nav a:hover::after{transform:scaleX(1)}}
+.header-cta{min-height:44px;padding:0 var(--s6);font-size:var(--t-sm)}
+.nav-toggle{display:none;width:44px;height:44px;flex-direction:column;justify-content:center;align-items:center;gap:var(--s1)}
+.nav-toggle span{display:block;width:var(--s6);height:1px;background:var(--color-border-ink);transition:transform var(--d-pop) var(--ease-out),opacity var(--d-pop) var(--ease-out)}
+.nav-toggle[aria-expanded="true"] span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.nav-toggle[aria-expanded="true"] span:nth-child(2){opacity:0}
+.nav-toggle[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+.mobile-menu{position:fixed;inset:0;z-index:40;background:var(--color-bg);display:flex;flex-direction:column;justify-content:center;gap:8px;padding:var(--s24) var(--gutter);opacity:0;visibility:hidden;pointer-events:none;transition:opacity var(--d-panel) var(--ease-out),visibility 0s linear var(--d-panel)}
+.mobile-menu.open{opacity:1;visibility:visible;pointer-events:auto;transition-delay:0s}
+.mobile-menu a{font-family:var(--font-display);font-size:var(--t-3xl);text-transform:uppercase;line-height:1.2;border-bottom:1px solid var(--color-border);padding:var(--s3) 0}
+.mobile-menu a small{display:block;font-family:var(--font-body);font-size:var(--t-xs);letter-spacing:var(--ls-label);color:var(--color-text-muted);font-variant-numeric:lining-nums}
+.mobile-menu .mm-cta{margin-top:var(--s6);align-self:flex-start;border-bottom:0}
+
+/* ===== 5. Layout ===== */
+.wrap{width:100%;max-width:calc(1800px + var(--gutter) * 2);margin:0 auto;padding:0 var(--gutter);position:relative;z-index:1}
+section{position:relative;z-index:1;scroll-margin-top:96px}
+#hero{scroll-margin-top:0}
+.sec-std{padding:var(--s32) 0}
+.sec-con{padding:var(--s24) 0}
+.sec-piv{padding:var(--s40) 0}
+.sec-head{margin-bottom:var(--s16);position:relative}
+.sec-std{--sec-pad:var(--s32)}.sec-con{--sec-pad:var(--s24)}.sec-piv{--sec-pad:var(--s40)}
+/* leads the eye down into the section, then stops dead at the rule */
+.head-guide{position:absolute;left:50%;top:calc(-1 * var(--sec-pad,0px));bottom:calc(-1 * var(--s16));width:1px;background:var(--color-border);transform:scaleY(0);transform-origin:top;pointer-events:none;z-index:0}
+.sec-head .no{font-size:var(--t-xs);font-weight:700;letter-spacing:var(--ls-label);color:var(--color-text-muted);margin-bottom:var(--s2);font-variant-numeric:lining-nums tabular-nums}
+.sec-head h2{font-size:clamp(44px,6vw,78px)}
+.sec-head h2 .ln{display:block}
+.ch{display:inline-block}
+.wd{white-space:nowrap}
+.sec-head .jp{font-size:clamp(20px,2.2vw,26px);font-weight:400;margin-top:var(--s3);letter-spacing:var(--ls-head)}
+.sec-head .lede{max-width:var(--measure-wide);margin-top:var(--s4);color:var(--color-text-muted);font-size:var(--t-sm)}
+
+/* ===== 6. Hero (H1 poster fold) =====
+   The three marks are pool geometry, the way the reference builds its marks
+   out of its own initials: a lane block seen from above (one lane reserved),
+   the ripple from the logo, and a droplet. No photography, no icons. */
+.hero{min-height:100dvh;display:grid;grid-template-columns:minmax(0,6fr) minmax(0,6fr);align-items:stretch;padding-top:88px;position:relative;z-index:1}
+.hero-left{position:relative;padding:var(--s12) 0 var(--s16) var(--gutter);display:grid;align-content:end;max-width:820px}
+.hero-marks{position:relative;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--s6);width:min(100%,690px)}
+.hero-marks .hmark{display:block;width:100%;aspect-ratio:1;fill:var(--color-fill-solid);position:relative;z-index:1}
+.hero-marks .m-o{overflow:hidden}
+/* the shell rounds (--o-round) and opens a hole (--o-hole) independently, so
+   the square can become a circle, hold, then become a square again while the
+   void grows out of its centre — the reference's actual sequence. */
+.hero-marks .o-shell{position:absolute;inset:0;background:var(--color-fill-solid);
+  border-radius:var(--o-round,0%);
+  -webkit-mask-image:radial-gradient(circle closest-side at 50% 50%,#0000 var(--o-hole,0%),#000 calc(var(--o-hole,0%) + 0.8%));
+  mask-image:radial-gradient(circle closest-side at 50% 50%,#0000 var(--o-hole,0%),#000 calc(var(--o-hole,0%) + 0.8%))}
+.hero-marks .o-photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center}
+.hero-marks .m-o{grid-area:1/1}
+.hero-marks .m-s{grid-area:1/2;fill:var(--color-accent-solid)}
+.hero-marks .m-c{grid-area:2/1}
+.hero-marks .guide{position:absolute;top:0;bottom:0;width:1px;background:var(--color-border);transform-origin:top;z-index:0}
+.hero-marks .hg1{left:0}.hero-marks .hg2{left:50%}.hero-marks .hg3{left:100%}
+.hero-marks .hrule{position:absolute;left:0;right:0;top:50%;height:1px;background:var(--color-border);transform-origin:left;z-index:0}
+.mark-pool{position:relative;width:min(100%,320px);aspect-ratio:1;background:var(--color-fill-solid)}
+.mark-pool svg{position:absolute;inset:0;width:100%;height:100%}
+.mark-pool .mark-eye{position:absolute;left:50%;top:42%;transform:translate(-50%,-50%);width:54%;height:auto;aspect-ratio:1;border-radius:50%;object-fit:cover;background:var(--color-surface)}
+.shape-row{width:min(38%,132px);margin-top:var(--s6)}
+.mark-ripple{aspect-ratio:1;display:grid;place-items:center}
+.mark-ripple svg{width:100%;height:100%}
+.mark-drop{width:76%;aspect-ratio:1;justify-self:center}
+.mark-drop svg{width:100%;height:100%;display:block;fill:var(--color-fill-solid)}
+.hero-right{position:relative;padding:var(--s8) var(--gutter) var(--s16) var(--s6);display:flex;flex-direction:column;align-items:flex-end;justify-content:space-between;gap:var(--s12)}
+.hero h1{font-size:clamp(56px,6.3vw,110px);text-align:end;line-height:1;letter-spacing:var(--ls-display);width:100%}
+.hero h1 .l1,.hero h1 .l2{display:block;white-space:nowrap}
+.tagline{writing-mode:vertical-rl;text-orientation:mixed;font-size:clamp(15px,1.4vw,19px);letter-spacing:var(--ls-wide);line-height:1;position:absolute;left:0;top:calc(88px + var(--s12));height:min(60vh,520px);white-space:nowrap}
+.tagline::before{content:"";position:absolute;left:50%;bottom:-40px;width:1px;height:40px;background:var(--color-border)}
+.pickup{position:relative;background:var(--color-surface);border:1px solid var(--color-border-ink);padding:var(--s6) var(--s8);width:min(100%,380px);margin-right:var(--s2)}
+.pickup::before{content:"";position:absolute;inset:0;border:1px solid var(--color-border-ink);transform:translate(8px,8px);z-index:-1;background:var(--color-surface)}
+.pickup .label{margin-bottom:var(--s3)}
+.pickup .t{font-size:var(--t-md);font-weight:700;letter-spacing:var(--ls-head)}
+.pickup .p{font-family:var(--font-display);font-size:var(--t-2xl);font-weight:400;line-height:1.1;margin:var(--s1) 0 var(--s2)}
+.pickup .p small{font-family:var(--font-body);font-size:var(--t-xs);color:var(--color-text-muted);letter-spacing:var(--ls-head);margin-left:var(--s2)}
+.pickup .textlink{margin-top:var(--s3);float:right}
+.scroll-cue{position:absolute;right:var(--gutter);bottom:calc(var(--s16) + var(--s8));writing-mode:vertical-rl;font-size:var(--t-2xs);font-weight:700;letter-spacing:var(--ls-wide);color:var(--color-text-muted);text-transform:uppercase}
+.scroll-cue::after{content:"";position:absolute;left:50%;translate:-50% 0;top:calc(100% + var(--s3));width:1px;height:var(--s16);background:var(--color-border-ink);transform:scaleY(0);transform-origin:top;animation:scroll-line 2s linear infinite}
+@keyframes scroll-line{
+  0%{transform:scaleY(0);transform-origin:top}
+  40%{transform:scaleY(1);transform-origin:top}
+  40.01%{transform:scaleY(1);transform-origin:bottom}
+  80%,100%{transform:scaleY(0);transform-origin:bottom}
 }
 
-/* Programs — 気泡のように浮上して着地する */
-.reveal-surface{--ry:70px; --rs:.92; --rr:-1.5deg; --rb:6px; --rd:.85s;}
-.program-card .landing-ripple{
-  position:absolute;
-  left:50%;bottom:-10px;
-  width:60%;height:14px;
-  margin-left:-30%;
-  border-radius:50%;
-  border:1px solid var(--cyan);
-  opacity:0;
-  pointer-events:none;
-}
-.reveal-surface.in-view .landing-ripple{animation:landing .6s ease-out .05s both;}
-@keyframes landing{
-  0%{transform:scale(.3);opacity:.8;}
-  100%{transform:scale(2.2);opacity:0;}
+.band{margin:0;width:100%;height:clamp(420px,86vh,860px);overflow:hidden;background:var(--color-fill-solid)}
+.band img{width:100%;height:118%;object-fit:cover;object-position:center 38%;will-change:transform}
+
+
+/* ===== 6b. The marks =====
+   One family, one weight: every mark is a solid ink form at the same optical
+   density. (An earlier hairline ripple sat here and read as a different, lighter
+   family than the solids beside it — that mismatch is what made the trio not
+   hold together.) */
+.mark{width:100%;height:auto;aspect-ratio:1;display:block;fill:var(--color-fill-solid)}
+
+/* ===== 7b. About composition =====
+   The reference builds its about-block out of big forms on a ruled grid, bleeding
+   off the page edge, punctuated by one photograph. Same structure here, with the
+   forms that belong to this brand. */
+.composition{position:relative;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:repeat(2,auto);gap:var(--s6);padding:var(--s8) 0;--cw:calc((100% - var(--s6) * 2) / 3)}
+.composition .cell{margin:0;display:block;width:100%;aspect-ratio:1;fill:var(--color-fill-solid);position:relative;z-index:1}
+.composition .c-photo{aspect-ratio:1;overflow:hidden;background:var(--color-fill-solid)}
+.composition .c-photo img{width:100%;height:100%;object-fit:cover;object-position:center}
+.composition .c-tri{grid-area:1/1}
+.composition .c-dot{grid-area:1/2;fill:var(--color-accent-solid)}
+.composition .c-photo{grid-area:1/3}
+.composition .c-lane{grid-area:2/1}
+.composition .c-w{grid-area:2/3}
+/* the ruled guides — thin lines that draw downward, the way the reference's do */
+.composition .guide{position:absolute;top:0;bottom:0;width:1px;background:var(--color-border);transform-origin:top;z-index:0}
+.composition .g0{left:0}
+.composition .g1{left:calc(var(--cw) + var(--s6) / 2)}
+.composition .g2{left:calc(var(--cw) * 2 + var(--s6) * 1.5)}
+.composition .g3{left:100%}
+
+/* ===== 7. About (01) ===== */
+.about-grid{display:grid;grid-template-columns:minmax(0,900px) minmax(300px,36em);gap:var(--s16);align-items:stretch;justify-content:space-between}
+/* the prose column takes the row height, and the slack collects in one place —
+   between the reading and the figures — so the figures and the CTA land on the
+   same baseline the composition ends on instead of loosening every paragraph */
+.about-text{display:flex;flex-direction:column}
+.about-text p:last-of-type{margin-bottom:auto}
+.about-text p+p{margin-top:var(--s4)}
+.about-text p{max-width:var(--measure)}
+.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid var(--color-border-ink);margin-top:var(--s12)}
+.stat{padding:var(--s6) var(--s6) var(--s4);border-right:1px solid var(--color-border)}
+.stat:first-child{padding-left:0}
+.stat:last-child{border-right:0;padding-right:0}
+.stat b{display:block;font-family:var(--font-display);font-weight:300;font-size:clamp(44px,5vw,64px);line-height:1;font-variant-numeric:lining-nums tabular-nums;font-feature-settings:"lnum" 1,"tnum" 1}
+.stat > span{display:block;font-size:var(--t-2xs);font-weight:700;letter-spacing:var(--ls-label);color:var(--color-text-muted);margin-top:var(--s2);text-transform:uppercase}
+/* the counting numeral is part of the figure, not a label — it must not
+   inherit the label rule above (that put "4" on its own line, 11px, grey) */
+.stat b [data-count]{display:inline;font:inherit;color:inherit;letter-spacing:inherit;margin:0;text-transform:none}
+.about-cta{margin-top:var(--s12)}
+
+/* ===== 8. Service (02) — compact spec rows, one column, no photography ===== */
+.svc-list{display:grid;gap:var(--s12);border-top:1px solid var(--color-border-ink)}
+.svc{display:grid;grid-template-columns:200px minmax(300px,34em) minmax(300px,1fr);gap:var(--s8) var(--s16);padding:var(--s12) 0;border-bottom:1px solid var(--color-border)}
+.svc-prices{justify-self:end;width:100%;max-width:420px}
+
+.svc-mark{width:200px;height:200px;position:sticky;top:120px}
+.svc-mark svg{width:100%;height:100%;display:block}
+.svc-body .step{font-size:var(--t-2xs);font-weight:700;letter-spacing:var(--ls-label);font-variant-numeric:lining-nums tabular-nums}
+.svc-body h3{font-size:clamp(28px,3vw,36px);margin-top:var(--s1)}
+.svc-body .sub{font-size:var(--t-base);font-weight:500;letter-spacing:var(--ls-head);margin:var(--s2) 0 var(--s4)}
+.svc-body p{font-size:var(--t-sm);color:var(--color-text-muted);max-width:var(--measure)}
+.svc-body p strong{color:var(--color-text)}
+.ptable{width:100%;border-collapse:collapse;font-variant-numeric:lining-nums tabular-nums;font-feature-settings:"lnum" 1,"tnum" 1}
+.ptable caption{text-align:left;font-size:var(--t-2xs);font-weight:700;letter-spacing:var(--ls-label);text-transform:uppercase;color:var(--color-text-muted);padding-bottom:var(--s2)}
+.ptable th,.ptable td{padding:var(--s3) 0;border-top:1px solid var(--color-border);text-align:right;font-size:var(--t-sm)}
+.ptable thead th{border-top:1px solid var(--color-border-ink);font-size:var(--t-2xs);font-weight:700;letter-spacing:var(--ls-label);color:var(--color-text-muted);text-transform:uppercase}
+.ptable th:first-child,.ptable td:first-child{text-align:left}
+.ptable tbody td{font-family:var(--font-display);font-weight:400;font-size:var(--t-lg);letter-spacing:var(--ls-body)}
+.ptable .unit{font-family:var(--font-body);font-size:0.62em;font-weight:400;letter-spacing:var(--ls-body);padding-left:0.08em}
+.ptable .paren{font-family:var(--font-body);font-size:0.72em}
+.ptable tbody th{font-family:var(--font-body);font-weight:500;font-size:var(--t-sm)}
+.ptable tbody tr:last-child th,.ptable tbody tr:last-child td{border-bottom:1px solid var(--color-border)}
+.note{font-size:var(--t-xs);color:var(--color-text-muted);margin-top:var(--s3);line-height:1.8}
+.svc-note{margin-inline-start:calc(200px + var(--s16));margin-top:var(--s8);font-size:var(--t-sm);color:var(--color-text-muted)}
+
+/* ===== 9. Flow (03) ===== */
+.steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}
+.rule-draw{display:block;height:1px;background:var(--color-border-ink);transform-origin:left}
+.stepc{padding:var(--s8) var(--s6);border-inline-end:1px solid var(--color-border)}
+.stepc:first-child{padding-left:0}
+.stepc:last-child{border-right:0;padding-right:0}
+.stepc .n{font-family:var(--font-display);font-weight:300;font-size:var(--t-4xl);line-height:1;font-variant-numeric:lining-nums tabular-nums;font-feature-settings:"lnum" 1,"tnum" 1}
+.stepc h3{font-size:var(--t-md);font-weight:700;letter-spacing:var(--ls-head);margin-top:var(--s4)}
+.stepc p{font-size:var(--t-sm);color:var(--color-text-muted);margin-top:var(--s2);max-width:34em}
+.policy{margin-top:var(--s24);display:grid;grid-template-columns:minmax(300px,30em) minmax(0,1fr);gap:var(--s12) var(--s16)}
+.policy h3{font-size:clamp(28px,3vw,36px)}
+.policy .lead{font-size:var(--t-sm);color:var(--color-text-muted);margin-top:var(--s4);max-width:var(--measure)}
+.policy-tables{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:var(--s8)}
+.policy .sameday{grid-column:1/-1;border-top:2px solid var(--color-border-ink);padding-top:var(--s6);display:grid;grid-template-columns:minmax(280px,1fr) minmax(280px,1fr);gap:var(--s6) var(--s16);align-items:start}
+.policy .sameday h4{grid-column:1/-1}
+.policy .sameday h4{font-size:var(--t-base);font-weight:700;letter-spacing:var(--ls-head);margin-bottom:var(--s2)}
+.policy .sameday .sd-text{grid-column:1;max-width:var(--measure-wide)}
+.policy .sameday p{font-size:var(--t-sm);color:var(--color-text-muted)}
+.policy .sameday strong{color:var(--color-text);font-weight:700}
+.policy .sameday .sd-table{margin-top:0;max-width:none;grid-column:2}
+.policy .sameday .note{margin-top:var(--s4);font-size:var(--t-xs)}
+.policy .keep{grid-column:1/-1;border-top:1px solid var(--color-border);padding-top:var(--s6);display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2fr);gap:var(--s4) var(--s16);align-items:start}
+.policy .keep h4{font-size:var(--t-base);font-weight:700;letter-spacing:var(--ls-head);margin-bottom:var(--s2)}
+.policy .keep p{font-size:var(--t-sm);color:var(--color-text-muted);max-width:var(--measure-wide)}
+.policy .keep h4{margin-bottom:0}
+
+/* ===== 10. Reserve (04) ===== */
+.reserve-grid{display:grid;grid-template-columns:minmax(0,1100px) minmax(240px,1fr);gap:var(--s16);align-items:start}
+.reserve-aside{grid-column:2;grid-row:1;position:sticky;top:120px;border-inline-start:1px solid var(--color-border-ink);padding-inline-start:var(--s8)}
+.reserve-card{position:relative;grid-column:1;grid-row:1;background:var(--color-surface);border:1px solid var(--color-border-ink);padding:var(--s12)}
+.reserve-card::before{content:"";position:absolute;inset:0;border:1px solid var(--color-border-ink);transform:translate(10px,10px);z-index:-1}
+.gate{display:block}
+.gate-form{max-width:440px}
+.gate-label{font-weight:700;letter-spacing:var(--ls-head)}
+.gate-row{display:flex;gap:var(--s3);margin-top:var(--s4);flex-wrap:wrap}
+.gate-row input{flex:1 1 200px}
+.gate-error{display:none;color:var(--color-danger);font-size:var(--t-sm);margin-top:var(--s3)}
+.gate-hint{font-size:var(--t-xs);color:var(--color-text-muted);margin-top:var(--s3)}
+.reserve-aside .rl{font-size:var(--t-2xs);font-weight:700;letter-spacing:var(--ls-label);color:var(--color-text-muted);text-transform:uppercase;margin-bottom:var(--s4)}
+.reserve-aside ol{margin:0;padding:0;list-style:none;counter-reset:g}
+.reserve-aside li{counter-increment:g;display:grid;grid-template-columns:40px minmax(0,1fr);gap:var(--s4);align-items:baseline;padding:var(--s3) 0;border-top:1px solid var(--color-border);font-size:var(--t-sm);color:var(--color-text-muted)}
+.reserve-aside li::before{content:counter(g,decimal-leading-zero);font-family:var(--font-display);font-weight:300;font-size:var(--t-xl);color:var(--color-text);line-height:1;font-variant-numeric:lining-nums tabular-nums;font-feature-settings:"lnum" 1,"tnum" 1}
+.reserve-aside li b{display:block;font-size:var(--t-sm);font-weight:700;color:var(--color-text);letter-spacing:var(--ls-head)}
+.tog-lab{font-size:var(--t-2xs);font-weight:700;letter-spacing:var(--ls-label);text-transform:uppercase;color:var(--color-text-muted);margin-bottom:var(--s3)}
+.service-toggle{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(280px,100%),1fr));gap:var(--s4);margin-bottom:var(--s8)}
+.service-btn{display:flex;align-items:flex-start;gap:var(--s4);text-align:left;padding:var(--s6);min-height:72px;border:1px solid var(--color-border-strong);background:var(--color-bg);color:var(--color-text);font-weight:700;letter-spacing:var(--ls-head);transition:background var(--d-pop) var(--ease-out),color var(--d-pop) var(--ease-out),border-color var(--d-pop) var(--ease-out)}
+.service-btn::before{content:"";flex:0 0 auto;width:20px;height:20px;margin-top:3px;border-radius:50%;border:2px solid var(--color-border-strong);box-shadow:inset 0 0 0 6px transparent;transition:box-shadow var(--d-pop) var(--ease-out),border-color var(--d-pop) var(--ease-out)}
+.service-btn .sb-txt{display:block;min-width:0}
+.service-btn .sb-txt b{display:block;font-weight:700}
+.service-btn .sb-txt > span{display:block;font-size:var(--t-2xs);font-weight:400;letter-spacing:var(--ls-head);color:var(--color-text-muted);margin-top:var(--s1)}
+.service-btn.active{background:var(--color-fill-solid);color:var(--color-bg);border-color:var(--color-fill-solid)}
+.service-btn.active::before{border-color:var(--color-bg);box-shadow:inset 0 0 0 6px var(--color-bg)}
+.service-btn.active .sb-txt > span{color:var(--color-text-on-fill-muted)}
+.form-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:var(--s6) var(--s8)}
+.field.full{grid-column:1/-1}
+.field label,.field .lab{display:block;font-size:var(--t-2xs);font-weight:700;letter-spacing:var(--ls-label);text-transform:uppercase;margin-bottom:var(--s2)}
+input[type=text],select,textarea{width:100%;min-height:48px;border:0;border-bottom:1px solid var(--color-border-ink);background:var(--color-surface);color:var(--color-text);padding:var(--s3) 0;border-radius:0}
+select{appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%2315252b' stroke-width='1.2'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 2px center;padding-right:24px}
+textarea{resize:vertical;min-height:96px}
+input[type=text]:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid var(--color-focus);outline-offset:4px;border-bottom-color:var(--color-accent-solid)}
+input::placeholder,textarea::placeholder{color:var(--color-text-muted)}
+.hint{font-size:var(--t-xs);color:var(--color-text-muted);display:block;max-width:var(--measure-wide)}
+.slot-notice{font-size:var(--t-xs);color:var(--color-text-muted);border-left:2px solid var(--color-border-ink);padding-left:var(--s3);margin-bottom:var(--s4);max-width:var(--measure-wide)}
+.slot-notice strong{color:var(--color-text)}
+.slot-grid{display:grid;gap:var(--s4)}
+.slot-day{display:grid;grid-template-columns:var(--s32) minmax(0,1fr);gap:var(--s4);align-items:start;border-top:1px solid var(--color-border);padding-top:var(--s3)}
+.slot-day-label{font-weight:700;letter-spacing:var(--ls-head);font-variant-numeric:lining-nums tabular-nums}
+.slot-day-label.is-sat{color:var(--color-sat)}
+.slot-day-label.is-sun,.slot-day-label.is-holiday{color:var(--color-sun)}
+.slot-day-times{display:flex;flex-wrap:wrap;gap:var(--s3)}
+.slot{min-height:44px;padding:0 var(--s4);border:1px solid var(--color-border-strong);font-size:var(--t-sm);font-variant-numeric:lining-nums tabular-nums;background:var(--color-surface);transition:background-color var(--d-press) var(--ease-out),color var(--d-press) var(--ease-out),border-color var(--d-press) var(--ease-out),transform var(--d-press) var(--ease-out)}
+.slot:active{transform:scale(.97)}
+@media (hover:hover) and (pointer:fine){.slot:hover{border-color:var(--color-border-ink)}}
+.slot.selected{background:var(--color-fill-solid);color:var(--color-text-on-fill);border-color:var(--color-border-ink)}
+.slot-hint{font-size:var(--t-xs);color:var(--color-text-muted);margin-top:var(--s4)}
+.slot-error{display:none;color:var(--color-danger);font-size:var(--t-sm);margin-top:var(--s3)}
+.checkbox-row{display:flex;align-items:flex-start;gap:var(--s4);padding:var(--s3) 0;cursor:pointer}
+.checkbox-row input{width:24px;height:24px;margin:0;accent-color:var(--color-fill-solid);flex:none;cursor:pointer}
+.checkbox-row label{font-size:var(--t-sm);font-weight:500;letter-spacing:var(--ls-body);text-transform:none;margin:0;min-height:24px;display:flex;align-items:center;cursor:pointer}
+.reserve-submit{margin-top:var(--s8);border-top:1px solid var(--color-border-ink);padding-top:var(--s6)}
+.pay-note{font-size:var(--t-xs);color:var(--color-text-muted);margin-top:var(--s4);max-width:var(--measure-wide)}
+.pay-note strong{color:var(--color-text);font-weight:700}
+.confirm-msg{display:none;margin-top:var(--s4);padding:var(--s4);border:1px solid var(--color-border-ink);font-size:var(--t-sm)}
+.confirm-msg.error{border-color:var(--color-danger);color:var(--color-danger)}
+
+/* ===== 11. Footer (Ft4) ===== */
+footer{position:relative;z-index:1;background:var(--color-fill-solid);color:var(--color-text-on-fill-muted);padding:var(--s24) 0 var(--s8)}
+.foot-top{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:var(--s12);align-items:start}
+.foot-mark{width:clamp(52px,6vw,76px);height:auto;fill:var(--color-text-on-fill);margin-bottom:var(--s6)}
+.foot-top .display{font-size:clamp(48px,8vw,112px);color:var(--color-text-on-fill);line-height:.95}
+.foot-top .display small{display:block;font-family:var(--font-body);font-size:var(--t-xs);letter-spacing:var(--ls-wide);text-transform:none;color:var(--color-text-on-fill-muted);margin-top:var(--s4)}
+.foot-links{display:grid;gap:0}
+.foot-links a{display:flex;justify-content:space-between;align-items:center;padding:var(--s4) 0;border-bottom:1px solid var(--color-border-on-fill);font-size:var(--t-sm);font-weight:500;letter-spacing:var(--ls-head);color:var(--color-text-on-fill)}
+.foot-links a svg{width:14px;height:14px;fill:currentColor}
+.foot-bottom{display:flex;justify-content:space-between;align-items:center;gap:var(--s6);margin-top:var(--s24);flex-wrap:wrap;font-size:var(--t-2xs);letter-spacing:var(--ls-head)}
+.foot-bottom .brand img{background:var(--color-surface);border-radius:50%;padding:var(--s1)}
+.foot-bottom .brand .wordmark{color:var(--color-text-on-fill)}
+
+/* ===== 12. Confirm modal ===== */
+.confirm-modal-overlay{position:fixed;inset:0;z-index:60;background:color-mix(in oklab,var(--color-scrim) 55%,transparent);display:grid;place-items:center;padding:var(--s4);overscroll-behavior:contain}
+.confirm-modal{background:var(--color-surface);border:1px solid var(--color-border-ink);max-width:560px;width:100%;max-height:90vh;overflow:auto;padding:var(--s8);transform-origin:center;animation:modal-in var(--d-panel) var(--ease-out)}
+@keyframes modal-in{from{opacity:0;transform:scale(.96)}to{opacity:1;transform:none}}
+.confirm-modal h3{font-size:var(--t-lg);font-weight:700;letter-spacing:var(--ls-head)}
+.confirm-modal-note{font-size:var(--t-sm);color:var(--color-text-muted);margin-top:var(--s3)}
+.confirm-modal dl{margin:var(--s6) 0 0}
+.confirm-modal-row{display:grid;grid-template-columns:var(--s32) minmax(0,1fr);gap:var(--s3);padding:var(--s3) 0;border-top:1px solid var(--color-border);font-size:var(--t-sm)}
+.confirm-modal-row dt{font-weight:700;color:var(--color-text-muted);letter-spacing:var(--ls-head)}
+.confirm-modal-row dd{margin:0;overflow-wrap:anywhere;font-variant-numeric:lining-nums tabular-nums}
+.confirm-modal-actions{display:flex;gap:var(--s3);margin-top:var(--s6);flex-wrap:wrap}
+#confirm-modal-back{min-height:52px;padding:0 var(--s6);font-weight:500;text-decoration:underline;text-underline-offset:4px}
+
+/* ===== 13. Motion helpers ===== */
+@keyframes modal-fade{from{opacity:0}to{opacity:1}}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  /* Movement goes. Colour and opacity feedback stays — a blanket
+     transition-duration:0 removes the press/selection/tab feedback too, and
+     that feedback is what tells the user the interface heard them. */
+  .pill:active,.slot:active{transform:none}
+  .textlink::before,#site-header nav a::after,.service-btn,.service-btn::before,.nav-toggle span{transition-duration:.01ms}
+  .textlink:hover::before{transform:none}
+  .confirm-modal{animation-name:modal-fade}
+  .scroll-cue::after{animation:none;transform:scaleY(1);transform-origin:top}
 }
 
-/* Reserve — 水面が凪いでガラスが結晶化する
-   (blur (--rb) 意図的に使わない: backdrop-filterを持つ.glass要素と
-   filter:blur()をtransformと同時に動かすと、一部のモバイルブラウザで
-   合成に失敗し要素ごと表示されなくなることがあるため) */
-.reveal-crystallize{--ry:26px; --rsy:.94; --rd:1s;}
-.reveal-crystallize .corner{opacity:0;transform:scale(.4);}
-.reveal-crystallize.in-view .corner{animation:cornerPop .5s cubic-bezier(.2,.8,.3,1.3) .35s both;}
-.reveal-crystallize.in-view .corner.tr,
-.reveal-crystallize.in-view .corner.bl{animation-delay:.44s;}
-.reveal-crystallize.in-view .corner.br{animation-delay:.53s;}
-@keyframes cornerPop{
-  0%{opacity:0;transform:scale(.4);}
-  100%{opacity:.7;transform:scale(1);}
-}
-
-/* status kicker (used across sections) */
-.kicker{
-  font-family:'JetBrains Mono', monospace;
-  display:inline-flex;
-  align-items:center;
-  gap:.65em;
-  letter-spacing:.3em;
-  font-size:.72rem;
-  text-transform:uppercase;
-  color:var(--cyan);
-}
-.kicker::before{
-  content:'';
-  width:6px;height:6px;
-  border-radius:50%;
-  background:var(--cyan);
-  box-shadow:0 0 10px 2px var(--cyan);
-  animation:pulseDot 2s ease-in-out infinite;
-  flex-shrink:0;
-}
-@keyframes pulseDot{0%,100%{opacity:1;} 50%{opacity:.25;}}
-
-/* ===== 4b. Splash intro ===== */
-.splash{
-  position:fixed;inset:0;z-index:300;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.4rem;
-  background:radial-gradient(ellipse at 50% 42%, #123a52, #0a2f42 72%);
-  transition:opacity .8s ease, visibility .8s ease;
-}
-.splash.hide{opacity:0;visibility:hidden;pointer-events:none;}
-.splash-glow{
-  position:absolute;width:min(60vmin,420px);height:min(60vmin,420px);border-radius:50%;
-  background:radial-gradient(circle, var(--cyan-a4) 0%, transparent 70%);
-  filter:blur(40px);
-  animation:splashPulse 2.4s ease-in-out infinite;
-  pointer-events:none;
-}
-.splash-logo{
-  width:min(34vw, 200px);
-  position:relative;
-  opacity:0;
-  filter:drop-shadow(0 0 26px var(--cyan-a5));
-  animation:splashLogoIn 1.1s cubic-bezier(.2,.8,.3,1) .2s forwards;
-}
-.splash-word{
-  position:relative;
-  font-family:'Fraunces','Shippori Mincho',serif;
-  font-size:clamp(1.4rem,4vw,1.9rem);
-  letter-spacing:.04em;
-  color:var(--ice);
-  opacity:0;
-  animation:splashWordIn .9s ease .75s forwards;
-}
-.splash-word span{color:var(--cyan);}
-@keyframes splashLogoIn{
-  0%{opacity:0;transform:scale(.82) translateY(14px);}
-  100%{opacity:1;transform:scale(1) translateY(0);}
-}
-@keyframes splashWordIn{
-  0%{opacity:0;transform:translateY(10px);}
-  100%{opacity:1;transform:translateY(0);}
-}
-@keyframes splashPulse{
-  0%,100%{opacity:.5;transform:scale(1);}
-  50%{opacity:.85;transform:scale(1.08);}
-}
-
-/* cursor-triggered water ripples on the hero glass panel */
-.cursor-ripple{
-  position:absolute;
-  left:0;top:0;
-  width:12px;height:12px;
-  margin:-6px 0 0 -6px;
-  border-radius:50%;
-  border:1.5px solid var(--cyan-a5);
-  background:radial-gradient(circle, var(--pearl-a2), transparent 70%);
-  pointer-events:none;
-  transform:scale(.3);
-  opacity:.85;
-  animation:cursorRipple 1s ease-out forwards;
-}
-@keyframes cursorRipple{
-  0%{transform:scale(.3);opacity:.85;}
-  100%{transform:scale(9);opacity:0;}
-}
-
-/* ===== 5. Header / nav ===== */
-header{
-  position:fixed;
-  top:0;left:0;right:0;
-  z-index:100;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  padding:26px 6vw;
-  border-bottom:1px solid transparent;
-  transition:background .4s ease, padding .4s ease, border-color .4s ease;
-}
-header.scrolled{
-  background:rgba(10,47,66,.6);
-  backdrop-filter:blur(20px) saturate(1.3);
-  padding:14px 6vw;
-  border-bottom:1px solid var(--line);
-}
-.brand-block{display:flex;flex-direction:row;align-items:center;gap:.65rem;}
-.brand-icon{width:36px;height:36px;object-fit:contain;filter:drop-shadow(0 0 8px var(--cyan-a4));flex-shrink:0;}
-.brand-text{display:flex;flex-direction:column;line-height:1;}
-.brand{font-family:'Shippori Mincho',serif;color:var(--ice);font-size:1.4rem;letter-spacing:.06em;font-weight:600;}
-.brand span{color:var(--cyan);}
-.brand-sub{
-  font-family:'JetBrains Mono',monospace;
-  font-size:.56rem;
-  letter-spacing:.22em;
-  color:var(--text-dim);
-  margin-top:5px;
-  text-transform:uppercase;
-}
-nav ul{display:flex;gap:2.4rem;}
-nav a{
-  font-family:'JetBrains Mono',monospace;
-  color:var(--text);
-  font-size:.72rem;
-  letter-spacing:.12em;
-  text-transform:uppercase;
-  position:relative;
-  padding-bottom:4px;
-}
-nav a::after{
-  content:'';
-  position:absolute;left:0;bottom:0;
-  width:0;height:1px;
-  background:var(--cyan);
-  box-shadow:0 0 8px var(--cyan);
-  transition:width .3s ease;
-}
-nav a:hover::after{width:100%;}
-
-.nav-toggle{
-  display:none;
-  flex-direction:column;
-  justify-content:center;
-  gap:5px;
-  width:34px;height:34px;
-  padding:6px;
-  background:none;
-  border:none;
-  cursor:pointer;
-  z-index:210;
-}
-.nav-toggle span{display:block;height:2px;background:var(--ice);transition:transform .3s ease, opacity .3s ease;}
-header.menu-open .nav-toggle span:nth-child(1){transform:translateY(7px) rotate(45deg);}
-header.menu-open .nav-toggle span:nth-child(2){opacity:0;}
-header.menu-open .nav-toggle span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
-
-.mobile-menu{
-  position:fixed;
-  inset:0;
-  z-index:150;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  gap:2.4rem;
-  background:rgba(8,38,56,.97);
-  backdrop-filter:blur(16px);
-  opacity:0;
-  pointer-events:none;
-  transition:opacity .35s ease;
-}
-.mobile-menu.open{opacity:1;pointer-events:auto;}
-.mobile-menu a{
-  font-family:'JetBrains Mono',monospace;
-  font-size:1.15rem;
-  letter-spacing:.16em;
-  text-transform:uppercase;
-  color:var(--ice);
-}
-.mobile-menu .mm-cta{
-  margin-top:1rem;
-  padding:14px 34px;
-  border:1px solid var(--cyan);
-  border-radius:3px;
-  color:var(--cyan);
-}
-
-/* ===== Hero ===== */
-.hero{
-  position:relative;
-  min-height:100vh;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  text-align:center;
-  color:var(--ice);
-  padding:110px 5vw 60px;
-  overflow:hidden;
-  perspective:1400px;
-}
-.hero-content{
-  position:relative;
-  isolation:isolate;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  transition:transform .25s ease-out, opacity 1.4s ease-out, filter 1.4s ease-out;
-  will-change:transform;
-  opacity:0;
-  filter:blur(24px);
-  max-width:780px;
-  border-radius:20px;
-  padding:clamp(2.2rem,6vw,4.2rem) clamp(1.6rem,6vw,3.6rem);
-  --glass-bg:linear-gradient(165deg, var(--pearl-a2), var(--cyan-a1) 55%, var(--violet-a2));
-  --glass-blur:9px;
-}
-.hero-content .glow{inset:-25%;filter:blur(80px);}
-/* the top edge itself reads as a moving wave line, straddling the panel's
-   top border — same layered-SVG technique as .wave-divider, just shorter
-   and centered on the border instead of sitting at a section seam */
-.panel-wave{
-  position:absolute;
-  top:0;left:0;
-  width:100%;height:36px;
-  transform:translateY(-50%);
-  overflow:hidden;
-  pointer-events:none;
-  z-index:2;
-}
-.panel-wave svg{
-  position:absolute;
-  top:0;left:0;
-  width:200%;height:100%;
-  animation-name:waveMove;animation-timing-function:linear;animation-iteration-count:infinite;
-}
-.pw-back{opacity:.55;animation-duration:12s;}
-.pw-front{opacity:.9;animation-duration:7.5s;}
-.hero-content.loaded{opacity:1;filter:blur(0);}
-/* the layered 3D tilt (preserve-3d + translateZ) only ever gets driven by the
-   mousemove JS, which itself only runs on hover-capable pointers — so keep
-   these transforms out of touch/tablet rendering entirely. Some mobile/tablet
-   browsers mishandle preserve-3d + overflow + backdrop-filter together and
-   silently clip content, and there's no interaction there to justify the
-   extra compositing cost anyway. */
-@media (hover: hover) and (pointer: fine){
-  .hero-content{transform-style:preserve-3d;}
-  .hero-content h1, .hero-content p, .hero-content .cta-row, .hero-content .chip-row{transform:translateZ(20px);}
-}
-.hero .kicker{margin-bottom:1.8rem;}
-.hero h1{
-  font-size:clamp(2.6rem, 8vw, 6rem);
-  font-weight:600;
-  line-height:1.08;
-  letter-spacing:-.01em;
-  background:linear-gradient(100deg, #ffffff 0%, var(--pearl) 24%, #cdece3 42%, var(--cyan) 56%, var(--pearl) 76%, #ffffff 100%);
-  background-size:220% 100%;
-  -webkit-background-clip:text;
-  background-clip:text;
-  color:transparent;
-  animation:metallicShine 7s ease-in-out infinite;
-}
-@keyframes metallicShine{
-  0%,100%{background-position:0% 50%;}
-  50%{background-position:100% 50%;}
-}
-.hero h1 em{
-  font-style:italic;
-  color:var(--cyan);
-  -webkit-text-fill-color:var(--cyan);
-  text-shadow:0 0 30px var(--cyan-a5);
-}
-.hero p{
-  margin-top:1.6rem;
-  max-width:520px;
-  color:var(--text);
-  font-size:clamp(.95rem,2vw,1.05rem);
-  font-weight:400;
-  line-height:1.9;
-  text-shadow:0 1px 12px rgba(3,15,20,.35);
-}
-.chip-row{margin-top:2.2rem;display:flex;flex-wrap:wrap;justify-content:center;gap:.7rem;}
-.chip{
-  font-family:'JetBrains Mono',monospace;
-  font-size:.68rem;
-  letter-spacing:.1em;
-  color:var(--text);
-  padding:8px 16px;
-  border-radius:100px;
-  display:inline-flex;
-  align-items:center;
-  gap:.5em;
-  white-space:nowrap;
-  --glass-blur:5px;
-}
-.chip .dot{width:5px;height:5px;border-radius:50%;background:var(--cyan);box-shadow:0 0 6px 1px var(--cyan);flex-shrink:0;}
-.cta-row{margin-top:2.6rem;display:flex;flex-wrap:wrap;justify-content:center;gap:1.1rem;}
-.btn{
-  display:inline-block;
-  padding:16px 38px;
-  border-radius:3px;
-  font-family:'JetBrains Mono',monospace;
-  font-size:.74rem;
-  letter-spacing:.14em;
-  text-transform:uppercase;
-  cursor:pointer;
-  border:1px solid transparent;
-  transition:background-position .6s ease, box-shadow .35s ease, transform .35s ease, border-color .35s ease;
-}
-.btn-primary{
-  background:linear-gradient(110deg, var(--cyan) 0%, var(--pearl) 35%, var(--violet) 70%, var(--cyan) 100%);
-  background-size:300% 100%;
-  background-position:0% 0%;
-  color:#04211d;
-  font-weight:500;
-}
-.btn-primary:hover{background-position:100% 0%;box-shadow:0 0 34px var(--cyan-a5);transform:translateY(-2px);}
-.btn-ghost{border-color:var(--line);color:var(--ice);background:var(--cyan-a1);}
-.btn-ghost:hover{background:var(--cyan-a2);border-color:var(--cyan-dim);}
-
-/* ===== 6. Wave divider / particles ===== */
-.wave-divider{position:absolute;bottom:-2px;left:0;width:100%;height:clamp(70px,18vw,140px);overflow:hidden;line-height:0;}
-.wave-divider svg{
-  position:absolute;bottom:0;left:0;width:200%;height:100%;
-  animation-name:waveMove;animation-timing-function:linear;animation-iteration-count:infinite;
-}
-.wave-divider path{fill:none;stroke-width:1.4;filter:drop-shadow(0 0 6px currentColor);}
-.wave-back{opacity:.28;animation-duration:26s;color:var(--violet);}
-.wave-mid{opacity:.4;animation-duration:19s;animation-direction:reverse;color:var(--cyan-dim);}
-.wave-front{opacity:.9;animation-duration:14s;color:var(--cyan);}
-@keyframes waveMove{from{transform:translateX(0);} to{transform:translateX(-50%);}}
-
-.particles{position:absolute;inset:0;overflow:hidden;pointer-events:none;}
-.particle{
-  position:absolute;
-  bottom:-5%;
-  border-radius:50%;
-  background:radial-gradient(circle, var(--pearl) 0%, var(--cyan-a5) 45%, transparent 72%);
-  animation:particleRise linear infinite;
-}
-@keyframes particleRise{
-  0%{transform:translate(0,0);opacity:0;}
-  10%{opacity:.9;}
-  85%{opacity:.4;}
-  100%{transform:translate(var(--drift,24px),-112vh);opacity:0;}
-}
-
-/* ===== 7. Section shared / HUD frame ===== */
-section{position:relative;padding:clamp(70px,12vw,130px) 6vw;}
-.section-head{text-align:center;max-width:640px;margin:0 auto 4.5rem;}
-.section-head .kicker{justify-content:center;margin-bottom:1.1rem;}
-.section-head h2{font-size:clamp(2rem, 4vw, 3.2rem);font-weight:600;color:var(--ice);}
-.section-head p{margin-top:1.2rem;color:var(--text-dim);font-weight:300;line-height:1.8;}
-
-.hud-frame{position:relative;}
-.corner{position:absolute;width:20px;height:20px;border:1.5px solid var(--cyan);opacity:.7;z-index:2;}
-.corner.tl{top:-1px;left:-1px;border-right:none;border-bottom:none;}
-.corner.tr{top:-1px;right:-1px;border-left:none;border-bottom:none;}
-.corner.bl{bottom:-1px;left:-1px;border-right:none;border-top:none;}
-.corner.br{bottom:-1px;right:-1px;border-left:none;border-top:none;}
-
-/* ===== 8. About ===== */
-#about{background:#e4f6f2;}
-#about .kicker{color:var(--cyan-dim);}
-#about .section-head h2{color:var(--ink);}
-#about .section-head p{color:var(--ink-dim);}
-.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center;max-width:1100px;margin:0 auto;}
-.visual-frame{position:relative;isolation:isolate;}
-.visual-frame .glow{inset:-18%;}
-.about-visual{
-  position:relative;
-  height:clamp(260px,42vw,420px);
-  border-radius:10px;
-  overflow:hidden;
-  /* deliberately dark + near-opaque (unlike the pearl-tinted glass used
-     elsewhere in this light section) so the lane rope reads with real
-     contrast; .refract + .surface-sweep still carry the glass shimmer */
-  --glass-bg:linear-gradient(165deg, rgba(15,60,84,.92), rgba(8,38,56,.94) 55%, rgba(6,28,42,.96));
-  --glass-blur:9px;
-  --lane-red:#e2543e;
-}
-.about-visual .private-lane-label{
-  position:absolute;top:16px;left:18px;
-  font-family:'Fraunces',serif;font-weight:700;font-style:italic;
-  font-size:clamp(1.3rem,4vw,1.9rem);line-height:1.05;color:var(--ice);
-  text-shadow:0 2px 20px rgba(0,0,0,.35);
-}
-/* lane-rope: five course ropes crossing the panel (the pool has more than
-   one lane), the other four dimmed so the reserved lane in the middle -
-   picked out with a slow pulse - reads as "yours" among several */
-.about-visual .lane-rope{position:absolute;top:50%;left:8%;right:8%;aspect-ratio:400/90;max-height:170px;margin:0 auto;transform:translateY(-50%);}
-.about-visual .lane-rope svg{width:100%;height:100%;display:block;overflow:visible;}
-.about-visual .lane-rope circle.mine{animation:lanePulse 3.2s ease-in-out infinite;transform-origin:center;transform-box:fill-box;filter:drop-shadow(0 0 5px var(--lane-red));}
-@keyframes lanePulse{0%,100%{opacity:1;transform:scale(1);} 50%{opacity:.65;transform:scale(1.35);}}
-.about-visual .readout{
-  position:absolute;bottom:18px;left:18px;right:18px;
-  font-family:'JetBrains Mono',monospace;font-size:.64rem;letter-spacing:.08em;
-  color:var(--pearl);opacity:.8;display:flex;justify-content:space-between;
-}
-.about-text p{color:var(--ink-dim);font-weight:300;line-height:2;margin-bottom:1.4rem;}
-.stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:1.6rem;margin-top:2.6rem;}
-.stat{border-top:1px solid rgba(10,31,38,.15);padding-top:.9rem;}
-.stat h3{font-size:clamp(1.5rem,3vw,2.2rem);color:var(--ink);font-weight:600;}
-.stat span{font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:.06em;color:var(--ink-dim);}
-
-/* ===== 9. Programs ===== */
-#programs{background:var(--bg-panel);}
-.program-grid{position:relative;isolation:isolate;display:grid;grid-template-columns:repeat(2,1fr);gap:1.6rem;max-width:820px;margin:0 auto;perspective:1600px;}
-.program-grid .glow{inset:5% 25%;filter:blur(70px);}
-.program-card{
-  --glass-bg:linear-gradient(160deg, var(--cyan-a2), var(--cyan-a1));
-  --glass-blur:6px;
-  border-radius:8px;
-  padding:2.6rem 2.2rem;
-  box-shadow:0 20px 50px rgba(0,0,0,.3);
-  transition:transform .15s ease-out, box-shadow .4s ease, border-color .4s ease;
-  will-change:transform;
-  position:relative;
-  overflow:hidden;
-}
-.program-card::after{
-  content:'';
-  position:absolute;inset:0;
-  background:linear-gradient(120deg, var(--cyan-a3) 0%, transparent 30%, var(--violet) 55%, transparent 80%);
-  background-size:220% 220%;
-  background-position:0% 0%;
-  opacity:0;
-  transition:opacity .4s ease, background-position .8s ease;
-  pointer-events:none;
-}
-.program-card:hover::after{opacity:1;background-position:100% 60%;}
-.program-card:hover{border-color:var(--cyan-dim);box-shadow:0 30px 70px var(--cyan-a3);}
-.program-card .num{
-  font-family:'JetBrains Mono',monospace;font-size:2.6rem;font-weight:500;
-  color:transparent;-webkit-text-stroke:1px var(--cyan);
-}
-.program-card h3{font-size:1.4rem;margin:.9rem 0 .8rem;color:var(--ice);font-weight:600;}
-@media (hover: hover) and (pointer: fine){
-  .program-card{transform-style:preserve-3d;}
-  .program-card .num{transform:translateZ(30px);}
-  .program-card h3, .program-card p, .program-card .price-table-label, .program-card .price-table{transform:translateZ(20px);}
-}
-.program-card p{color:var(--text-dim);font-weight:300;line-height:1.85;font-size:.93rem;}
-.program-card p strong{color:var(--cyan-dim);font-weight:600;}
-.price-table-label{
-  margin-top:1.4rem;padding-top:1rem;border-top:1px solid var(--line);
-  font-family:'JetBrains Mono',monospace;font-size:.68rem;letter-spacing:.1em;
-  text-transform:uppercase;color:var(--cyan);
-}
-.price-table{
-  margin-top:.6rem;
-  display:flex;flex-direction:column;gap:.45rem;
-}
-.price-row{
-  display:flex;justify-content:space-between;align-items:baseline;gap:1rem;
-  font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--text-dim);
-}
-.price-row strong{color:var(--cyan);font-weight:500;letter-spacing:.02em;font-size:.88rem;}
-.price-note{margin-top:.6rem;font-family:'JetBrains Mono',monospace;font-size:.66rem;color:var(--text-dim);letter-spacing:.05em;opacity:.8;}
-.programs-note{text-align:center;max-width:600px;margin:2.6rem auto 0;color:var(--text-dim);font-size:.82rem;line-height:1.8;}
-
-/* ===== 10. Reserve ===== */
-/* cancellation policy: shown above the gate/form so it's visible before
-   anyone commits to booking, not buried in a post-submit confirmation */
-.policy-card{
-  --glass-bg:linear-gradient(160deg, var(--cyan-a2), var(--cyan-a1));
-  --glass-blur:6px;
-  border-radius:8px;
-  padding:1.8rem 2rem;
-  max-width:640px;
-  margin:0 auto 3rem;
-}
-.policy-intro{margin-top:.5rem;color:var(--text-dim);font-weight:300;line-height:1.85;font-size:.86rem;}
-.policy-card .price-table{margin-top:1rem;}
-.policy-card .price-row span{color:var(--text-dim);}
-.policy-card .price-note{margin-top:.8rem;}
-@media (max-width:640px){.policy-card{padding:1.5rem 1.4rem;}}
-#reserve{background:linear-gradient(180deg, var(--bg-panel), var(--bg-black));}
-.process-row{display:grid;grid-template-columns:repeat(3,1fr);gap:1.4rem;max-width:900px;margin:0 auto 3.5rem;}
-.process-step{text-align:center;padding:1.5rem 1.1rem;border-radius:8px;--glass-bg:var(--cyan-a1);--glass-blur:4px;}
-.process-step .step-num{font-family:'JetBrains Mono',monospace;font-size:.68rem;color:var(--cyan);letter-spacing:.2em;margin-bottom:.7rem;}
-.process-step h4{font-size:1rem;color:var(--ice);margin-bottom:.5rem;font-weight:600;}
-.process-step p{font-size:.82rem;color:var(--text-dim);line-height:1.7;}
-
-/* Reserve card is deliberately NOT translucent — this is the task the
-   whole site exists to support, so it trades atmosphere for maximum
-   legibility: an opaque bright surface floating in the dark water. */
-.reserve-wrap{
-  position:relative;
-  isolation:isolate;
-  max-width:860px;margin:0 auto;border-radius:14px;padding:3.2rem;
-  background:linear-gradient(165deg, #fbfffd, #dcf3ec);
-  border:1px solid rgba(8,38,45,.12);
-  box-shadow:0 30px 90px rgba(3,15,20,.5);
-}
-.reserve-wrap .glow{inset:-20%;opacity:.45;}
-.reserve-wrap .corner{border-color:var(--cyan-dim);opacity:.85;}
-
-.gate{text-align:center;padding:1rem 0 .5rem;}
-.gate-label{font-family:'JetBrains Mono',monospace;font-size:.78rem;letter-spacing:.1em;color:var(--ink-dim);margin-bottom:1.2rem;text-transform:uppercase;}
-.gate-row{display:flex;gap:.7rem;max-width:360px;margin:0 auto;flex-wrap:wrap;justify-content:center;}
-.gate-row input{
-  flex:1;min-width:140px;
-  background:#ffffff;border:1px solid rgba(8,38,45,.2);border-radius:6px;
-  padding:12px 14px;color:var(--ink);font-size:.95rem;outline:none;
-  transition:border-color .3s ease;
-}
-.gate-row input:focus{border-color:var(--cyan-dim);}
-.gate-row .btn{padding:12px 24px;}
-.gate-error{display:none;margin-top:.9rem;font-family:'JetBrains Mono',monospace;font-size:.76rem;color:#c23b3b;}
-.gate-hint{margin-top:1.1rem;font-size:.78rem;color:var(--ink-dim);line-height:1.7;}
-
-.service-toggle{display:flex;gap:.7rem;margin-bottom:2.4rem;}
-.service-btn{
-  flex:1;text-align:center;cursor:pointer;padding:.9rem 1rem;border-radius:8px;
-  border:1px solid rgba(8,38,45,.16);background:#ffffff;color:var(--ink-dim);
-  font-family:'JetBrains Mono',monospace;font-size:.74rem;letter-spacing:.06em;text-transform:uppercase;
-  transition:border-color .25s ease, background .25s ease, color .25s ease;
-}
-.service-btn span{
-  display:block;margin-top:.35rem;font-family:'Noto Sans JP',sans-serif;
-  font-size:.72rem;letter-spacing:0;text-transform:none;color:var(--ink-dim);opacity:.85;
-}
-.service-btn.active{border-color:var(--cyan-dim);background:var(--cyan-a4);color:var(--ink);}
-.service-btn:hover{border-color:var(--cyan-dim);}
-
-.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.6rem 2rem;}
-.field{display:flex;flex-direction:column;gap:.55rem;}
-.field.full{grid-column:1/-1;}
-.field label{font-family:'JetBrains Mono',monospace;font-size:.66rem;letter-spacing:.12em;color:var(--ink-dim);text-transform:uppercase;}
-.field .hint{font-size:.74rem;color:var(--ink-dim);font-family:'Noto Sans JP',sans-serif;letter-spacing:0;text-transform:none;}
-.field input, .field select, .field textarea{
-  background:transparent;border:none;border-bottom:1px solid rgba(8,38,45,.28);padding:12px 2px;
-  color:var(--ink);font-family:inherit;font-size:.95rem;outline:none;
-  transition:border-color .3s ease, box-shadow .3s ease;
-}
-.field select option{color:var(--ink);}
-.field input::placeholder, .field textarea::placeholder{color:var(--ink-dim);opacity:.75;}
-.field input:focus, .field select:focus, .field textarea:focus{border-color:var(--cyan-dim);box-shadow:0 6px 12px -8px var(--cyan-a5);}
-
-.checkbox-row{display:flex;align-items:flex-start;gap:.7rem;font-family:'Noto Sans JP',sans-serif;font-size:.9rem;color:var(--ink);line-height:1.65;}
-.checkbox-row input[type="checkbox"]{margin-top:.3rem;width:1.05rem;height:1.05rem;accent-color:var(--cyan-dim);flex-shrink:0;cursor:pointer;}
-.checkbox-row label{cursor:pointer;}
-
-.confirm-modal-overlay{
-  position:fixed;inset:0;z-index:200;padding:1.5rem;
-  background:rgba(4,20,28,.72);backdrop-filter:blur(4px);
-  display:flex;align-items:center;justify-content:center;
-}
-.confirm-modal-overlay[hidden]{display:none;}
-.confirm-modal{
-  --glass-bg:linear-gradient(165deg, rgba(15,60,84,.97), rgba(8,38,56,.98) 55%, rgba(6,28,42,.99));
-  width:100%;max-width:480px;max-height:85vh;overflow-y:auto;
-  border-radius:10px;padding:2.2rem;box-shadow:0 40px 90px rgba(0,0,0,.5);
-}
-.confirm-modal h3{
-  font-family:'Fraunces',serif;font-style:italic;font-weight:600;
-  font-size:1.35rem;margin-bottom:.6rem;color:var(--pearl);
-}
-.confirm-modal .confirm-modal-note{font-size:.82rem;color:var(--text-dim);margin-bottom:1.6rem;line-height:1.7;}
-.confirm-modal dl{margin-bottom:1.8rem;border-top:1px solid var(--line);}
-.confirm-modal div.confirm-modal-row{
-  display:flex;justify-content:space-between;align-items:baseline;gap:1.2rem;
-  padding:.75rem 0;border-bottom:1px solid var(--line);
-}
-.confirm-modal dt{
-  color:var(--cyan);font-family:'JetBrains Mono',monospace;font-size:.66rem;
-  letter-spacing:.08em;text-transform:uppercase;white-space:nowrap;flex:0 0 auto;
-}
-.confirm-modal dd{
-  color:var(--ice);font-size:.92rem;text-align:right;
-  white-space:pre-wrap;word-break:break-word;
-}
-.confirm-modal-actions{display:flex;flex-direction:column;gap:.9rem;}
-.confirm-modal-actions #confirm-modal-send{
-  width:100%;padding:20px 18px;font-size:.86rem;letter-spacing:.1em;font-weight:700;
-  animation:confirmSendPulse 1.8s ease-in-out infinite;
-}
-@keyframes confirmSendPulse{
-  0%, 100%{box-shadow:0 0 0 0 var(--cyan-a4), 0 0 24px var(--cyan-a3);}
-  50%{box-shadow:0 0 0 12px transparent, 0 0 40px var(--cyan-a4);}
-}
-.confirm-modal-actions #confirm-modal-back{
-  background:none;border:none;color:var(--text-dim);text-decoration:underline;
-  font-size:.78rem;letter-spacing:.06em;padding:6px;text-align:center;cursor:pointer;
-}
-.confirm-modal-actions #confirm-modal-back:hover{color:var(--text);}
-@media(max-width:480px){
-  .confirm-modal{padding:1.6rem;}
-  .confirm-modal div.confirm-modal-row{flex-direction:column;align-items:flex-start;gap:.3rem;}
-  .confirm-modal dd{text-align:left;}
-}
-
-.slot-grid{display:flex;flex-direction:column;gap:1.1rem;margin-top:.3rem;}
-.slot-day{display:flex;align-items:baseline;gap:1rem;flex-wrap:wrap;}
-.slot-day-label{
-  flex:0 0 auto;min-width:80px;padding-top:.55rem;
-  font-family:'JetBrains Mono',monospace;font-size:.78rem;font-weight:600;
-  color:var(--ink);letter-spacing:.02em;
-}
-.slot-day-label.is-sat{color:#1a6fd4;}
-.slot-day-label.is-sun, .slot-day-label.is-holiday{color:#d43a3a;}
-.slot-day-times{display:flex;flex-wrap:wrap;gap:.6rem;flex:1;}
-.slot{
-  position:relative;display:inline-flex;align-items:center;cursor:pointer;
-  border:1px solid rgba(8,38,45,.16);border-radius:6px;padding:.6rem 1rem;
-  background:#ffffff;color:var(--ink);font-size:.85rem;font-weight:500;
-  transition:border-color .25s ease, background .25s ease, padding .2s ease;
-  min-height:44px;
-}
-.slot:hover{border-color:var(--cyan-dim);}
-.slot.selected{border-color:var(--cyan-dim);background:var(--cyan-a4);box-shadow:0 0 16px var(--cyan-a3);padding-right:2.1rem;}
-.slot.selected::after{content:'✓';position:absolute;right:.7rem;top:50%;transform:translateY(-50%);color:var(--cyan-dim);font-size:.8rem;font-weight:700;}
-.slot-hint{margin-top:.7rem;font-size:.76rem;color:var(--ink-dim);line-height:1.7;}
-.slot-error{display:none;margin-top:.5rem;font-family:'JetBrains Mono',monospace;font-size:.72rem;color:#c23b3b;font-weight:500;}
-.slot-notice{
-  margin-bottom:1rem;padding:.9rem 1.1rem;border-radius:6px;
-  background:var(--cyan-a1);border:1px solid var(--line);border-left:3px solid var(--cyan-dim);
-  font-size:.82rem;color:var(--ink-dim);line-height:1.75;
-}
-.slot-notice strong{color:var(--ink);font-weight:600;}
-
-.reserve-submit{margin-top:2.6rem;text-align:center;}
-.reserve-submit .btn{width:100%;max-width:300px;}
-.pay-note{margin-top:1.4rem;text-align:center;font-size:.76rem;color:var(--ink-dim);line-height:1.8;}
-.confirm-msg{
-  display:none;margin-top:1.6rem;text-align:center;font-family:'JetBrains Mono',monospace;
-  color:#0c6d61;font-size:.8rem;font-weight:500;letter-spacing:.02em;line-height:1.9;
-}
-.confirm-msg.error{color:#c23b3b;}
-.btn[disabled]{opacity:.6;cursor:not-allowed;}
-.btn.sent[disabled]{opacity:1;background:var(--cyan-dim);color:#ffffff;cursor:default;}
-
-/* ===== 11. Footer ===== */
-footer{background:var(--bg-black);color:var(--text-dim);padding:60px 6vw 30px;text-align:center;border-top:1px solid var(--line);}
-footer .brand-block{justify-content:center;margin-bottom:1.4rem;}
-footer .brand{font-size:1.15rem;margin-bottom:.4rem;color:var(--ice);}
-footer .brand-icon{width:44px;height:44px;}
-footer .foot-links{
-  display:flex;flex-wrap:wrap;justify-content:center;gap:2rem;margin:1.6rem 0;
-  font-family:'JetBrains Mono',monospace;font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;
-}
-footer .copyright{font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--text-dim);margin-top:2rem;letter-spacing:.05em;}
-
-/* ===== 12. Responsive ===== */
-@media (max-width:900px){
-  nav{display:none;}
-  .nav-toggle{display:flex;}
-  .about-grid{grid-template-columns:1fr;gap:3rem;}
-  .stat-row{grid-template-columns:repeat(3,1fr);gap:1rem;}
-  .refract{backdrop-filter:url(#glass-refract-md);}
-}
-@media (max-width:700px){
-  .program-grid{grid-template-columns:1fr;}
-  .process-row{grid-template-columns:1fr;}
-  section{padding-left:5.5vw;padding-right:5.5vw;}
-}
-@media (max-width:640px){
-  .form-grid{grid-template-columns:1fr;}
-  .reserve-wrap{padding:2rem;}
-  .slot-day{flex-direction:column;align-items:flex-start;gap:.5rem;}
-  .slot-day-label{padding-top:0;}
-}
-@media (max-width:480px){
-  .stat-row{grid-template-columns:1fr 1fr;}
-  .program-card{padding:2rem 1.5rem;}
-  .reserve-wrap{padding:1.5rem 1.2rem;}
-  .cta-row{flex-direction:column;width:100%;}
-  .cta-row .btn{width:100%;text-align:center;}
-  .chip-row{gap:.5rem;}
-  .brand{font-size:1.15rem;}
-  .refract{backdrop-filter:url(#glass-refract-sm);}
+/* ===== 14. Responsive ===== */
+@media (max-width:1100px){#site-header nav ul{gap:20px}}
+@media (max-width:960px){
+  #site-header nav,.header-cta{display:none}
+  .nav-toggle{display:flex}
+  .hero{grid-template-columns:minmax(0,1fr);min-height:auto;padding-top:80px}
+  .hero-right{order:1;padding:var(--s8) var(--gutter) 0;align-items:flex-start}
+  .hero h1{text-align:start;font-size:clamp(52px,13vw,92px)}
+  .tagline{position:static;writing-mode:horizontal-tb;height:auto;letter-spacing:var(--ls-wide);margin-top:var(--s4)}
+  .tagline::before{display:none}
+  .hero-left{order:2;padding:var(--s8) var(--gutter) var(--s12);max-width:none;display:block}
+  .hero-marks{width:100%;gap:var(--s4)}
+  .pickup{width:100%;margin:var(--s8) 0 0}
+  .scroll-cue{display:none}
+  .about-grid,.policy,.foot-top{grid-template-columns:minmax(0,1fr)}
+  .composition{gap:var(--s4);grid-template-columns:repeat(2,minmax(0,1fr));--cw:calc((100% - var(--s4)) / 2)}
+  .composition .g1{left:calc(var(--cw) + var(--s4) / 2)}
+  .composition .g2{display:none}
+  .composition .c-tri{grid-area:1/1}.composition .c-dot{grid-area:1/2;fill:var(--color-accent-solid)}
+  .composition .c-photo{grid-area:2/1}.composition .c-lane{grid-area:2/1}
+  .composition .c-w{grid-area:3/1}
+  .svc{grid-template-columns:120px minmax(0,1fr);justify-content:start}
+  .svc-note{margin-inline-start:calc(120px + var(--s8))}
+  .svc-mark{width:120px;height:120px;position:static}
+  .svc-prices{grid-column:1/-1}
+  .steps{grid-template-columns:minmax(0,1fr)}
+  .stepc{border-inline-end:0;border-bottom:1px solid var(--color-border);padding:var(--s6) 0}
+  .stepc:last-child{border-bottom:0}
+  .sec-std{padding:var(--s16) 0;--sec-pad:var(--s16)}.sec-con{padding:var(--s12) 0;--sec-pad:var(--s12)}.sec-piv{padding:var(--s16) 0;--sec-pad:var(--s16)}
+  .reserve-card{padding:var(--s6)}
+  .gate{grid-template-columns:minmax(0,1fr);gap:var(--s8)}
+  .reserve-grid{grid-template-columns:minmax(0,1fr)}
+  .reserve-aside{grid-column:1;grid-row:1;position:static;border-inline-start:0;border-top:1px solid var(--color-border-ink);padding:var(--s6) 0 0}
+  .reserve-card{grid-column:1;grid-row:2}
+  .form-grid,.slot-day,.policy-tables{grid-template-columns:minmax(0,1fr)}
+}
+@media (max-width:520px){
+  .hero h1 .l1,.hero h1 .l2{white-space:normal}
+  .svc-note{margin-inline-start:0}
+  .policy .sameday,.policy .keep{grid-template-columns:minmax(0,1fr)}
+  .policy .sameday .sd-table{grid-column:1;grid-row:auto}
+  .hero-marks{gap:var(--s3)}
+  .hero-marks .hg2{left:50%}
+  .stats{grid-template-columns:minmax(0,1fr)}
+  .stat{border-right:0;border-bottom:1px solid var(--color-border)}
+  .stat:last-child{border-bottom:0}
+  .svc{grid-template-columns:minmax(0,1fr)}
+  .pill{width:100%;justify-content:center}
+  .confirm-modal-row{grid-template-columns:minmax(0,1fr)}
 }
 </style>
 </head>
 <body>
+<a href="#main" class="skip">本文へ移動</a>
 
-<div class="splash" id="splash">
-  <div class="splash-glow"></div>
-  <img src="logo-icon.png" alt="" class="splash-logo">
-  <div class="splash-word">Personal<span>Aqua</span></div>
-</div>
-
-<!-- SVG defs: 実際の水のような揺らぎを作るコースティクス光フィルター -->
-<svg width="0" height="0" style="position:absolute">
-  <linearGradient id="panel-wave-grad-a" x1="0" y1="0" x2="0" y2="1">
-    <stop offset="0%" stop-color="var(--pearl)" stop-opacity="0.9"/>
-    <stop offset="100%" stop-color="var(--violet)" stop-opacity="0.1"/>
-  </linearGradient>
-  <linearGradient id="panel-wave-grad-b" x1="0" y1="0" x2="0" y2="1">
-    <stop offset="0%" stop-color="var(--pearl)" stop-opacity="0.95"/>
-    <stop offset="100%" stop-color="var(--cyan)" stop-opacity="0.15"/>
-  </linearGradient>
-  <filter id="water-caustic" x="-20%" y="-20%" width="140%" height="140%">
-    <feTurbulence type="fractalNoise" baseFrequency="0.010 0.020" numOctaves="2" seed="7" result="noise">
-      <animate attributeName="baseFrequency" values="0.010 0.020;0.016 0.026;0.010 0.020" dur="22s" repeatCount="indefinite"/>
-    </feTurbulence>
-    <feDisplacementMap in="SourceGraphic" in2="noise" scale="34" xChannelSelector="R" yChannelSelector="G"/>
-  </filter>
-  <!-- A single filter, constantly animated via the baseFrequency SMIL
-       animation (this one reliably repaints), at a fixed moderate scale.
-       Earlier attempts to "settle" from a strong scale down to a calm one
-       either didn't repaint (animating scale directly) or looked like blur
-       instead of movement (cross-fading two static filters). Real water
-       waviness needs the distortion pattern itself to keep moving, so
-       instead this stays at one constant, legible intensity throughout. -->
-  <!-- Fixed pixel-scale distortion reads much stronger on a small panel
-       than a large one, so three strengths are defined here and CSS media
-       queries pick the right one per viewport (a plain backdrop-filter
-       value swap, which repaints reliably, unlike mutating one filter's
-       internal attributes). Each still animates once for 3s then freezes. -->
-  <filter id="glass-refract-lg" x="-30%" y="-30%" width="160%" height="160%">
-    <feTurbulence type="fractalNoise" baseFrequency="0.008 0.016" numOctaves="2" seed="3" result="n">
-      <animate attributeName="baseFrequency" values="0.008 0.016;0.013 0.021;0.008 0.016" dur="3s" repeatCount="1" fill="freeze"/>
-    </feTurbulence>
-    <feDisplacementMap in="SourceGraphic" in2="n" scale="18" xChannelSelector="R" yChannelSelector="G"/>
-  </filter>
-  <filter id="glass-refract-md" x="-30%" y="-30%" width="160%" height="160%">
-    <feTurbulence type="fractalNoise" baseFrequency="0.008 0.016" numOctaves="2" seed="3" result="n">
-      <animate attributeName="baseFrequency" values="0.008 0.016;0.013 0.021;0.008 0.016" dur="3s" repeatCount="1" fill="freeze"/>
-    </feTurbulence>
-    <feDisplacementMap in="SourceGraphic" in2="n" scale="8" xChannelSelector="R" yChannelSelector="G"/>
-  </filter>
-  <filter id="glass-refract-sm" x="-30%" y="-30%" width="160%" height="160%">
-    <feTurbulence type="fractalNoise" baseFrequency="0.008 0.016" numOctaves="2" seed="3" result="n">
-      <animate attributeName="baseFrequency" values="0.008 0.016;0.013 0.021;0.008 0.016" dur="3s" repeatCount="1" fill="freeze"/>
-    </feTurbulence>
-    <feDisplacementMap in="SourceGraphic" in2="n" scale="3" xChannelSelector="R" yChannelSelector="G"/>
-  </filter>
+<!-- The marks. Four forms, all drawn from the owner's own Illustrator sheets and
+     rebuilt here as geometry (C 99.7%, S 99.6%, W 97.3%, ▽ 99.5% match to the source).
+     They are not decoration and they are not letters borrowed for their shape: each one
+     is a path the hand or the water actually traces.
+       ▽  water            C  the catch, the curve the hand carves at the front of the stroke
+       W  the surface      S  the S-pull, the hand's path through the water -->
+<svg width="0" height="0" aria-hidden="true" style="position:absolute">
+  <defs>
+    <mask id="m-c" maskUnits="userSpaceOnUse" x="0" y="0" width="100" height="100">
+      <rect width="100" height="100" fill="#000"/>
+      <circle cx="50" cy="50" r="50" fill="#fff"/><rect x="50" width="50" height="100" fill="#fff"/>
+      <g id="c-cut"><rect x="60.3" y="44.9" width="39.7" height="10.5" fill="#000"/></g>
+    </mask>
+    <mask id="m-s" maskUnits="userSpaceOnUse" x="0" y="0" width="100" height="100">
+      <rect width="100" height="100" fill="#000"/>
+      <circle cx="25" cy="25" r="25" fill="#fff"/><rect x="25" width="52.4" height="50" fill="#fff"/>
+      <circle cx="75" cy="75" r="25" fill="#fff"/><rect x="22.6" y="50" width="52.4" height="50" fill="#fff"/>
+      <g id="s-cut-top"><rect x="27.1" y="22.4" width="72.9" height="5.2" fill="#000"/></g>
+      <g id="s-cut-bot"><rect y="72.4" width="72.9" height="5.2" fill="#000"/></g>
+    </mask>
+    <symbol id="g-c" viewBox="0 0 100 100"><rect width="100" height="100" mask="url(#m-c)"/></symbol>
+    <symbol id="g-s" viewBox="0 0 100 100"><rect width="100" height="100" mask="url(#m-s)"/></symbol>
+    <symbol id="g-w" viewBox="0 0 100 100">
+      <path d="M0 0 H79 L39.5 100 Z"/><path d="M88.4 0 H100 L60.4 100 H48.8 Z"/>
+    </symbol>
+    <symbol id="g-tri" viewBox="0 0 100 100"><path d="M0 0 H100 L50 100 Z"/></symbol>
+    <!-- ⊙ the still surface: a square with a circular void punched out of it.
+         The void is a separate <g> so it can be scaled independently — the ring
+         a drop leaves. -->
+    <mask id="m-ring" maskUnits="userSpaceOnUse" x="0" y="0" width="100" height="100">
+      <rect width="100" height="100" fill="#fff"/>
+      <g id="ring-void"><circle cx="50" cy="50" r="42" fill="#000"/></g>
+    </mask>
+    <symbol id="g-ring" viewBox="0 0 100 100"><rect width="100" height="100" mask="url(#m-ring)"/></symbol>
+    <!-- ● the drop -->
+    <symbol id="g-dot" viewBox="0 0 100 100"><circle cx="50" cy="50" r="50"/></symbol>
+    <symbol id="g-lane" viewBox="0 0 100 100">
+      <rect width="100" height="100" fill="var(--color-fill-solid)"/>
+      <rect y="60" width="100" height="20" fill="var(--color-accent-solid)"/>
+      <g stroke="var(--color-bg)" stroke-width="1.6">
+        <line y1="20" x2="100" y2="20"/><line y1="40" x2="100" y2="40"/>
+        <line y1="60" x2="100" y2="60"/><line y1="80" x2="100" y2="80"/>
+      </g>
+      <circle cx="16" cy="70" r="5" fill="#fff"/><path d="M24 70 H58" stroke="#fff" stroke-width="3.4" stroke-linecap="round"/>
+    </symbol>
+  </defs>
 </svg>
 
-<div class="water-bg" id="water-bg"></div>
-<div class="caustics" id="caustics">
-  <div class="blob blob-a"></div>
-  <div class="blob blob-b"></div>
-</div>
 
 <header id="site-header">
-  <div class="brand-block">
-    <img src="logo-icon.png" alt="" class="brand-icon">
-    <div class="brand-text">
-      <div class="brand">パーソナル<span>アクア</span></div>
-      <div class="brand-sub">Personal Aqua — Private Pool Reservation</div>
-    </div>
-  </div>
-  <nav>
+  <a href="#hero" class="brand" aria-label="パーソナルアクア トップへ">
+    <img src="logo-icon-96.png" alt="" width="34" height="34" decoding="async">
+    <span class="wordmark">Personal Aqua</span>
+  </a>
+  <nav aria-label="メイン">
     <ul>
-      <li><a href="#about">パーソナルアクアとは</a></li>
-      <li><a href="#programs">ご利用シーン</a></li>
-      <li><a href="#reserve">ご予約</a></li>
+      <li><a href="#about"><small>01</small>About</a></li>
+      <li><a href="#service"><small>02</small>Service</a></li>
+      <li><a href="#flow"><small>03</small>Flow</a></li>
+      <li><a href="#reserve"><small>04</small>Reserve</a></li>
     </ul>
   </nav>
-  <button class="nav-toggle" id="nav-toggle" aria-label="メニューを開く" aria-expanded="false">
+  <a href="#reserve" class="pill solid header-cta">ご予約へ <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.75 5a.75.75 0 0 0 0 1.5h9.69L5.22 17.72a.75.75 0 1 0 1.06 1.06L17.5 7.56v9.69a.75.75 0 0 0 1.5 0V5.75a.75.75 0 0 0-.75-.75z"/></svg></a>
+  <button class="nav-toggle" id="nav-toggle" aria-label="メニューを開く" aria-expanded="false" aria-controls="mobile-menu">
     <span></span><span></span><span></span>
   </button>
 </header>
 
 <div class="mobile-menu" id="mobile-menu">
-  <a href="#about">パーソナルアクアとは</a>
-  <a href="#programs">ご利用シーン</a>
-  <a href="#reserve">ご予約</a>
-  <a href="#reserve" class="mm-cta">今すぐ予約する</a>
+  <a href="#about">About<small>01 パーソナルアクアとは</small></a>
+  <a href="#service">Service<small>02 ご利用シーン</small></a>
+  <a href="#flow">Flow<small>03 ご予約の流れ</small></a>
+  <a href="#reserve">Reserve<small>04 ご予約</small></a>
+  <a href="#reserve" class="pill solid mm-cta">ご予約へ</a>
 </div>
 
-<section class="hero" id="hero">
-  <div class="particles" id="particles"></div>
+<main id="main">
 
-  <div class="hero-content glass glass-edge hud-frame" id="hero-content">
-    <div class="glow"></div>
-    <div class="refract"></div>
-    <div class="panel-wave">
-      <svg class="pw-back" viewBox="0 0 1600 60" preserveAspectRatio="none">
-        <path fill="url(#panel-wave-grad-a)" d="M0,30 C50,55 150,5 200,30 C250,55 350,5 400,30 C450,55 550,5 600,30 C650,55 750,5 800,30 C850,55 950,5 1000,30 C1050,55 1150,5 1200,30 C1250,55 1350,5 1400,30 C1450,55 1550,5 1600,30 L1600,60 L0,60 Z">
-          <animate attributeName="d" dur="16.5s" repeatCount="indefinite" values="
-            M0,30 C50,55 150,5 200,30 C250,55 350,5 400,30 C450,55 550,5 600,30 C650,55 750,5 800,30 C850,55 950,5 1000,30 C1050,55 1150,5 1200,30 C1250,55 1350,5 1400,30 C1450,55 1550,5 1600,30 L1600,60 L0,60 Z;
-            M0,30 C50,52 150,6 200,30 C250,58 350,10 400,30 C450,47 550,3 600,30 C650,53 750,14 800,30 C850,60 950,2 1000,30 C1050,48 1150,11 1200,30 C1250,55 1350,5 1400,30 C1450,50 1550,9 1600,30 L1600,60 L0,60 Z;
-            M0,30 C50,55 150,5 200,30 C250,55 350,5 400,30 C450,55 550,5 600,30 C650,55 750,5 800,30 C850,55 950,5 1000,30 C1050,55 1150,5 1200,30 C1250,55 1350,5 1400,30 C1450,55 1550,5 1600,30 L1600,60 L0,60 Z
-          "/>
-        </path>
-      </svg>
-      <svg class="pw-front" viewBox="0 0 1600 60" preserveAspectRatio="none">
-        <path fill="url(#panel-wave-grad-b)" d="M0,30 C50,5 150,55 200,30 C250,5 350,55 400,30 C450,5 550,55 600,30 C650,5 750,55 800,30 C850,5 950,55 1000,30 C1050,5 1150,55 1200,30 C1250,5 1350,55 1400,30 C1450,5 1550,55 1600,30 L1600,60 L0,60 Z">
-          <animate attributeName="d" dur="10.5s" repeatCount="indefinite" values="
-            M0,30 C50,5 150,55 200,30 C250,5 350,55 400,30 C450,5 550,55 600,30 C650,5 750,55 800,30 C850,5 950,55 1000,30 C1050,5 1150,55 1200,30 C1250,5 1350,55 1400,30 C1450,5 1550,55 1600,30 L1600,60 L0,60 Z;
-            M0,30 C50,8 150,50 200,30 C250,2 350,58 400,30 C450,12 550,45 600,30 C650,4 750,53 800,30 C850,15 950,48 1000,30 C1050,1 1150,57 1200,30 C1250,9 1350,51 1400,30 C1450,6 1550,55 1600,30 L1600,60 L0,60 Z;
-            M0,30 C50,5 150,55 200,30 C250,5 350,55 400,30 C450,5 550,55 600,30 C650,5 750,55 800,30 C850,5 950,55 1000,30 C1050,5 1150,55 1200,30 C1250,5 1350,55 1400,30 C1450,5 1550,55 1600,30 L1600,60 L0,60 Z
-          "/>
-        </path>
-      </svg>
-    </div>
-    <span class="corner tl"></span>
-    <span class="corner tr"></span>
-    <span class="corner bl"></span>
-    <span class="corner br"></span>
-    <div class="kicker">Private Pool Reservation</div>
-    <h1>Your Private <em>Waters</em></h1>
-    <p>マンツーマンから最大4名まで。貸切レーンでのプール時間を完全予約制でご用意します。</p>
-    <div class="chip-row">
-      <span class="chip glass"><span class="dot"></span>最大4名まで</span>
-      <span class="chip glass"><span class="dot"></span>1時間単位で予約</span>
-      <span class="chip glass"><span class="dot"></span>レーン完全貸切</span>
-    </div>
-    <div class="cta-row">
-      <a href="#reserve" class="btn btn-primary">今すぐ予約する</a>
-      <a href="#about" class="btn btn-ghost">パーソナルアクアを見る</a>
+<!-- ===== Hook: H1 poster fold ===== -->
+<section class="hero" id="hero" aria-label="イントロ">
+  <div class="hero-left" id="hero-left">
+    <div class="hero-marks" id="hero-marks" aria-hidden="true">
+      <span class="guide hg1"></span><span class="guide hg2"></span><span class="guide hg3"></span>
+      <span class="hrule"></span>
+      <div class="hmark m-o">
+        <img class="o-photo" src="assets/photos/school-480.jpg" width="480" height="480" alt="" fetchpriority="high">
+        <div class="o-shell"></div>
+      </div>
+      <svg class="hmark m-s" viewBox="0 0 100 100"><use href="#g-s"/></svg>
+      <svg class="hmark m-c" viewBox="0 0 100 100"><use href="#g-c"/></svg>
     </div>
   </div>
+  <div class="hero-right">
+    <p class="tagline" id="tagline">貸切だから、静かに集中できる。</p>
+    <h1 class="display" id="hero-h1"><span class="l1">Your Private</span> <span class="l2">Waters</span></h1>
+    <div class="pickup" id="pickup">
+      <div class="pu-in label">Pick up</div>
+      <div class="pu-in t">パーソナルアクア</div>
+      <div class="pu-in p">¥11,000<small>〜 ／ 1名・55分・税込</small></div>
+      <p class="pu-in note">マンツーマンから最大4名まで、レーンを完全貸切。</p>
+      <a href="#service" class="pu-in textlink">More</a>
+    </div>
+  </div>
+  <div class="scroll-cue" aria-hidden="true">Scroll</div>
+</section>
 
-  <div class="wave-divider">
-    <svg class="wave-back" viewBox="0 0 2880 150" preserveAspectRatio="none">
-      <path d="M0,95 C360,60 720,130 1080,95 C1440,60 1800,130 2160,95 C2520,60 2880,130 2880,95"></path>
-    </svg>
-    <svg class="wave-mid" viewBox="0 0 2880 150" preserveAspectRatio="none">
-      <path d="M0,85 C360,120 720,55 1080,85 C1440,120 1800,55 2160,85 C2520,120 2880,55 2880,85"></path>
-    </svg>
-    <svg class="wave-front" viewBox="0 0 2880 150" preserveAspectRatio="none">
-      <path d="M0,70 C360,105 720,45 1080,70 C1440,105 1800,45 2160,70 C2520,105 2880,45 2880,70"></path>
-    </svg>
+<!-- one full-bleed moment: the fold hands off to the document -->
+<figure class="band" id="band">
+  <img id="band-img" src="assets/photos/water-1920.jpg"
+       srcset="assets/photos/water-800.jpg 800w, assets/photos/water-1280.jpg 1280w, assets/photos/water-1920.jpg 1920w"
+       sizes="100vw" width="1920" height="1204" alt="" loading="lazy" decoding="async">
+</figure>
+
+<!-- ===== Problem / stakes: 01 ABOUT ===== -->
+<section class="sec-std" id="about">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="head-guide" aria-hidden="true"></span>
+      <div class="no">01</div>
+      <h2 class="display">About<br>Personal Aqua</h2>
+      <p class="jp">周りを気にせず、自分のペースで。</p>
+    </div>
+    <div class="about-grid">
+      <!-- decorative: the prose beside it carries the meaning, and the mark must not
+     assert a lane count nobody has stated -->
+      <div class="composition" aria-hidden="true">
+        <span class="guide g0"></span><span class="guide g1"></span><span class="guide g2"></span><span class="guide g3"></span>
+        <svg class="cell c-tri"  viewBox="0 0 100 100"><use href="#g-tri"/></svg>
+        <svg class="cell c-dot"  viewBox="0 0 100 100"><use href="#g-dot"/></svg>
+        <figure class="cell c-photo">
+          <img src="assets/photos/lane-427.jpg" width="427" height="427" alt="" loading="lazy" decoding="async">
+        </figure>
+        <svg class="cell c-lane" viewBox="0 0 100 100"><use href="#g-lane"/></svg>
+        <svg class="cell c-w"    viewBox="0 0 100 100"><use href="#g-w"/></svg>
+      </div>
+      <div class="about-text measure" data-reveal>
+        <p>パーソナルアクアは、マンツーマンから最大4名までご利用いただける完全予約制の<span class="nowrap">プール</span>貸切サービスです。レーンは貸切のため、周りを気にせず、ご自身のペースで泳ぐこと・練習することに集中できます。</p>
+        <p>施設としての貸切は、プールのみのシンプルな形にしています。泳ぎ込みたい方は「パーソナルアクア」を、フォームやトレーニングメニューのサポートが欲しい方は、コーチによる「パーソナルトレーニング」をご利用いただけます。</p>
+        <p>ご予約はオンラインの空き状況から。担当が実際にレーンの確保を確認したうえで、確定のご連絡をいたします。</p>
+        <div class="stats" data-reveal data-reveal-group>
+          <div class="stat"><b>1–<span data-count="4">4</span></b><span>名 / 1回のご予約</span></div>
+          <div class="stat"><b><span data-count="55">55</span></b><span>分 / プール利用</span></div>
+          <div class="stat"><b><span data-count="2">2</span></b><span>サービス</span></div>
+        </div>
+        <div class="about-cta"><a href="#flow" class="pill">ご予約の流れを見る <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.75 5a.75.75 0 0 0 0 1.5h9.69L5.22 17.72a.75.75 0 1 0 1.06 1.06L17.5 7.56v9.69a.75.75 0 0 0 1.5 0V5.75a.75.75 0 0 0-.75-.75z"/></svg></a></div>
+      </div>
+    </div>
   </div>
 </section>
 
-<section id="about">
-  <div class="section-head" data-reveal>
-    <div class="kicker">About</div>
-    <h2>貸切だから、<span class="nowrap">静かに集中できる</span></h2>
-    <p>パーソナルアクアは、マンツーマンから最大4名までご利用いただける完全予約制の<span class="nowrap">プール</span>貸切サービスです。レーンは貸切のため、周りを気にせず、ご自身のペースで泳ぐ<span class="nowrap">こと</span>・練習する<span class="nowrap">こと</span>に集中できます。</p>
-  </div>
-  <div class="about-grid">
-    <div class="visual-frame">
-      <div class="glow"></div>
-      <div class="about-visual glass reveal-focus" id="about-visual" data-reveal>
-        <div class="refract"></div>        <div class="surface-sweep"></div>
-        <div class="private-lane-label">PRIVATE<br>Lane</div>
-        <div class="lane-rope">
-          <svg viewBox="0 0 400 90" preserveAspectRatio="xMidYMid meet">
-            <g>
-              <line x1="0" y1="9" x2="400" y2="9" stroke="var(--text-dim)" stroke-opacity="0.18" stroke-width="1.5"/>
-              <circle cx="17" cy="9" r="2.6" fill="var(--text-dim)" fill-opacity="0.4"/>
-              <circle cx="51" cy="9" r="2.6" fill="var(--text-dim)" fill-opacity="0.4"/>
-              <circle cx="85" cy="9" r="2.6" fill="var(--text-dim)" fill-opacity="0.4"/>
-              <circle cx="119" cy="9" r="2.6" fill="var(--text-dim)" fill-opacity="0.4"/>
-              <circle cx="153" cy="9" r="2.6" fill="var(--text-dim)" fill-opacity="0.4"/>
-              <circle cx="187" cy="9" r="2.6" fill="var(--text-dim)" fill-opacity="0.4"/>
-              <circle cx="221" cy="9" r="2.6" fill="var(--text-dim)" fill-opacity="0.4"/>
-              <circle cx="255" cy="9" r="2.6" fill="var(--text-dim)" fill-opacity="0.4"/>
-              <circle cx="289" cy="9" r="2.6" fill="var(--text-dim)" fill-opacity="0.4"/>
-              <circle cx="323" cy="9" r="2.6" fill="var(--text-dim)" fill-opacity="0.4"/>
-              <circle cx="357" cy="9" r="2.6" fill="var(--text-dim)" fill-opacity="0.4"/>
-              <circle cx="391" cy="9" r="2.6" fill="var(--text-dim)" fill-opacity="0.4"/>
-            </g>
-            <g>
-              <line x1="0" y1="27" x2="400" y2="27" stroke="var(--text-dim)" stroke-opacity="0.18" stroke-width="1.5"/>
-              <circle cx="17" cy="27" r="2.6" fill="var(--text-dim)" fill-opacity="0.4"/>
-              <circle cx="51" cy="27" r="2.6" fill="var(--text-dim)" fill-opacity="0.4"/>
-              <circle cx="85" cy="27" r="2.6" fill="var(--text-dim)" fill-opacity="0.4"/>
-              <circle cx="119" cy="27" r="2.6" fill="var(--text-dim)" fill-opacity="0.4"/>
-              <circle cx="153" cy="27" r="2.6" fill="var(--text-dim)" fill-opacity="0.4"/>
-              <circle cx="187" cy="27" r="2.6" fill="var(--text-dim)" fill-opacity="0.4"/>
-              <circle cx="221" cy="27" r="2.6" fill="var(--text-dim)" fill-opacity="0.4"/>
-              <circle cx="255" cy="27" r="2.6" fill="var(--text-dim)" fill-opacity="0.4"/>
-              <circle cx="289" cy="27" r="2.6" fill="var(--text-dim)" fill-opacity="0.4"/>
-              <circle cx="323" cy="27" r="2.6" fill="var(--text-dim)" fill-opacity="0.4"/>
-              <circle cx="357" cy="27" r="2.6" fill="var(--text-dim)" fill-opacity="0.4"/>
-              <circle cx="391" cy="27" r="2.6" fill="var(--text-dim)" fill-opacity="0.4"/>
-            </g>
-            <g>
-              <line x1="0" y1="45" x2="400" y2="45" stroke="var(--lane-red)" stroke-opacity="0.35" stroke-width="1.5"/>
-              <circle cx="17" cy="45" r="4" fill="var(--lane-red)"/>
-              <circle cx="51" cy="45" r="4" fill="var(--pearl)"/>
-              <circle cx="85" cy="45" r="4" fill="var(--lane-red)"/>
-              <circle cx="119" cy="45" r="4" fill="var(--pearl)"/>
-              <circle cx="153" cy="45" r="4" fill="var(--lane-red)"/>
-              <circle cx="187" cy="45" r="5.5" fill="var(--pearl)" class="mine"/>
-              <circle cx="221" cy="45" r="4" fill="var(--lane-red)"/>
-              <circle cx="255" cy="45" r="4" fill="var(--pearl)"/>
-              <circle cx="289" cy="45" r="4" fill="var(--lane-red)"/>
-              <circle cx="323" cy="45" r="4" fill="var(--pearl)"/>
-              <circle cx="357" cy="45" r="4" fill="var(--lane-red)"/>
-              <circle cx="391" cy="45" r="4" fill="var(--pearl)"/>
-            </g>
-            <g>
-              <line x1="0" y1="63" x2="400" y2="63" stroke="var(--text-dim)" stroke-opacity="0.18" stroke-width="1.5"/>
-              <circle cx="17" cy="63" r="2.6" fill="var(--text-dim)" fill-opacity="0.4"/>
-              <circle cx="51" cy="63" r="2.6" fill="var(--text-dim)" fill-opacity="0.4"/>
-              <circle cx="85" cy="63" r="2.6" fill="var(--text-dim)" fill-opacity="0.4"/>
-              <circle cx="119" cy="63" r="2.6" fill="var(--text-dim)" fill-opacity="0.4"/>
-              <circle cx="153" cy="63" r="2.6" fill="var(--text-dim)" fill-opacity="0.4"/>
-              <circle cx="187" cy="63" r="2.6" fill="var(--text-dim)" fill-opacity="0.4"/>
-              <circle cx="221" cy="63" r="2.6" fill="var(--text-dim)" fill-opacity="0.4"/>
-              <circle cx="255" cy="63" r="2.6" fill="var(--text-dim)" fill-opacity="0.4"/>
-              <circle cx="289" cy="63" r="2.6" fill="var(--text-dim)" fill-opacity="0.4"/>
-              <circle cx="323" cy="63" r="2.6" fill="var(--text-dim)" fill-opacity="0.4"/>
-              <circle cx="357" cy="63" r="2.6" fill="var(--text-dim)" fill-opacity="0.4"/>
-              <circle cx="391" cy="63" r="2.6" fill="var(--text-dim)" fill-opacity="0.4"/>
-            </g>
-            <g>
-              <line x1="0" y1="81" x2="400" y2="81" stroke="var(--text-dim)" stroke-opacity="0.18" stroke-width="1.5"/>
-              <circle cx="17" cy="81" r="2.6" fill="var(--text-dim)" fill-opacity="0.4"/>
-              <circle cx="51" cy="81" r="2.6" fill="var(--text-dim)" fill-opacity="0.4"/>
-              <circle cx="85" cy="81" r="2.6" fill="var(--text-dim)" fill-opacity="0.4"/>
-              <circle cx="119" cy="81" r="2.6" fill="var(--text-dim)" fill-opacity="0.4"/>
-              <circle cx="153" cy="81" r="2.6" fill="var(--text-dim)" fill-opacity="0.4"/>
-              <circle cx="187" cy="81" r="2.6" fill="var(--text-dim)" fill-opacity="0.4"/>
-              <circle cx="221" cy="81" r="2.6" fill="var(--text-dim)" fill-opacity="0.4"/>
-              <circle cx="255" cy="81" r="2.6" fill="var(--text-dim)" fill-opacity="0.4"/>
-              <circle cx="289" cy="81" r="2.6" fill="var(--text-dim)" fill-opacity="0.4"/>
-              <circle cx="323" cy="81" r="2.6" fill="var(--text-dim)" fill-opacity="0.4"/>
-              <circle cx="357" cy="81" r="2.6" fill="var(--text-dim)" fill-opacity="0.4"/>
-              <circle cx="391" cy="81" r="2.6" fill="var(--text-dim)" fill-opacity="0.4"/>
+<!-- ===== Solution: 02 SERVICE (F4 offset cards) ===== -->
+<section class="sec-std" id="service">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="head-guide" aria-hidden="true"></span>
+      <div class="no">02</div>
+      <h2 class="display">Service</h2>
+      <p class="jp">ご利用シーンに合わせて</p>
+    </div>
+    <div class="svc-list">
+      <article class="svc" data-reveal>
+        <div class="svc-mark" aria-hidden="true">
+          <svg viewBox="0 0 104 104">
+            <rect width="104" height="104" fill="#15252b"/>
+            <rect y="62" width="104" height="21" fill="#008096"/>
+            <g stroke="#f8fbfc" stroke-width="1.5">
+              <line x1="0" y1="21" x2="104" y2="21"/><line x1="0" y1="41.5" x2="104" y2="41.5"/>
+              <line x1="0" y1="62" x2="104" y2="62"/><line x1="0" y1="83" x2="104" y2="83"/>
             </g>
           </svg>
         </div>
-        <div class="readout"><span>貸切レーン</span><span>RESERVATION ONLY</span></div>
+        <div class="svc-body">
+          <div class="step">STEP 01</div>
+          <h3 class="display">Personal Aqua</h3>
+          <p class="sub">パーソナルアクア — 水中でマンツーマン指導</p>
+          <p><strong>マンツーマン指導。</strong>プールレーンを貸切り、コーチが直接泳ぎ方を指導するプランです。1〜4名まで対応可能で、人数が増えるほどお一人あたりに対しての指導時間は短くなります（おおよその時間です　1名55分／2名27分30秒／3名約18分／4名約12分）、グループレッスンとしての対応も可能です。どちらもコーチがつきっきりで指導します。</p>
+        </div>
+        <div class="svc-prices">
+          <table class="ptable">
+            <caption>料金（税込）</caption>
+            <thead><tr><th scope="col">人数</th><th scope="col">平日</th><th scope="col">土日祝</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">1名</th><td>¥11,000</td><td>¥12,500</td></tr>
+              <tr><th scope="row">2名</th><td>¥16,500</td><td>¥18,000</td></tr>
+              <tr><th scope="row">3名</th><td>¥21,000</td><td>¥22,500</td></tr>
+              <tr><th scope="row">4名</th><td>¥24,500</td><td>¥26,000</td></tr>
+            </tbody>
+          </table>
+          <p class="note">55分利用（15分前から入場可）・土日祝はプールコース代の値上がり分（+¥1,500）を反映しています</p>
+        </div>
+      </article>
+      <article class="svc" data-reveal>
+        <div class="svc-mark" aria-hidden="true">
+          <svg viewBox="0 0 104 104">
+            <rect x="0" y="10" width="104" height="19" fill="#15252b"/>
+            <rect x="14" y="42" width="76" height="19" fill="#008096"/>
+            <rect x="28" y="74" width="48" height="19" fill="#15252b"/>
+          </svg>
+        </div>
+        <div class="svc-body">
+          <div class="step">STEP 02</div>
+          <h3 class="display">Personal Training</h3>
+          <p class="sub">パーソナルトレーニング — 陸上でマンツーマン</p>
+          <p><strong>陸上トレーニング。</strong>ダンベルなどの器具を備えたレンタルルームで行う、コーチによるマンツーマントレーニングです。ご希望の日時をお伺いし、個別にご連絡します。</p>
+        </div>
+        <div class="svc-prices">
+          <table class="ptable">
+            <caption>料金（税込）</caption>
+            <tbody><tr><th scope="row">マンツーマン</th><td>¥8,800</td></tr></tbody>
+          </table>
+          <p class="note">60分</p>
+        </div>
+      </article>
+    </div>
+    <p class="svc-note measure" data-reveal>※ パーソナルトレーニングをご希望の場合も、下のご予約フォームからお申し込みいただけます。料金についてご不明な点やご相談があれば、いつでもお気軽にご連絡ください。</p>
+  </div>
+</section>
+
+<!-- ===== How it works: 03 FLOW (F4 steps + F6 policy) ===== -->
+<section class="sec-con" id="flow">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="head-guide" aria-hidden="true"></span>
+      <div class="no">03</div>
+      <h2 class="display">Flow</h2>
+      <p class="jp">ご予約の流れ</p>
+    </div>
+    <span class="rule-draw" id="flow-rule" aria-hidden="true"></span>
+    <div class="steps">
+      <div class="stepc">
+        <div class="n">01</div>
+        <h3>サービスを選ぶ</h3>
+        <p>パーソナルアクアかパーソナルトレーニングかをお選びください。</p>
+      </div>
+      <div class="stepc">
+        <div class="n">02</div>
+        <h3>フォーム送信</h3>
+        <p>ご希望の内容とお名前を送信します。</p>
+      </div>
+      <div class="stepc">
+        <div class="n">03</div>
+        <h3>ご連絡</h3>
+        <p>送信後24時間以内を目安に、担当よりご連絡いたします。</p>
       </div>
     </div>
-    <div class="about-text" data-reveal>
-      <p>施設としての貸切は、プールのみのシンプルな形にしています。泳ぎ込みたい方は「パーソナルアクア」を、フォームやトレーニングメニューのサポートが欲しい方は、コーチによる「パーソナルトレーニング」をご利用いただけます。</p>
-      <p>ご予約はオンラインの空き状況から。担当が実際にレーンの確保を確認したうえで、確定のご連絡をいたします。</p>
-      <div class="stat-row">
-        <div class="stat"><h3>1–4</h3><span>GUESTS PER RESERVATION</span></div>
-        <div class="stat"><h3>55</h3><span>MIN POOL TIME</span></div>
-        <div class="stat"><h3>2</h3><span>SERVICES OFFERED</span></div>
+
+    <div class="policy" data-reveal>
+      <div>
+        <h3 class="display">Cancellation<br>Policy</h3>
+        <p class="lead">ご利用日の<strong>前日まで</strong>のキャンセルは、施設利用料（枠1件あたり、税込・平日4,950円／土日祝6,600円）に対し、キャンセル時期に応じた料金をご請求いたします。<strong>当日のキャンセルは、ご予約総額の全額</strong>をご請求いたします。あらかじめご了承のうえご予約ください。</p>
+        <p class="note">複数枠のご予約は、キャンセルする枠数分を合算してご請求します。</p>
+      </div>
+      <div class="policy-tables">
+        <table class="ptable">
+          <caption>平日（税込）</caption>
+          <tbody>
+            <tr><th scope="row">30日前 〜 14日前</th><td>30%<span class="paren">（</span>1,485<span class="unit">円</span><span class="paren">）</span></td></tr>
+            <tr><th scope="row">13日前 〜 7日前</th><td>50%<span class="paren">（</span>2,475<span class="unit">円</span><span class="paren">）</span></td></tr>
+            <tr><th scope="row">6日前 〜 前日</th><td>100%<span class="paren">（</span>4,950<span class="unit">円</span><span class="paren">）</span></td></tr>
+          </tbody>
+        </table>
+        <table class="ptable">
+          <caption>土日祝（税込）</caption>
+          <tbody>
+            <tr><th scope="row">30日前 〜 14日前</th><td>30%<span class="paren">（</span>1,980<span class="unit">円</span><span class="paren">）</span></td></tr>
+            <tr><th scope="row">13日前 〜 7日前</th><td>50%<span class="paren">（</span>3,300<span class="unit">円</span><span class="paren">）</span></td></tr>
+            <tr><th scope="row">6日前 〜 前日</th><td>100%<span class="paren">（</span>6,600<span class="unit">円</span><span class="paren">）</span></td></tr>
+          </tbody>
+        </table>
+        <div class="sameday">
+          <h4>ご利用日当日のキャンセル</h4>
+          <div class="sd-text">
+            <p>当日のキャンセルは、<strong>体調不良の場合を含め、ご予約総額の全額（施設利用料＋レッスン料）</strong>をご請求いたします。当日は代わりのご利用者を手配することが難しく、レーンとお時間の両方が確保できなくなるためです。</p>
+            <p class="note">ご予定が確定していない場合は、下記の「キープ」をご利用ください。<br>本規定は2026年9月8日以降のお申し込みに適用いたします。</p>
+          </div>
+          <table class="ptable sd-table">
+            <caption>当日キャンセル時のご請求額（1枠あたり・税込）</caption>
+            <thead><tr><th scope="col">ご利用人数</th><th scope="col">平日</th><th scope="col">土日祝</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">1名</th><td>¥11,000</td><td>¥12,500</td></tr>
+              <tr><th scope="row">2名</th><td>¥16,500</td><td>¥18,000</td></tr>
+              <tr><th scope="row">3名</th><td>¥21,000</td><td>¥22,500</td></tr>
+              <tr><th scope="row">4名</th><td>¥24,500</td><td>¥26,000</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="keep">
+          <h4>ご予約の「キープ」について</h4>
+          <p>プールコースのキャンセル料は予約の30日前から発生するため、ご予定がまだ確定しきっていない場合は、ご利用日の1週間前を目安に枠を「キープ」いただけます（コースの予約手続きは、進めてよいタイミングになってから行います）。キープの間はまだコースを確定させていないため、直前になって空きがなくなっている可能性がある点はご了承ください。皆様に気持ちよくご利用いただけるよう、必要以上に多くの枠を長期間キープすることは控えていただけますと幸いです。</p>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
-<section id="programs">
-  <div class="section-head" data-reveal>
-    <div class="kicker">Use Cases</div>
-    <h2>ご利用シーンに合わせて</h2>
-    <p>水中でコーチのマンツーマン指導を受けながら泳ぎ方を身につけたい方は「パーソナルアクア」、陸上のレンタルルームでトレーニングをしたい方は「パーソナルトレーニング」。目的に合わせてお選びいただけます。</p>
-  </div>
-  <div class="program-grid">
-    <div class="glow"></div>
-    <div class="program-card glass reveal-surface" data-reveal>
-      <div class="landing-ripple"></div>
-      <div class="num">01</div>
-      <h3>パーソナルアクア</h3>
-      <p><strong>マンツーマン指導。</strong>プールレーンを貸切り、コーチが直接泳ぎ方を指導するプランです。1〜4名まで対応可能で、人数が増えるほどお一人あたりに対しての指導時間は短くなります（おおよその時間です　1名55分／2名27分30秒／3名約18分／4名約12分）、グループレッスンとしての対応も可能です。どちらもコーチがつきっきりで指導します。</p>
-      <div class="price-table-label">料金（税込・平日）</div>
-      <div class="price-table">
-        <div class="price-row"><span>1名</span><strong>¥11,000</strong></div>
-        <div class="price-row"><span>2名</span><strong>¥16,500</strong></div>
-        <div class="price-row"><span>3名</span><strong>¥21,000</strong></div>
-        <div class="price-row"><span>4名</span><strong>¥24,500</strong></div>
+<!-- ===== Close: 04 RESERVE (C1 inline gated form) ===== -->
+<section class="sec-piv" id="reserve">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="head-guide" aria-hidden="true"></span>
+      <div class="no">04</div>
+      <h2 class="display">Reserve</h2>
+      <p class="jp">ご予約</p>
+      <p class="lede">パーソナルアクアとパーソナルトレーニング、ご希望のサービスをお選びのうえ必要事項をご入力ください。送信後24時間以内を目安に、担当よりご返信いたします。</p>
+    </div>
+
+    <div class="reserve-grid">
+      <aside class="reserve-aside">
+        <div class="rl">この先で行うこと</div>
+        <ol>
+          <li><span><b>サービスを選ぶ</b>パーソナルアクア／パーソナルトレーニング</span></li>
+          <li><span><b>空き枠を選ぶ</b>表示中の日時から複数選択できます</span></li>
+          <li><span><b>内容を確認して送信</b>確認画面を挟んでから送信されます</span></li>
+        </ol>
+      </aside>
+    <div class="reserve-card" data-reveal>
+      <div class="gate" id="reserve-gate">
+        <div class="gate-form">
+        <p class="gate-label">合言葉を入力してください</p>
+        <div class="gate-row">
+          <label for="gate-input" class="sr">合言葉</label>
+          <input type="text" id="gate-input" placeholder="合言葉…" autocomplete="off" spellcheck="false" aria-describedby="gate-error gate-hint">
+          <button type="button" class="pill solid" id="gate-submit">進む</button>
+        </div>
+        <p class="gate-error" id="gate-error" role="alert">合言葉が違います。もう一度お試しください。</p>
+        <p class="gate-hint" id="gate-hint">合言葉が分からない場合は、担当までLINEなどでお問い合わせください。</p>
+        </div>
       </div>
-      <div class="price-table-label">料金（税込・土日祝）</div>
-      <div class="price-table">
-        <div class="price-row"><span>1名</span><strong>¥12,500</strong></div>
-        <div class="price-row"><span>2名</span><strong>¥18,000</strong></div>
-        <div class="price-row"><span>3名</span><strong>¥22,500</strong></div>
-        <div class="price-row"><span>4名</span><strong>¥26,000</strong></div>
-      </div>
-      <div class="price-note">55分利用（15分前から入場可）・土日祝はプールコース代の値上がり分（+¥1,500）を反映しています</div>
-    </div>
-    <div class="program-card glass reveal-surface" data-reveal>
-      <div class="landing-ripple"></div>
-      <div class="num">02</div>
-      <h3>パーソナルトレーニング</h3>
-      <p><strong>陸上トレーニング。</strong>ダンベルなどの器具を備えたレンタルルームで行う、コーチによるマンツーマントレーニングです。ご希望の日時をお伺いし、個別にご連絡します。</p>
-      <div class="price-table-label">料金（税込）</div>
-      <div class="price-table">
-        <div class="price-row"><span>マンツーマン</span><strong>¥8,800</strong></div>
-      </div>
-      <div class="price-note">60分</div>
-    </div>
-  </div>
-  <p class="programs-note">※ パーソナルトレーニングをご希望の場合も、下のご予約フォームからお申し込みいただけます。料金についてご不明な点やご相談があれば、いつでもお気軽にご連絡ください。</p>
-</section>
 
-<section id="reserve">
-  <div class="section-head" data-reveal>
-    <div class="kicker">Reservation</div>
-    <h2>ご予約</h2>
-    <p>パーソナルアクアとパーソナルトレーニング、ご希望のサービスをお選びのうえ必要事項をご入力ください。送信後24時間以内を目安に、担当よりご返信いたします。</p>
-  </div>
+      <div class="gated-content" id="gated-content" hidden>
+        <div class="tog-lab" id="tog-lab">ご希望のサービスをお選びください</div>
+        <div class="service-toggle" role="tablist" aria-labelledby="tog-lab">
+          <button type="button" class="service-btn active" id="toggle-aqua" role="tab" aria-selected="true" aria-controls="panel-aqua">
+            <span class="sb-txt"><b>パーソナルアクア</b><span>コーチ指導・水中で泳ぐ</span></span>
+          </button>
+          <button type="button" class="service-btn" id="toggle-training" role="tab" aria-selected="false" aria-controls="panel-training">
+            <span class="sb-txt"><b>パーソナルトレーニング</b><span>コーチ指導・陸上トレーニング</span></span>
+          </button>
+        </div>
 
-  <div class="policy-card glass glass-edge" data-reveal>
-    <div class="price-table-label">キャンセルポリシー</div>
-    <p class="policy-intro">施設利用料（枠1件あたり、税込・平日4,950円／土日祝6,600円）に対し、ご予約日の前日を起点に数えたキャンセル時期に応じて、キャンセル料をご請求いたします。あらかじめご了承のうえご予約ください。</p>
-    <div class="price-table-label">平日（税込）</div>
-    <div class="price-table">
-      <div class="price-row"><span>30日前 〜 14日前</span><strong>30%（1,485円）</strong></div>
-      <div class="price-row"><span>13日前 〜 7日前</span><strong>50%（2,475円）</strong></div>
-      <div class="price-row"><span>6日前 〜 当日</span><strong>100%（4,950円）</strong></div>
-    </div>
-    <div class="price-table-label">土日祝（税込）</div>
-    <div class="price-table">
-      <div class="price-row"><span>30日前 〜 14日前</span><strong>30%（1,980円）</strong></div>
-      <div class="price-row"><span>13日前 〜 7日前</span><strong>50%（3,300円）</strong></div>
-      <div class="price-row"><span>6日前 〜 当日</span><strong>100%（6,600円）</strong></div>
-    </div>
-    <div class="price-note">複数枠のご予約は、キャンセルする枠数分を合算してご請求します。</div>
-    <div class="price-table-label">ご予約の「キープ」について</div>
-    <p class="policy-intro">プールコースのキャンセル料は予約の30日前から発生するため、ご予定がまだ確定しきっていない場合は、ご利用日の1週間前を目安に枠を「キープ」いただけます（コースの予約手続きは、進めてよいタイミングになってから行います）。キープの間はまだコースを確定させていないため、直前になって空きがなくなっている可能性がある点はご了承ください。皆様に気持ちよくご利用いただけるよう、必要以上に多くの枠を長期間キープすることは控えていただけますと幸いです。</p>
-  </div>
-
-  <div class="process-row">
-    <div class="process-step glass" data-reveal>
-      <div class="step-num">STEP 01</div>
-      <h4>サービスを選ぶ</h4>
-      <p>パーソナルアクアかパーソナルトレーニングかをお選びください。</p>
-    </div>
-    <div class="process-step glass" data-reveal>
-      <div class="step-num">STEP 02</div>
-      <h4>フォーム送信</h4>
-      <p>ご希望の内容とお名前を送信します。</p>
-    </div>
-    <div class="process-step glass" data-reveal>
-      <div class="step-num">STEP 03</div>
-      <h4>ご連絡</h4>
-      <p>送信後24時間以内を目安に、担当よりご連絡いたします。</p>
-    </div>
-  </div>
-
-  <div class="reserve-wrap glass-edge hud-frame reveal-crystallize" data-reveal>
-    <div class="glow"></div>
-    <span class="corner tl"></span>
-    <span class="corner tr"></span>
-    <span class="corner bl"></span>
-    <span class="corner br"></span>
-
-    <div class="gate" id="reserve-gate">
-      <p class="gate-label">合言葉を入力してください</p>
-      <div class="gate-row">
-        <input type="text" id="gate-input" placeholder="合言葉" autocomplete="off">
-        <button type="button" class="btn btn-primary" id="gate-submit">進む</button>
-      </div>
-      <p class="gate-error" id="gate-error">合言葉が違います。もう一度お試しください。</p>
-      <p class="gate-hint">合言葉が分からない場合は、担当までLINEなどでお問い合わせください。</p>
-    </div>
-
-    <div class="gated-content" id="gated-content" hidden>
-    <div class="service-toggle" role="tablist" aria-label="ご希望のサービス">
-      <button type="button" class="service-btn active" id="toggle-aqua" role="tab" aria-selected="true">
-        パーソナルアクア<span>コーチ指導・水中で泳ぐ</span>
-      </button>
-      <button type="button" class="service-btn" id="toggle-training" role="tab" aria-selected="false">
-        パーソナルトレーニング<span>コーチ指導・陸上トレーニング</span>
-      </button>
-    </div>
-
-    <div class="service-panel" id="panel-aqua">
-      <form id="reserve-form">
-        <input type="hidden" name="service" value="パーソナルアクア">
-        <input type="hidden" name="_subject" value="【パーソナルアクア】新規予約リクエスト">
-        <input type="hidden" name="selected_slots" id="selected-slots-field">
-        <div class="form-grid">
-          <div class="field full">
-            <label>ご希望の日時（複数選択可）</label>
-            <div class="slot-notice"><strong>先着順のご予約です。</strong>空き状況は自動更新ではないため、表示されている日時でも、他のお客様が同じ枠を先にご予約済みの場合があります。その際は先にご予約いただいた方を優先し、後からのお申し込みには別日時をご相談させていただきます。あらかじめご了承ください。</div>
-            <div class="slot-grid" id="slot-grid"></div>
-            <p class="slot-hint">※ 表示されている日時のみご予約可能です。複数選択いただいても構いません。見つからない場合は担当までお問い合わせください。<br>※ ご利用時間は各枠55分間です（例：15:00の枠は15:00〜15:55利用、入場は15分前の14:45から可能です）。</p>
-            <p class="slot-error" id="slot-error">日時を1つ以上選択してください。</p>
-          </div>
-          <div class="field">
-            <label for="name">お名前</label>
-            <input type="text" id="name" name="name" placeholder="山田 花子" required>
-          </div>
-          <div class="field">
-            <label for="people">ご利用人数</label>
-            <select id="people" name="people" required>
-              <option value="" disabled selected>選択してください</option>
-              <option>1名</option>
-              <option>2名</option>
-              <option>3名</option>
-              <option>4名</option>
-            </select>
-          </div>
-          <div class="field">
-            <label for="flex">時間変更の可否</label>
-            <select id="flex" name="flex" required>
-              <option value="" disabled selected>選択してください</option>
-              <option>この時間のみ（変更不可）</option>
-              <option>1時間前ならOK</option>
-              <option>1時間後ならOK</option>
-              <option>前後どちらもOK（前を優先）</option>
-              <option>前後どちらもOK（後を優先）</option>
-            </select>
-          </div>
-          <div class="field full">
-            <span class="hint">※ 時間変更の可否は、ご希望の枠が確保できなかった場合、前後の時間へ変更できるかの確認です。</span>
-          </div>
-          <div class="field full">
-            <div class="checkbox-row">
-              <input type="checkbox" id="course-ok" name="course_ok" value="はい、進めてOKです">
-              <label for="course-ok">このままコースの予約手続きを進めてOKです（キープではなく確定希望）</label>
+        <div class="service-panel" id="panel-aqua" role="tabpanel">
+          <form id="reserve-form">
+            <input type="hidden" name="service" value="パーソナルアクア">
+            <input type="hidden" name="_subject" value="【パーソナルアクア】新規予約リクエスト">
+            <input type="hidden" name="selected_slots" id="selected-slots-field">
+            <div class="form-grid">
+              <div class="field full">
+                <span class="lab">ご希望の日時（複数選択可）</span>
+                <div class="slot-notice"><strong>先着順のご予約です。</strong>空き状況は自動更新ではないため、表示されている日時でも、他のお客様が同じ枠を先にご予約済みの場合があります。その際は先にご予約いただいた方を優先し、後からのお申し込みには別日時をご相談させていただきます。あらかじめご了承ください。</div>
+                <div class="slot-grid" id="slot-grid" role="group" aria-label="空き枠"></div>
+                <p class="slot-hint">※ 表示されている日時のみご予約可能です。複数選択いただいても構いません。見つからない場合は担当までお問い合わせください。<br>※ ご利用時間は各枠55分間です（例：15:00の枠は15:00〜15:55利用、入場は15分前の14:45から可能です）。</p>
+                <p class="slot-error" id="slot-error" role="alert">日時を1つ以上選択してください。</p>
+              </div>
+              <div class="field">
+                <label for="name">お名前</label>
+                <input type="text" id="name" name="name" placeholder="例：山田 花子" autocomplete="name" required>
+              </div>
+              <div class="field">
+                <label for="people">ご利用人数</label>
+                <select id="people" name="people" required>
+                  <option value="" disabled selected>選択してください</option>
+                  <option>1名</option>
+                  <option>2名</option>
+                  <option>3名</option>
+                  <option>4名</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="flex">時間変更の可否</label>
+                <select id="flex" name="flex" required>
+                  <option value="" disabled selected>選択してください</option>
+                  <option>この時間のみ（変更不可）</option>
+                  <option>1時間前ならOK</option>
+                  <option>1時間後ならOK</option>
+                  <option>前後どちらもOK（前を優先）</option>
+                  <option>前後どちらもOK（後を優先）</option>
+                </select>
+              </div>
+              <div class="field full">
+                <span class="hint">※ 時間変更の可否は、ご希望の枠が確保できなかった場合、前後の時間へ変更できるかの確認です。</span>
+              </div>
+              <div class="field full">
+                <div class="checkbox-row">
+                  <input type="checkbox" id="course-ok" name="course_ok" value="はい、進めてOKです">
+                  <label for="course-ok">このままコースの予約手続きを進めてOKです（キープではなく確定希望）</label>
+                </div>
+                <span class="hint">※ チェックなしの場合は「キープ」として承ります。ご利用日の1週間前を目安に、あらためてコース予約を進めてよいかご連絡します。キープはあくまでご予定を確保するものであり、施設側のコース予約はまだ確定していません。他のご利用と重なった場合、直前になって施設側の空きがなくなる可能性がある点はご了承ください。複数の日時をまとめてご予約の場合、一部の枠だけキープをご希望のときは、下の備考欄に対象の日時をご記入ください。</span>
+              </div>
+              <div class="field full">
+                <label for="note">備考（任意）</label>
+                <textarea id="note" name="note" rows="3" placeholder="ご要望やご質問があればご記入ください…"></textarea>
+              </div>
             </div>
-            <span class="hint">※ チェックなしの場合は「キープ」として承ります。ご利用日の1週間前を目安に、あらためてコース予約を進めてよいかご連絡します。キープはあくまでご予定を確保するものであり、施設側のコース予約はまだ確定していません。他のご利用と重なった場合、直前になって施設側の空きがなくなる可能性がある点はご了承ください。複数の日時をまとめてご予約の場合、一部の枠だけキープをご希望のときは、下の備考欄に対象の日時をご記入ください。</span>
-          </div>
-          <div class="field full">
-            <label for="note">備考（任意）</label>
-            <textarea id="note" name="note" rows="3" placeholder="ご要望やご質問があればご記入ください"></textarea>
-          </div>
+            <div class="reserve-submit">
+              <button type="submit" class="pill solid">予約をリクエストする</button>
+              <p class="pay-note">料金：1名 ¥11,000〜4名 ¥24,500（55分利用・税込、人数別の詳細は上記「02 Service」をご覧ください）。<strong>ご利用日当日のキャンセルは、体調不良の場合を含めご予約総額の全額をご請求いたします</strong>（前日までのキャンセル料は上記「03 Flow」のキャンセルポリシーをご覧ください）。送信後24時間以内を目安に、レーンの確保状況についてご返信いたします（状況により前後する場合がございます）。お支払い方法（銀行振込／手渡し／PayPay）は、その際に合わせてご案内いたします。初回のご連絡後は、LINEでのやり取りにご案内する場合があります。</p>
+              <p id="confirm-msg" class="confirm-msg" aria-live="polite"></p>
+            </div>
+          </form>
         </div>
-        <div class="reserve-submit">
-          <button type="submit" class="btn btn-primary">予約をリクエストする</button>
-          <p class="pay-note">料金：1名 ¥11,000〜4名 ¥24,500（55分利用・税込、人数別の詳細は上記「ご利用シーン」をご覧ください）。送信後24時間以内を目安に、レーンの確保状況についてご返信いたします（状況により前後する場合がございます）。お支払い方法（銀行振込／手渡し／PayPay）は、その際に合わせてご案内いたします。初回のご連絡後は、LINEでのやり取りにご案内する場合があります。</p>
-          <p id="confirm-msg" class="confirm-msg"></p>
-        </div>
-      </form>
-    </div>
 
-    <div class="service-panel" id="panel-training" hidden>
-      <form id="training-form">
-        <input type="hidden" name="service" value="パーソナルトレーニング">
-        <input type="hidden" name="_subject" value="【パーソナルトレーニング】新規申し込み">
-        <div class="form-grid">
-          <div class="field">
-            <label for="t-name">お名前</label>
-            <input type="text" id="t-name" name="name" placeholder="山田 花子" required>
-          </div>
-          <div class="field">
-            <label for="t-date1">ご希望日時（第一希望）</label>
-            <input type="text" id="t-date1" name="date1" placeholder="例：7/20(月) 19時〜21時ごろ" required>
-          </div>
-          <div class="field">
-            <label for="t-date2">ご希望日時（第二希望・任意）</label>
-            <input type="text" id="t-date2" name="date2" placeholder="例：平日夜なら基本OK など">
-          </div>
-          <div class="field">
-            <label for="t-date3">ご希望日時（第三希望・任意）</label>
-            <input type="text" id="t-date3" name="date3" placeholder="例：週末なら終日OK など">
-          </div>
-          <div class="field full">
-            <label for="t-note">備考（任意）</label>
-            <textarea id="t-note" name="note" rows="3" placeholder="トレーニング内容やご経験、ご要望などがあればご記入ください"></textarea>
-          </div>
+        <div class="service-panel" id="panel-training" role="tabpanel" hidden>
+          <form id="training-form">
+            <input type="hidden" name="service" value="パーソナルトレーニング">
+            <input type="hidden" name="_subject" value="【パーソナルトレーニング】新規申し込み">
+            <div class="form-grid">
+              <div class="field">
+                <label for="t-name">お名前</label>
+                <input type="text" id="t-name" name="name" placeholder="例：山田 花子" autocomplete="name" required>
+              </div>
+              <div class="field">
+                <label for="t-date1">ご希望日時（第一希望）</label>
+                <input type="text" id="t-date1" name="date1" placeholder="例：7/20(月) 19時〜21時ごろ" required>
+              </div>
+              <div class="field">
+                <label for="t-date2">ご希望日時（第二希望・任意）</label>
+                <input type="text" id="t-date2" name="date2" placeholder="例：平日夜なら基本OK など">
+              </div>
+              <div class="field">
+                <label for="t-date3">ご希望日時（第三希望・任意）</label>
+                <input type="text" id="t-date3" name="date3" placeholder="例：週末なら終日OK など">
+              </div>
+              <div class="field full">
+                <label for="t-note">備考（任意）</label>
+                <textarea id="t-note" name="note" rows="3" placeholder="トレーニング内容やご経験、ご要望などがあればご記入ください…"></textarea>
+              </div>
+            </div>
+            <div class="reserve-submit">
+              <button type="submit" class="pill solid">パーソナルトレーニングを申し込む</button>
+              <p class="pay-note">料金：¥8,800（60分・税込、マンツーマン）。送信後24時間以内を目安に、担当よりご連絡いたします（LINEまたはお電話・メールにて）。</p>
+              <p id="confirm-msg-training" class="confirm-msg" aria-live="polite"></p>
+            </div>
+          </form>
         </div>
-        <div class="reserve-submit">
-          <button type="submit" class="btn btn-primary">パーソナルトレーニングを申し込む</button>
-          <p class="pay-note">料金：¥8,800（60分・税込、マンツーマン）。送信後24時間以内を目安に、担当よりご連絡いたします（LINEまたはお電話・メールにて）。</p>
-          <p id="confirm-msg-training" class="confirm-msg"></p>
-        </div>
-      </form>
+      </div>
     </div>
     </div>
   </div>
 </section>
 
-<footer>
-  <div class="brand-block">
-    <img src="logo-icon.png" alt="" class="brand-icon">
-    <div class="brand-text">
-      <div class="brand">パーソナル<span>アクア</span></div>
-      <div class="brand-sub">Personal Aqua — Private Pool Reservation</div>
+</main>
+
+<!-- ===== Ft4 statement close ===== -->
+<footer id="site-footer">
+  <div class="wrap">
+    <div class="foot-top">
+      <div data-reveal>
+        <!-- W — two wave strokes cut from the same ▽, from the user's Illustrator sheet.
+             It closes the page on the promise the headline opened with: "Your Private Waters". -->
+        <svg class="foot-mark" viewBox="0 0 100 100" aria-hidden="true">
+          <path d="M0 0 H79 L39.5 100 Z"/><path d="M88.4 0 H100 L60.4 100 H48.8 Z"/>
+        </svg>
+        <div class="display">Personal<br>Aqua<small>パーソナルアクア — Private Pool Reservation</small></div>
+      </div>
+      <nav class="foot-links" aria-label="フッター" data-reveal data-reveal-group>
+        <a href="#about">01 パーソナルアクアとは <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.75 5a.75.75 0 0 0 0 1.5h9.69L5.22 17.72a.75.75 0 1 0 1.06 1.06L17.5 7.56v9.69a.75.75 0 0 0 1.5 0V5.75a.75.75 0 0 0-.75-.75z"/></svg></a>
+        <a href="#service">02 ご利用シーン <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.75 5a.75.75 0 0 0 0 1.5h9.69L5.22 17.72a.75.75 0 1 0 1.06 1.06L17.5 7.56v9.69a.75.75 0 0 0 1.5 0V5.75a.75.75 0 0 0-.75-.75z"/></svg></a>
+        <a href="#flow">03 ご予約の流れ <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.75 5a.75.75 0 0 0 0 1.5h9.69L5.22 17.72a.75.75 0 1 0 1.06 1.06L17.5 7.56v9.69a.75.75 0 0 0 1.5 0V5.75a.75.75 0 0 0-.75-.75z"/></svg></a>
+        <a href="#reserve">04 ご予約 <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.75 5a.75.75 0 0 0 0 1.5h9.69L5.22 17.72a.75.75 0 1 0 1.06 1.06L17.5 7.56v9.69a.75.75 0 0 0 1.5 0V5.75a.75.75 0 0 0-.75-.75z"/></svg></a>
+      </nav>
+    </div>
+    <div class="foot-bottom">
+      <div class="brand"><img src="logo-icon-96.png" alt="" width="34" height="34" decoding="async"><span class="wordmark">Personal Aqua</span></div>
+      <div>&copy; 2026 Personal Aqua — パーソナルアクア. All rights reserved.</div>
     </div>
   </div>
-  <div class="foot-links">
-    <a href="#about">パーソナルアクアとは</a>
-    <a href="#programs">ご利用シーン</a>
-    <a href="#reserve">ご予約</a>
-  </div>
-  <div class="copyright">&copy; 2026 Personal Aqua — パーソナルアクア. All rights reserved.</div>
 </footer>
 
 <div class="confirm-modal-overlay" id="confirm-modal-overlay" hidden>
-  <div class="confirm-modal glass glass-edge">
-    <h3>まだ送信されていません</h3>
+  <div class="confirm-modal" role="dialog" aria-modal="true" aria-labelledby="confirm-modal-title">
+    <h3 id="confirm-modal-title">まだ送信されていません</h3>
     <p class="confirm-modal-note">内容をご確認のうえ、下の「送信する」ボタンを押して初めて予約リクエストが送られます。押さないと、このまま閉じても送信されませんのでご注意ください。</p>
     <dl id="confirm-modal-body"></dl>
     <div class="confirm-modal-actions">
-      <button type="button" class="btn btn-primary" id="confirm-modal-send">✓ この内容で送信する</button>
+      <button type="button" class="pill solid" id="confirm-modal-send">この内容で送信する</button>
       <button type="button" id="confirm-modal-back">内容を修正する</button>
     </div>
   </div>
 </div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="assets/gsap-starter.js"></script>
 <script>
 /*
   CONTENTS
-  1. Utilities (hover detection, rAF throttle)
-  2. Header scroll / mobile menu
-  3. Particles
-  4. Hero entrance + parallax
-  5. Card / visual tilt
-  6. Scroll reveal
-  7. Reservation: slot data, picker, submit
+  1. Header scroll / mobile menu
+  2. Motion: one motion per surface — hero timeline, title wipes, counting figures,
+     price-row stagger, rule draws, composition assembly, footer strokes, parallax
+  3. Reservation: passphrase gate, service toggle, slot data, picker, submit
 */
 
-/* ===== 1. Utilities ===== */
-const supportsHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
-
-function rafThrottle(fn) {
-  let ticking = false;
-  let lastEvent;
-  return (e) => {
-    lastEvent = e;
-    if (!ticking) {
-      ticking = true;
-      requestAnimationFrame(() => {
-        fn(lastEvent);
-        ticking = false;
-      });
-    }
-  };
-}
-
-/* ===== 1b. Splash intro (once per browser session) ===== */
-const splash = document.getElementById('splash');
-const SPLASH_KEY = 'personalAquaSplashSeen';
-if (sessionStorage.getItem(SPLASH_KEY)) {
-  splash.remove();
-} else {
-  document.documentElement.style.overflow = 'hidden';
-  setTimeout(() => {
-    splash.classList.add('hide');
-    document.documentElement.style.overflow = '';
-    sessionStorage.setItem(SPLASH_KEY, '1');
-    setTimeout(() => splash.remove(), 900);
-  }, 2000);
-}
-
-/* ===== 2. Header scroll / mobile menu ===== */
+/* ===== 1. Header scroll / mobile menu ===== */
 const header = document.getElementById('site-header');
 window.addEventListener('scroll', () => {
   header.classList.toggle('scrolled', window.scrollY > 40);
-});
+}, { passive: true });
 
 const navToggle = document.getElementById('nav-toggle');
 const mobileMenu = document.getElementById('mobile-menu');
 navToggle.addEventListener('click', () => {
   const open = mobileMenu.classList.toggle('open');
-  header.classList.toggle('menu-open', open);
   navToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+  navToggle.setAttribute('aria-label', open ? 'メニューを閉じる' : 'メニューを開く');
+  document.documentElement.style.overflow = open ? 'hidden' : '';
 });
 mobileMenu.querySelectorAll('a').forEach((a) => {
   a.addEventListener('click', () => {
     mobileMenu.classList.remove('open');
-    header.classList.remove('menu-open');
     navToggle.setAttribute('aria-expanded', 'false');
+    document.documentElement.style.overflow = '';
   });
 });
 
-/* ===== 3. Particles ===== */
-const particleLayer = document.getElementById('particles');
-const PARTICLE_COUNT = window.innerWidth < 600 ? 12 : 26;
-for (let i = 0; i < PARTICLE_COUNT; i++) {
-  const p = document.createElement('div');
-  p.className = 'particle';
-  const size = 1.5 + Math.random() * 4.5;
-  p.style.width = size + 'px';
-  p.style.height = size + 'px';
-  p.style.left = Math.random() * 100 + '%';
-  p.style.animationDuration = 6 + Math.random() * 10 + 's';
-  p.style.animationDelay = Math.random() * 12 + 's';
-  p.style.setProperty('--drift', (Math.random() * 60 - 30).toFixed(0) + 'px');
-  particleLayer.appendChild(p);
-}
+/* ===== 2. Motion ===== */
+if (typeof gsap !== 'undefined') {
+  TastemakerMotion.init({ duration: 0.6, distance: 18, ease: 'power3.out', staggerStep: 0.08 });
 
-/* ===== 4. Hero entrance + parallax ===== */
-const heroContent = document.getElementById('hero-content');
-requestAnimationFrame(() => {
-  setTimeout(() => heroContent.classList.add('loaded'), 60);
-});
+  const mm = gsap.matchMedia();
+  mm.add({
+    motionOK: '(prefers-reduced-motion: no-preference)',
+    reduce: '(prefers-reduced-motion: reduce)',
+  }, (ctx) => {
+    const reduce = ctx.conditions.reduce;
+    const q = (sel) => document.querySelectorAll(sel);
+    const has = (sel) => document.querySelector(sel) !== null;
+    const ST = typeof ScrollTrigger !== 'undefined';
 
-if (supportsHover) {
-  const hero = document.getElementById('hero');
-  const waterBg = document.getElementById('water-bg');
-  const caustics = document.getElementById('caustics');
-  hero.addEventListener('mousemove', rafThrottle((e) => {
-    /* a narrow window (phone, or a resized desktop browser) has too little
-       room for the panel to absorb a 3D tilt gracefully — it just reads as
-       the panel being crooked/off-center. Skip the effect below this width,
-       independent of whether a mouse is present. */
-    if (window.innerWidth < 900) return;
-    const rect = hero.getBoundingClientRect();
-    const x = (e.clientX - rect.left) / rect.width - 0.5;
-    const y = (e.clientY - rect.top) / rect.height - 0.5;
-    heroContent.style.transform = `rotateY(${x * 10}deg) rotateX(${-y * 10}deg)`;
-    waterBg.style.transform = `translate(${x * -14}px, ${y * -14}px) scale(1.04)`;
-    caustics.style.transform = `translate(${x * 22}px, ${y * 22}px)`;
-  }));
-  hero.addEventListener('mouseleave', () => {
-    heroContent.style.transform = 'rotateY(0deg) rotateX(0deg)';
-    waterBg.style.transform = 'translate(0,0) scale(1)';
-    caustics.style.transform = 'translate(0,0)';
-  });
+    /* ─────────────────────────────────────────────────────────────────────
+       Every surface gets its own motion, because one fade-and-rise repeated
+       down a page reads as a template. Each is picked for what the thing IS:
+       a ring opens like a drop landing, a rule draws because it marks a
+       sequence, figures count because they are real numbers.
+       ───────────────────────────────────────────────────────────────────── */
 
-  /* water ripples that spread out from the cursor while it's over the glass panel */
-  let lastRippleTime = 0;
-  heroContent.addEventListener('mousemove', (e) => {
-    const now = performance.now();
-    if (now - lastRippleTime < 140) return;
-    lastRippleTime = now;
-    const rect = heroContent.getBoundingClientRect();
-    const ripple = document.createElement('div');
-    ripple.className = 'cursor-ripple';
-    ripple.style.left = (e.clientX - rect.left) + 'px';
-    ripple.style.top = (e.clientY - rect.top) + 'px';
-    heroContent.appendChild(ripple);
-    setTimeout(() => ripple.remove(), 1000);
-  });
+    /* ── DISPLAY HEADINGS ── character by character ──
+       The reference carries 223 single-character `.split` spans, so this
+       matches it: each glyph rises 18px and fades, 22ms apart. Confined to the
+       Latin display type — a 200-character Japanese paragraph revealed one
+       glyph at a time would fight the act of reading, and the reference does
+       not do it to its body copy either. Splitting text destroys screen-reader
+       pronunciation, so the original string moves to an aria-label and the
+       fragments leave the accessibility tree. ── */
+    const splitChars = (el) => {
+      if (el.dataset.split) return [...el.querySelectorAll('.ch')];
+      const text = el.textContent;
+      el.setAttribute('aria-label', text);
+      el.innerHTML = text.split(' ')
+        .map((word) => '<span class="wd">' +
+          [...word].map((c) => '<span class="ch" aria-hidden="true">' + c + '</span>').join('') +
+          '</span>')
+        .join(' ');
+      el.dataset.split = '1';
+      return [...el.querySelectorAll('.ch')];
+    };
 
-  /* ===== 5. Card / visual tilt ===== */
-  document.querySelectorAll('.program-card').forEach((card) => {
-    card.addEventListener('mousemove', rafThrottle((e) => {
-      const rect = card.getBoundingClientRect();
-      const x = (e.clientX - rect.left) / rect.width - 0.5;
-      const y = (e.clientY - rect.top) / rect.height - 0.5;
-      card.style.transform = `perspective(800px) rotateY(${x * 14}deg) rotateX(${-y * 14}deg) translateY(-6px) scale(1.02)`;
-    }));
-    card.addEventListener('mouseleave', () => {
-      card.style.transform = 'perspective(800px) rotateY(0deg) rotateX(0deg) translateY(0) scale(1)';
+    /* ── HERO ── four beats, then the three marks each arrive differently ── */
+    if (reduce) {
+      gsap.set(['#site-header', '#hero-h1', '#tagline', '#pickup', '.pu-in', '.hmark',
+                '.hero-marks .guide', '.hero-marks .hrule'],
+               { opacity: 1, y: 0, scale: 1, scaleY: 1, scaleX: 1, clipPath: 'none' });
+      ['#hero-h1 .l1', '#hero-h1 .l2']
+        .flatMap((sel) => splitChars(document.querySelector(sel)))
+        .forEach((g) => gsap.set(g, { opacity: 1, y: 0 }));
+      gsap.set('.o-shell', { '--o-round': '0%', '--o-hole': '100%' });
+      gsap.set(['#s-cut-top', '#s-cut-bot', '#c-cut'], { scaleX: 1 });
+    } else {
+      /* ───────────────────────────────────────────────────────────────────
+         Read off the recording frame by frame: the square wipes in on a
+         diagonal (3.77-4.32s), HOLDS for half a second, snaps to a circle in
+         0.27s, HOLDS again for nearly a second, then returns to a square while
+         a void opens out of its centre.
+
+         The dynamics come from the stillness, not from picking different
+         easing curves. An earlier pass here ran every beat back to back and
+         that is exactly why it read as one flat motion.
+         ─────────────────────────────────────────────────────────────────── */
+      const WIPE_IN  = 'polygon(-40% 0%, 0% 0%, -40% 100%, -80% 100%)';
+      const WIPE_OUT = 'polygon(-40% 0%, 140% 0%, 100% 100%, -80% 100%)';
+
+      gsap.set('.o-shell', { '--o-round': '0%', '--o-hole': '0%' });
+      gsap.set(['#s-cut-top', '#c-cut'], { scaleX: 0, svgOrigin: '100 50' });
+      gsap.set('#s-cut-bot', { scaleX: 0, svgOrigin: '0 75' });
+      gsap.set('.hero-marks .guide', { scaleY: 0 });
+      gsap.set('.hero-marks .hrule', { scaleX: 0 });
+      gsap.set('.hmark', { clipPath: WIPE_IN });
+      const h1Glyphs = ['#hero-h1 .l1', '#hero-h1 .l2']
+        .flatMap((sel) => splitChars(document.querySelector(sel)));
+      gsap.set(h1Glyphs, { opacity: 0, y: 26 });
+      gsap.set('#pickup', { clipPath: 'inset(0 0 100% 0)' });
+      gsap.set('.pu-in', { opacity: 0, y: 8 });
+
+      gsap.timeline()
+        .from('#site-header', { opacity: 0, y: -8, duration: 0.5, ease: 'power3.out' }, 0)
+        .to('.hero-marks .guide', { scaleY: 1, duration: 0.7, ease: 'power2.inOut', stagger: 0.12 }, 0.15)
+        .to('.hero-marks .hrule', { scaleX: 1, duration: 0.7, ease: 'power2.inOut' }, 0.5)
+        /* the headline rises glyph by glyph — the same two-clock treatment as
+           the section heads: power3.out lifts, a near-linear opacity keeps the
+           0→100% spread across the whole rise instead of finishing in its first
+           fifth. 18 glyphs at 75ms lands the last one at ~2.8s. */
+        .to(h1Glyphs, { y: 0, duration: 0.95, ease: 'power3.out', stagger: 0.075 }, 0.6)
+        .to(h1Glyphs, { opacity: 1, duration: 0.95, ease: 'power1.out', stagger: 0.075 }, 0.6)
+        /* the tagline waits for the headline to finish rather than cutting across it */
+        .from('#tagline', { opacity: 0, y: 14, duration: 0.6, ease: 'power3.out' }, 2.7)
+
+        /* O — wipes in as a square … */
+        .to('.m-o', { clipPath: WIPE_OUT, duration: 0.6, ease: 'power2.inOut' }, 1.4)
+        /*     … holds …                                              (0.45s of nothing) */
+        /*     … then snaps to a circle, fast */
+        .to('.o-shell', { '--o-round': '50%', duration: 0.3, ease: 'power2.inOut' }, 2.45)
+        /*     … holds again …                                        (0.55s of nothing) */
+        /*     … then returns to a square as the void opens out of it */
+        .to('.o-shell', { '--o-round': '0%', duration: 0.55, ease: 'power2.inOut' }, 3.3)
+        .to('.o-shell', { '--o-hole': '100%', duration: 0.75, ease: 'power2.out' }, 3.35)
+
+        /* S — enters between the O's two holds, so the eye always has one
+              thing moving and one thing at rest */
+        .to('.m-s', { clipPath: WIPE_OUT, duration: 0.6, ease: 'power2.inOut' }, 2.0)
+        .to('#s-cut-top', { scaleX: 1, duration: 0.45, ease: 'power2.inOut' }, 2.95)
+        .to('#s-cut-bot', { scaleX: 1, duration: 0.45, ease: 'power2.inOut' }, 3.1)
+
+        /* C — last in, and its notch lands after everything else has settled */
+        .to('.m-c', { clipPath: WIPE_OUT, duration: 0.6, ease: 'power2.inOut' }, 2.6)
+        .to('#c-cut', { scaleX: 1, duration: 0.45, ease: 'power2.inOut' }, 3.85)
+
+        /* the card is built: frame first, contents into it */
+        .to('#pickup', { clipPath: 'inset(0 0 -4% 0)', duration: 0.6, ease: 'power2.inOut' }, 3.5)
+        .to('.pu-in', { opacity: 1, y: 0, duration: 0.45, ease: 'power3.out', stagger: 0.09 }, 3.95);
+    }
+
+    q('.sec-head').forEach((head) => {
+      const h2 = head.querySelector('h2');
+      if (h2 && !h2.querySelector('.ln')) {
+        h2.innerHTML = h2.innerHTML.split(/<br\s*\/?>/i)
+          .map((line) => '<span class="ln">' + line + '</span>').join('');
+      }
+      const lines = h2 ? [...h2.querySelectorAll('.ln')] : [];
+      const glyphs = lines.flatMap(splitChars);
+      const rest = [head.querySelector('.no'), head.querySelector('.jp'),
+                    head.querySelector('.lede')].filter(Boolean);
+      if (reduce || !ST) { gsap.set([...glyphs, ...rest], { opacity: 1, y: 0 }); return; }
+      gsap.set(glyphs, { opacity: 0, y: 26 });
+      gsap.set(rest, { opacity: 0, y: 16 });
+      // The rise and the fade are two tweens on one clock: same start, same
+      // stagger, different curves. power3.out lifts each glyph into place while
+      // a near-linear opacity keeps 0→100% spread across the whole of that rise
+      // — on a single tween the strong ease-out finishes the fade in the first
+      // fifth and only the movement is left to see.
+      gsap.timeline({ scrollTrigger: { trigger: head, start: 'top 88%', once: true } })
+        .to(rest[0], { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out' })
+        .to(glyphs, { y: 0, duration: 0.95, ease: 'power3.out', stagger: 0.075 }, '-=0.2')
+        .to(glyphs, { opacity: 1, duration: 0.95, ease: 'power1.out', stagger: 0.075 }, '<')
+        .to(rest.slice(1), { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out', stagger: 0.14 }, '-=0.8');
     });
-  });
 
-  const aboutVisual = document.getElementById('about-visual');
-  aboutVisual.addEventListener('mousemove', rafThrottle((e) => {
-    const rect = aboutVisual.getBoundingClientRect();
-    const x = (e.clientX - rect.left) / rect.width - 0.5;
-    const y = (e.clientY - rect.top) / rect.height - 0.5;
-    aboutVisual.style.transform = `perspective(900px) rotateY(${x * 12}deg) rotateX(${-y * 12}deg)`;
-  }));
-  aboutVisual.addEventListener('mouseleave', () => {
-    aboutVisual.style.transform = 'perspective(900px) rotateY(0deg) rotateX(0deg)';
-  });
-}
+    /* the service headings get the same treatment — they are display type too */
+    q('.svc-body h3').forEach((h3) => {
+      const glyphs = splitChars(h3);
+      if (reduce || !ST) { gsap.set(glyphs, { opacity: 1, y: 0 }); return; }
+      gsap.set(glyphs, { opacity: 0, y: 26 });
+      const st = { trigger: h3, start: 'top 88%', once: true };
+      gsap.to(glyphs, { y: 0, duration: 0.95, ease: 'power3.out', stagger: 0.075, scrollTrigger: st });
+      gsap.to(glyphs, { opacity: 1, duration: 0.95, ease: 'power1.out', stagger: 0.075, scrollTrigger: st });
+    });
 
-/* ===== 6. Scroll reveal (per-section signature animation, see CSS §4) ===== */
-const revealObserver = new IntersectionObserver((entries) => {
-  entries.forEach((entry) => {
-    if (entry.isIntersecting) {
-      entry.target.classList.add('in-view');
-      revealObserver.unobserve(entry.target);
+    /* ── STATS ── real figures, so they count rather than fade ── */
+    q('[data-count]').forEach((el) => {
+      const target = parseFloat(el.dataset.count);
+      if (reduce || !ST) { el.textContent = String(target); return; }
+      const o = { v: 0 };
+      gsap.to(o, {
+        v: target, duration: 1.1, ease: 'power1.out',
+        onUpdate: () => { el.textContent = String(Math.round(o.v)); },
+        scrollTrigger: { trigger: el, start: 'top 82%', once: true },
+      });
+    });
+
+    /* ── 02 SERVICE ── the price table fills in from the left, row by row ── */
+    q('.ptable tbody tr').forEach((row, i, all) => {
+      if (reduce || !ST) { gsap.set(row, { opacity: 1, x: 0 }); return; }
+      if (i === 0) {
+        gsap.fromTo(all, { opacity: 0, x: -14 }, {
+          opacity: 1, x: 0, duration: 0.55, ease: 'power3.out', stagger: 0.1,
+          scrollTrigger: { trigger: row.closest('.ptable'), start: 'top 85%', once: true },
+        });
+      }
+    });
+
+    /* ── 03 FLOW ── the rule draws, then the steps arrive behind it ── */
+    if (has('#flow-rule')) {
+      if (reduce || !ST) { gsap.set('#flow-rule', { scaleX: 1 }); }
+      else gsap.fromTo('#flow-rule', { scaleX: 0 }, {
+        scaleX: 1, duration: 0.8, ease: 'power2.inOut',
+        scrollTrigger: { trigger: '#flow', start: 'top 74%', once: true },
+      });
+    }
+
+    /* ── 03 FLOW steps ── each step is a beat, not a batch ── */
+    const steps = [...document.querySelectorAll('.stepc')];
+    if (reduce || !ST) { gsap.set(steps, { opacity: 1, y: 0 }); }
+    else steps.forEach((step, i) => {
+      gsap.fromTo(step, { opacity: 0, y: 24 }, {
+        opacity: 1, y: 0, duration: 0.6, ease: 'power3.out', delay: i * 0.08,
+        scrollTrigger: { trigger: step, start: 'top 80%', once: true },
+      });
+    });
+
+    /* ── 01 ABOUT ── the guides rule the grid, the page holds still for a
+       third of a second, then each form arrives the way that form should:
+       the triangle wipes down the way it points, the circle lands like a drop,
+       the photographs are drawn back like a curtain, the W strokes across.
+       Five identical fade-ups in a row is what made this section monotonous. ── */
+    const comp = document.querySelector('.composition');
+    if (comp) {
+      const guides = comp.querySelectorAll('.guide');
+      const pick = (sel) => comp.querySelector(sel);
+      const cells = [...comp.querySelectorAll('.cell')];
+      if (reduce || !ST) {
+        gsap.set(guides, { scaleY: 1 });
+        gsap.set(cells, { opacity: 1, y: 0, scale: 1, clipPath: 'none' });
+      } else {
+        gsap.set(guides, { scaleY: 0 });
+        gsap.set(cells, { opacity: 1 });
+        gsap.set(pick('.c-tri'), { clipPath: 'inset(0 0 100% 0)' });
+        gsap.set(pick('.c-dot'), { opacity: 0, scale: 0.82, transformOrigin: 'center' });
+        gsap.set(pick('.c-photo'), { clipPath: 'inset(0 100% 0 0)' });
+        gsap.set(pick('.c-lane'), { clipPath: 'inset(0 100% 0 0)' });
+        gsap.set(pick('.c-w'), { clipPath: 'inset(100% 0 0 0)' });
+
+        gsap.timeline({ scrollTrigger: { trigger: comp, start: 'top 74%', once: true } })
+          .to(guides, { scaleY: 1, duration: 0.85, ease: 'power2.inOut', stagger: 0.12 })
+          /* ── a third of a second of nothing ── */
+          .to(pick('.c-tri'),   { clipPath: 'inset(0 0 -4% 0)', duration: 0.7, ease: 'power2.inOut' }, '+=0.35')
+          .to(pick('.c-dot'),   { opacity: 1, scale: 1, duration: 0.55, ease: 'power2.out' }, '-=0.42')
+          .to(pick('.c-photo'), { clipPath: 'inset(0 -2% 0 0)', duration: 0.8, ease: 'power2.inOut' }, '-=0.3')
+          .to(pick('.c-lane'),  { clipPath: 'inset(0 -2% 0 0)', duration: 0.7, ease: 'power2.inOut' }, '-=0.45')
+          .to(pick('.c-w'),     { clipPath: 'inset(-4% 0 0 0)', duration: 0.7, ease: 'power2.inOut' }, '-=0.35');
+      }
+    }
+
+    /* ── FOOTER ── the two wave strokes wipe in, one after the other ── */
+    const footMark = document.querySelector('.foot-mark');
+    if (footMark) {
+      const strokes = footMark.querySelectorAll('path');
+      if (reduce || !ST) { gsap.set(strokes, { clipPath: 'none' }); }
+      else gsap.fromTo(strokes, { clipPath: 'inset(0 100% 0 0)' }, {
+        clipPath: 'inset(0 -5% 0 0)', duration: 0.7, ease: 'power2.inOut', stagger: 0.12,
+        scrollTrigger: { trigger: footMark, start: 'top 92%', once: true },
+      });
+    }
+
+    /* ── the water band drifts against the scroll — the page's one big moment ──
+       It pulls upward only: the image is 118% of the figure, so drifting up
+       keeps the overhang covering the bottom edge. Drifting the other way
+       uncovers the figure's own dark background along the top. ── */
+    const bandImg = document.getElementById('band-img');
+    if (bandImg) {
+      if (reduce || !ST) { gsap.set(bandImg, { yPercent: -8, scale: 1 }); }
+      else gsap.fromTo(bandImg, { yPercent: 0, scale: 1.06 }, {
+        yPercent: -15, scale: 1, ease: 'none',
+        scrollTrigger: { trigger: '#band', start: 'top bottom', end: 'bottom top', scrub: 0.5 },
+      });
+    }
+
+    /* ── the section guides ── each draws down into its own heading and stops
+       at the rule. The old version was one fixed full-height line down the
+       middle of the viewport, so it cut through whatever was being read. These
+       lead the eye toward a section and then get out of the way. ── */
+    q('.head-guide').forEach((g) => {
+      if (reduce || !ST) { gsap.set(g, { scaleY: 1 }); return; }
+      gsap.to(g, {
+        scaleY: 1, duration: 0.9, ease: 'power2.inOut',
+        scrollTrigger: { trigger: g.parentElement, start: 'top 82%', once: true },
+      });
+    });
+
+    /* ── hero marks drift at slightly different rates as the fold leaves ── */
+    if (!reduce && ST) {
+      [['.m-o', -16], ['.m-s', 10], ['.m-c', -7]].forEach(([sel, y]) => {
+        gsap.to(sel, { y, ease: 'none',
+          scrollTrigger: { trigger: '#hero', start: 'top top', end: 'bottom top', scrub: true } });
+      });
     }
   });
-}, { threshold: 0.2 });
-document.querySelectorAll('[data-reveal]').forEach((el, i) => {
-  if (el.closest('.program-grid')) el.style.transitionDelay = (i % 3) * 0.12 + 's';
-  revealObserver.observe(el);
-  /* 保険: 何らかの理由でIntersectionObserverが発火しなかった場合に備え、
-     一定時間後は強制的に表示する（要素が永久に見えないままになるのを防ぐ）。 */
-  setTimeout(() => el.classList.add('in-view'), 2500);
-});
+} else {
+  /* no GSAP (offline / blocked CDN): show everything, no motion */
+  document.querySelectorAll('[data-reveal]').forEach((el) => { el.style.opacity = 1; });
+}
 
-/* ===== 7. Reservation: passphrase gate, service toggle, slot data, picker, submit =====
+/* Insurance, deliberately narrow. Content must never be permanently invisible
+   because a trigger failed to fire — but a blanket timer would defeat every
+   scroll reveal on the page, since the user reaches them well after it runs.
+   So this rescues only what is already ON SCREEN and still hidden; anything
+   below the fold keeps its animation. */
+setTimeout(() => {
+  const vh = window.innerHeight;
+  document.querySelectorAll('[data-reveal], .composition .cell').forEach((el) => {
+    const r = el.getBoundingClientRect();
+    const onScreen = r.top < vh && r.bottom > 0;
+    if (onScreen && parseFloat(getComputedStyle(el).opacity) < 0.99) {
+      el.style.opacity = '1';
+      el.style.transform = 'none';
+    }
+  });
+}, 2500);
+
+/* ===== 3. Reservation: passphrase gate, service toggle, slot data, picker, submit =====
    Facility rental is pool-only (パーソナルアクア). Personal training is a
    separate coached service with no fixed slot calendar, handled as a
    simple date/time request that gets a personal reply.
@@ -1572,6 +1306,7 @@ function unlockGate() {
   gateEl.hidden = true;
   gatedContent.hidden = false;
   localStorage.setItem(GATE_STORAGE_KEY, '1');
+  if (typeof ScrollTrigger !== 'undefined') ScrollTrigger.refresh();
 }
 
 function tryUnlockGate() {
@@ -1579,6 +1314,8 @@ function tryUnlockGate() {
     unlockGate();
   } else {
     gateError.style.display = 'block';
+    gateInput.setAttribute('aria-invalid', 'true');
+    gateInput.focus();
   }
 }
 
@@ -1590,8 +1327,13 @@ gateInput.addEventListener('keydown', (e) => {
   if (e.key === 'Enter') {
     e.preventDefault();
     tryUnlockGate();
+    // Enter must stop here: the reset below is for typing a correction, and
+    // falling through to it wiped the error message on the same tick it was
+    // set, so a wrong passphrase entered with Enter failed silently.
+    return;
   }
   gateError.style.display = 'none';
+  gateInput.removeAttribute('aria-invalid');
 });
 
 const toggleAqua = document.getElementById('toggle-aqua');
@@ -1607,9 +1349,19 @@ function setService(service) {
   toggleTraining.setAttribute('aria-selected', String(!isAqua));
   panelAqua.hidden = !isAqua;
   panelTraining.hidden = isAqua;
+  if (typeof ScrollTrigger !== 'undefined') ScrollTrigger.refresh();
 }
 toggleAqua.addEventListener('click', () => setService('aqua'));
 toggleTraining.addEventListener('click', () => setService('training'));
+[toggleAqua, toggleTraining].forEach((tab) => {
+  tab.addEventListener('keydown', (e) => {
+    if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
+    e.preventDefault();
+    const next = tab === toggleAqua ? toggleTraining : toggleAqua;
+    setService(next === toggleAqua ? 'aqua' : 'training');
+    next.focus();
+  });
+});
 
 /* --- パーソナルアクア: slot data, picker, submit ---
    SLOTS mirrors Notion's 「空き状況カレンダー」データベースを、最後に手動で
@@ -1665,8 +1417,10 @@ Object.entries(slotsByDate).forEach(([date, daySlots]) => {
     btn.className = 'slot';
     btn.dataset.id = slot.id;
     btn.textContent = slot.time;
+    btn.setAttribute('aria-pressed', 'false');
     btn.addEventListener('click', () => {
       const isSelected = btn.classList.toggle('selected');
+      btn.setAttribute('aria-pressed', String(isSelected));
       isSelected ? selectedSlots.add(slot.id) : selectedSlots.delete(slot.id);
       if (selectedSlots.size > 0) slotError.style.display = 'none';
     });
@@ -1705,18 +1459,24 @@ const confirmModalBody = document.getElementById('confirm-modal-body');
 const confirmModalBack = document.getElementById('confirm-modal-back');
 const confirmModalSend = document.getElementById('confirm-modal-send');
 let pendingSend = null; // 「送信する」が押されたときに実行する関数
+let lastFocused = null;
 
 function openConfirmModal(rows, onSend) {
   confirmModalBody.innerHTML = rows
     .map(([label, value]) => `<div class="confirm-modal-row"><dt>${label}</dt><dd>${value}</dd></div>`)
     .join('');
   pendingSend = onSend;
+  lastFocused = document.activeElement;
+  ['site-header', 'main', 'site-footer'].forEach((id) => { const el = document.getElementById(id); if (el) el.inert = true; });
   confirmModalOverlay.hidden = false;
+  confirmModalSend.focus();
 }
 
 function closeConfirmModal() {
   confirmModalOverlay.hidden = true;
   pendingSend = null;
+  ['site-header', 'main', 'site-footer'].forEach((id) => { const el = document.getElementById(id); if (el) el.inert = false; });
+  if (lastFocused && typeof lastFocused.focus === 'function') lastFocused.focus();
 }
 
 confirmModalBack.addEventListener('click', closeConfirmModal);
@@ -1782,8 +1542,8 @@ async function sendReserveForm(name, chosen) {
     confirmMsg.textContent = `${name} 様、以下の日時でご予約リクエストを承りました：${chosen}。24時間以内を目安に、レーンの確保状況についてご返信いたします。`;
     form.reset();
     selectedSlots.clear();
-    slotGrid.querySelectorAll('.slot.selected').forEach((el) => el.classList.remove('selected'));
-    submitBtn.textContent = '送信完了 ✓';
+    slotGrid.querySelectorAll('.slot.selected').forEach((el) => { el.classList.remove('selected'); el.setAttribute('aria-pressed', 'false'); });
+    submitBtn.textContent = '送信完了';
     submitBtn.classList.add('sent');
     setTimeout(() => {
       submitBtn.textContent = originalLabel;
@@ -1833,7 +1593,7 @@ async function sendTrainingForm(name, dates) {
   if (ok) {
     confirmMsgTraining.textContent = `${name} 様、パーソナルトレーニングのご希望日時（${dates}）を承りました。24時間以内を目安に、担当よりご連絡いたします。`;
     trainingForm.reset();
-    submitBtn.textContent = '送信完了 ✓';
+    submitBtn.textContent = '送信完了';
     submitBtn.classList.add('sent');
     setTimeout(() => {
       submitBtn.textContent = originalLabel;
@@ -1847,6 +1607,5 @@ async function sendTrainingForm(name, dates) {
   }
 }
 </script>
-
 </body>
 </html>
