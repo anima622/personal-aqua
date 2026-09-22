@@ -474,6 +474,7 @@ footer{position:relative;z-index:1;background:var(--color-fill-solid);color:var(
   .pill{width:100%;justify-content:center}
   .confirm-modal-row{grid-template-columns:minmax(0,1fr)}
 }
+.swim-lab-entry{display:grid;grid-template-columns:1fr 1fr;gap:8vw;padding:80px max(6vw,24px);border-top:1px solid var(--color-border);background:var(--color-accent-wash)}.swim-lab-entry h2{font-size:clamp(28px,4vw,48px);line-height:1.5;margin:12px 0}.swim-lab-entry p{line-height:2;max-width:34em}.swim-lab-eyebrow{font-size:13px;letter-spacing:.12em}.swim-lab-entry .pill{margin-top:20px}.swim-lab-entry svg{width:20px;height:20px}@media(max-width:700px){.swim-lab-entry{grid-template-columns:1fr;gap:20px;padding-block:48px}}
 </style>
 </head>
 <body>
@@ -552,6 +553,7 @@ footer{position:relative;z-index:1;background:var(--color-fill-solid);color:var(
   <a href="#service">Service<small>02 ご利用シーン</small></a>
   <a href="#flow">Flow<small>03 ご予約の流れ</small></a>
   <a href="#reserve">Reserve<small>04 ご予約</small></a>
+  <a href="swim-flow-lab.html">Swim Flow Lab<small>水泳のしくみを学ぶ</small></a>
   <a href="#reserve" class="pill solid mm-cta">ご予約へ</a>
 </div>
 
@@ -925,6 +927,12 @@ footer{position:relative;z-index:1;background:var(--color-fill-solid);color:var(
   </div>
 </section>
 
+
+<!-- SWIM FLOW LAB: optional learning entry; reservation flow is unchanged. -->
+<section class="swim-lab-entry" aria-labelledby="swim-lab-title">
+ <div><p class="swim-lab-eyebrow">水泳をもっと知る</p><h2 id="swim-lab-title">水の流れから<br>泳ぎを見つめる</h2></div>
+ <div><p>姿勢を変えると、水の流れはどう変わるのか。SWIM FLOW LAB は、シミュレーターと研究の解説を行き来しながら、水泳の「なぜ」を学べるサイトです。</p><a class="pill solid" href="swim-flow-lab.html">学び方とサイトを見る <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></a></div>
+</section>
 </main>
 
 <!-- ===== Ft4 statement close ===== -->
@@ -940,6 +948,7 @@ footer{position:relative;z-index:1;background:var(--color-fill-solid);color:var(
         <div class="display">Personal<br>Aqua<small>パーソナルアクア — Private Pool Reservation</small></div>
       </div>
       <nav class="foot-links" aria-label="フッター" data-reveal data-reveal-group>
+        <a href="swim-flow-lab.html">SWIM FLOW LAB 水泳のしくみを学ぶ <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></a>
         <a href="#about">01 パーソナルアクアとは <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.75 5a.75.75 0 0 0 0 1.5h9.69L5.22 17.72a.75.75 0 1 0 1.06 1.06L17.5 7.56v9.69a.75.75 0 0 0 1.5 0V5.75a.75.75 0 0 0-.75-.75z"/></svg></a>
         <a href="#service">02 ご利用シーン <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.75 5a.75.75 0 0 0 0 1.5h9.69L5.22 17.72a.75.75 0 1 0 1.06 1.06L17.5 7.56v9.69a.75.75 0 0 0 1.5 0V5.75a.75.75 0 0 0-.75-.75z"/></svg></a>
         <a href="#flow">03 ご予約の流れ <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.75 5a.75.75 0 0 0 0 1.5h9.69L5.22 17.72a.75.75 0 1 0 1.06 1.06L17.5 7.56v9.69a.75.75 0 0 0 1.5 0V5.75a.75.75 0 0 0-.75-.75z"/></svg></a>

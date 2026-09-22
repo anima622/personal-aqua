@@ -1,0 +1,22 @@
+(() => {
+  const hero=document.querySelector('.hero');
+  const video=document.createElement('video');
+  video.className='water water-film';
+  video.src='/personal-aqua/swim-flow-lab/water-film-original-upscale-4k.mp4';
+  video.poster='/personal-aqua/swim-flow-lab/water-atlas.webp';
+  video.muted=true;video.loop=true;video.playsInline=true;video.preload='metadata';
+  video.setAttribute('aria-hidden','true');
+  hero.insertBefore(video,hero.querySelector('.water').nextSibling);
+  const reduced=matchMedia('(prefers-reduced-motion: reduce)');
+  let wanted=!reduced.matches,visible=true;
+  const button=document.createElement('button');button.type='button';button.className='motion-toggle';
+  const label=()=>{button.textContent=video.paused?'水の動画を再生':'水の動画を停止';};
+  const sync=()=>{if(wanted&&visible&&!document.hidden){video.play().catch(()=>{wanted=false;label();});}else video.pause();};
+  video.addEventListener('play',label);video.addEventListener('pause',label);
+  video.addEventListener('error',()=>{video.hidden=true;button.textContent='動画を読み込めません';button.disabled=true;});
+  button.addEventListener('click',()=>{wanted=video.paused;sync();});
+  reduced.addEventListener('change',()=>{wanted=!reduced.matches;sync();});
+  document.addEventListener('visibilitychange',sync);
+  new IntersectionObserver(([entry])=>{visible=entry.isIntersecting;sync();}).observe(hero);
+  hero.querySelector('.foot').append(button);label();sync();
+})();

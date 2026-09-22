@@ -1,0 +1,1 @@
+import{n as e}from"./index-BjOkD9my.js";var t=e();function n(e){return(0,t.jsx)(`a`,{...e})}function r(){throw Error(`Article not found`)}export{r as n,n as t};

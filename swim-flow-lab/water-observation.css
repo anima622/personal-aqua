@@ -1,0 +1,115 @@
+.observation{height:200svh;background:#071f2d;color:#eefaff;position:relative}.observation-stage{height:100svh;min-height:600px;position:sticky;top:0;overflow:hidden;isolation:isolate}.observation-canvas{position:absolute;inset:0;z-index:-2}.observation-canvas canvas{display:block;width:100%;height:100%}.observation-stage:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,#021622cc,transparent 65%);z-index:-1;pointer-events:none}.observation-top{position:absolute;top:20px;left:6vw;right:6vw;display:flex;justify-content:space-between;align-items:center;gap:16px;font:12px Arial;letter-spacing:.1em}.observation-top a{padding:18px 0}.observation-copy{position:absolute;left:7vw;top:22%;width:40%;max-width:540px}.observation-kicker{font-size:14px;letter-spacing:.15em}.observation-copy h2{font-family:"dnp-shuei-gothic-gin-std",sans-serif;font-size:clamp(42px,5.4vw,78px);font-weight:600;line-height:1.3;margin:20px 0 35px}.observation-note{border-left:1px solid #96d7e0;padding:0 0 0 22px;max-width:340px}.observation-number{font:12px Arial;letter-spacing:.13em;color:#a2dbe4}.observation-question{font-size:18px;font-weight:600;line-height:1.75;margin:14px 0 8px}.observation-detail{font-size:15px;line-height:1.9;color:#cce3e9}.observation-bottom{position:absolute;bottom:52px;left:7vw;right:7vw;display:flex;align-items:center;gap:24px}.observation-toggle{padding:14px;color:inherit;border:1px solid #709ca9;background:#092637;font:14px sans-serif;min-height:48px;cursor:pointer}.observation-hint{font:11px Arial;letter-spacing:.1em}.observation-progress{flex:1;max-width:220px;height:2px;background:#42616f}.observation-progress i{display:block;width:100%;height:100%;background:#c3f9ff;transform:scaleX(var(--progress,0));transform-origin:left}.observation-credit{position:absolute;bottom:10px;left:7vw;font-size:12px;color:#9bbbc8}.observation-fallback{display:none}.observation.is-static{height:auto}.is-static .observation-stage{position:relative}.observation.is-unavailable .observation-fallback{display:block;position:absolute;right:6vw;top:50%;font-size:18px;line-height:2}.observation.is-unavailable .observation-toggle{display:none}@media(max-width:700px){.observation-stage{min-height:760px}.observation-copy{top:auto;bottom:150px;width:86%;max-width:none}.observation-copy h2{font-size:40px;line-height:1.25;margin:12px 0 22px}.observation-note{max-width:100%;padding-left:16px}.observation-question{font-size:16px}.observation-detail{font-size:14px}.observation-top{font-size:10px}.observation-bottom{bottom:48px;gap:14px;flex-wrap:wrap}.observation-hint{font-size:10px}.observation-progress{max-width:none;width:100%;flex-basis:100%}.observation-stage:after{background:linear-gradient(0deg,#021622ee,transparent 90%)}.observation-credit{font-size:12px}.observation.is-unavailable .observation-fallback{top:20%;left:7vw;font-size:16px}}
+/* Blend the approved hero into the observation before its sticky phase. */
+.observation{margin-top:-1px}.observation-stage:before{content:"";position:absolute;inset:0 0 auto;height:24vh;background:linear-gradient(#061f30,transparent);pointer-events:none;z-index:-1}.hero{position:relative}.hero:before{content:"";position:absolute;inset:auto 0 0;height:18vh;background:linear-gradient(transparent,#061f30);pointer-events:none;z-index:-1}.observation-top{top:28px}
+
+.water-fields{background:#e7eeee;color:#103440;padding:85px 7vw}.fields-heading{display:grid;grid-template-columns:1.2fr 1fr;gap:50px;align-items:end;margin:55px 0}.fields-heading h2{font-family:"dnp-shuei-gothic-gin-std",sans-serif;font-size:clamp(30px,4vw,56px);font-weight:600;line-height:1.5;margin:0}.fields-heading p{line-height:2;font-size:16px}.field-list{display:grid;grid-template-columns:1fr 1fr;gap:0 65px}.field-list article{padding:40px 0;border-top:1px solid #90aab3}.field-index{font:12px Arial;letter-spacing:.14em;color:#486e7a}.field-list h3{font-size:25px;line-height:1.6;margin:22px 0 16px}.field-list p{font-size:16px;line-height:2;max-width:34em}.field-list summary{cursor:pointer;padding:18px 0;font-size:14px;line-height:1.8}.field-list details a{display:inline-block;padding:14px 0;text-decoration:underline;font-size:14px;line-height:1.8}.fields-bridge{border-top:1px solid #90aab3;padding-top:40px;margin-top:40px;line-height:2}.fields-bridge .read{margin-top:0}@media(max-width:700px){.water-fields{padding:55px 6vw}.fields-heading,.field-list{grid-template-columns:1fr;gap:24px}.fields-heading{margin:32px 0}.field-list article{padding:26px 0}.field-list h3{font-size:23px}}
+
+/* Use one opaque junction color and fade the canvas itself, not a translucent overlay. */
+.hero:before{height:30vh;background:linear-gradient(to bottom,transparent 0%,#071f2d 100%);z-index:0}.hero .header,.hero .copy,.hero .foot{position:relative;z-index:1}.hero:after{background:linear-gradient(0deg,#071f2d,transparent 85%)}.observation{background:#071f2d}.observation-stage{background:#071f2d}.observation-stage:before{display:none}.observation-canvas{mask-image:linear-gradient(to bottom,transparent 0%,#000 32%);-webkit-mask-image:linear-gradient(to bottom,transparent 0%,#000 32%)}.observation-stage:after{mask-image:linear-gradient(to bottom,transparent,#000 32%);-webkit-mask-image:linear-gradient(to bottom,transparent,#000 32%)}
+
+/* Shared transition into the vortex: fade geometry before its rectangular edge. */
+.observation{background:#031921}.observation-stage{background:linear-gradient(to bottom,#071f2d 0%,#071f2d 55%,#031921 100%)}
+.observation-canvas,.observation-stage:after{mask-image:linear-gradient(to bottom,transparent 0%,#000 32%,#000 65%,transparent 100%);-webkit-mask-image:linear-gradient(to bottom,transparent 0%,#000 32%,#000 65%,transparent 100%)}
+
+/* One shared viewport carries the hero, falling drop and ripple. */
+.water-journey{height:340svh;position:relative;background:#071f2d}
+.journey-frame{position:sticky;top:0;height:100svh;overflow:hidden;isolation:isolate}
+.water-journey .hero{position:absolute;inset:0;min-height:0;height:100%;z-index:2;opacity:var(--hero-alpha,1);transform:translateY(var(--hero-lift,0px));will-change:opacity,transform}
+.water-journey .hero:before{display:none}
+.water-journey .observation{position:absolute;inset:0;height:100%;margin:0;background:transparent;z-index:1}
+.water-journey .observation-stage{position:relative;height:100%;min-height:0;background:transparent}
+.water-journey .observation-canvas{opacity:var(--scene-alpha,0);mask-image:none;-webkit-mask-image:none}
+.water-journey .observation-stage:after{background:linear-gradient(90deg,#071f2d99,transparent 55%);mask-image:none;-webkit-mask-image:none}
+.water-journey .observation-copy{top:24%;opacity:var(--reading-alpha,0);max-width:410px;width:35%}
+.water-journey .observation-copy h2{font-size:clamp(35px,4.2vw,66px)}
+.water-journey .observation-top,.water-journey .observation-bottom,.water-journey .observation-credit{opacity:var(--scene-alpha,0)}
+.journey-next{position:absolute;bottom:100px;left:7vw;font-size:14px;line-height:1.9;opacity:var(--exit-alpha,0);visibility:hidden;max-width:40%}
+.journey-next span{display:block;font-weight:600;font-size:18px;margin-top:12px}
+.water-journey[data-phase="next"] .journey-next{visibility:visible}
+.water-journey[data-phase="next"] .observation-note{opacity:0}
+@media(max-width:700px){.water-journey{height:340svh}.water-journey .observation-copy{top:auto;bottom:140px;width:86%;max-width:none}.water-journey .observation-copy h2{font-size:32px;margin:8px 0 16px}.water-journey .observation-note{max-width:310px}.journey-next{max-width:86%;bottom:110px}.water-journey[data-phase="next"] .observation-copy{opacity:0}}
+@media(prefers-reduced-motion:reduce){.water-journey{height:auto}.journey-frame{position:relative;height:auto;overflow:visible}.water-journey .hero{position:relative;opacity:1;transform:none;min-height:100svh}.water-journey .observation{position:relative;height:100svh}.water-journey .observation-copy,.water-journey .observation-canvas,.water-journey .observation-top,.water-journey .observation-bottom{opacity:1}.journey-next{visibility:visible;opacity:1}}
+
+.water-journey:not([data-phase="entry"]) .hero{pointer-events:none}.journey-steps{display:flex;gap:16px}.journey-steps button{border:0;border-bottom:1px solid #678590;padding:10px 0;color:#c6e6ef;background:transparent;font:12px sans-serif;cursor:pointer}.journey-steps button:focus-visible{outline:2px solid white;outline-offset:3px}@media(max-width:700px){.water-journey .observation-bottom{bottom:36px}.water-journey .observation-progress{display:none}}
+
+.water-journey .observation-bottom{isolation:isolate}.water-journey .observation-bottom:before{content:"";position:absolute;inset:-16px -16px -24px;background:#071f2de8;filter:blur(12px);z-index:-1}.water-journey .observation-hint{font-size:12px}.water-journey .observation-credit{bottom:10px}
+
+@media(prefers-reduced-motion:reduce){.journey-steps{display:none}.journey-next{display:none}}
+
+.journey-steps button{min-height:44px}
+/* Approved film: one continuous viewport, with a light reading treatment. */
+.film-journey{height:420svh}.film-journey .observation-stage{min-height:0;background:#e3e8eb;color:#102c38}.film-journey .observation-canvas video{width:100%;height:100%;object-fit:cover;object-position:57% center;display:block}.film-journey .observation-stage:after{mask-image:none;-webkit-mask-image:none;background:linear-gradient(90deg,#eef2f470,transparent 45%);opacity:1}.film-journey .observation-stage:before{display:block;inset:0;height:auto;background:#031921;opacity:var(--film-shade,0);z-index:0}.film-journey .observation-copy{top:16%;width:35%;opacity:var(--scene-alpha)}.film-journey .observation-copy h2{font-size:clamp(28px,3.4vw,52px);margin:12px 0 22px}.film-journey .observation-number,.film-journey .observation-detail,.film-journey .observation-credit{color:#304e5b}.film-journey .observation-note{border-color:#597682}.film-journey .observation-bottom:before{display:none}.film-journey .journey-steps button{color:inherit;border-color:#567581}.film-journey .journey-next{z-index:2;color:#e9f7fa}.film-journey[data-phase=next] .observation-copy{opacity:0}.film-journey[data-phase=next] .observation-top,.film-journey[data-phase=next] .observation-bottom{color:#e9f7fa}
+@media(max-width:700px){.film-journey .observation-canvas video{object-fit:contain;background:#e3e8eb}.film-journey .observation-copy{top:12%;bottom:auto;width:86%}.film-journey .observation-copy h2{font-size:28px}.film-journey .observation-note{border:0;padding:0}.film-journey .observation-detail{font-size:13px}.film-journey .observation-bottom{bottom:36px}.film-journey .journey-steps{gap:14px}.film-journey .observation-hint{display:none}}
+@media(prefers-reduced-motion:reduce){.film-journey{height:auto}.film-journey .observation-stage:before{opacity:0}.film-journey .observation-copy{opacity:1}.film-journey .observation-canvas{opacity:1}}
+/* Keep the film edge-to-edge on narrow screens; never expose a letterbox band. */
+@media(max-width:700px){.film-journey .observation-canvas video{object-fit:cover;object-position:55% center}.film-journey .observation-copy{bottom:auto;top:13%}.film-journey .observation-copy h2{font-size:28px}.film-journey .observation-note{max-width:270px}}
+.film-journey .observation-copy{opacity:var(--film-copy,0)}
+.film-journey .journey-steps button{min-height:44px}
+.film-journey.journey-reduced .observation-copy{opacity:1}
+/* Observation UI: the approved film and its scroll mapping are unchanged. */
+.film-journey .observation-bottom{flex-wrap:wrap;gap:12px 24px}
+.film-journey .observation-hint,.film-journey .observation-progress{display:none}
+.water-discover{display:flex;align-items:center;gap:18px;width:100%;font-size:14px;font-weight:600}
+.discover-label{font-size:10px;letter-spacing:.1em;opacity:.65}.discover-arrow{display:inline-block;animation:water-invite 2.4s ease-in-out 3}
+@keyframes water-invite{0%,100%{transform:translateY(0)}50%{transform:translateY(7px)}}
+.journey-steps button[aria-current=step]{border-bottom:3px solid currentColor;font-weight:800}
+.water-research{font-size:13px;line-height:1.8;margin-top:14px}.water-research summary{cursor:pointer;min-height:32px;text-decoration:underline;text-underline-offset:5px}.water-research>div{background:#f5f8f9;color:#12313c;padding:18px;max-height:240px;overflow:auto;box-shadow:0 5px 20px #001b2222}.water-research a{display:block;text-decoration:underline;margin:10px 0}.water-research p{margin:0 0 12px}
+.film-journey .observation-note{max-width:390px}.film-journey .observation-detail{font-size:15px;line-height:1.8}
+@media(max-width:700px){.water-discover{font-size:12px;gap:10px}.discover-label{display:none}.film-journey .observation-copy h2{font-size:22px;margin:8px 0 14px}.film-journey .observation-question{font-size:15px;margin:8px 0}.film-journey .observation-detail{font-size:13px}.water-research>div{max-height:150px}.film-journey .observation-copy{top:10%}.film-journey .journey-steps{display:flex;flex-wrap:wrap;gap:8px}}
+@media(prefers-reduced-motion:reduce){.discover-arrow{animation:none}.journey-reduced .journey-steps,.journey-reduced .water-discover{display:none}}
+.film-journey .observation-note{background:linear-gradient(90deg,#f1f5f8f5,#f1f5f8e8);padding:14px 18px;border-left:2px solid #84a9b7}.film-journey .observation-detail{color:#173542}.film-journey .water-research>div{box-shadow:none;padding:10px 0;background:transparent}
+/* Editorial observation: an uninterrupted film with a quiet reading foreground. */
+.film-journey .observation-stage:after{background:linear-gradient(0deg,#031921 0%,#031921f5 17%,#031921a8 29%,transparent 49%);z-index:-1}
+.film-journey .observation-copy{top:11%;left:6vw;width:34%;max-width:460px}
+.film-journey .observation-copy h2{font-size:clamp(28px,3.4vw,52px);line-height:1.25;letter-spacing:-.035em;margin:10px 0}
+.film-journey .observation-note{position:absolute;left:6vw;right:6vw;bottom:145px;max-width:none;background:none;border:0;padding:0;display:grid;grid-template-columns:140px 1fr 1fr;column-gap:30px;align-items:start;color:#eff8f8;opacity:var(--film-copy,0)}
+.film-journey .observation-number{grid-row:1 / 3;font:600 clamp(36px,5vw,72px)/1 Arial,sans-serif;letter-spacing:-.05em;color:#a4d0d4}
+.film-journey .observation-number small{display:block;font-size:11px;letter-spacing:.16em;margin-top:12px}
+.film-journey .observation-question{margin:0;font-size:clamp(20px,2.2vw,32px);line-height:1.5;letter-spacing:.015em}
+.film-journey .observation-detail{margin:0;color:#d6e5e8;font-size:14px;line-height:1.9}
+.film-journey .water-research{grid-column:3;margin:4px 0 0;color:#d6e5e8}
+.film-journey .water-research>div{position:absolute;right:0;bottom:48px;width:min(450px,80vw);max-height:55vh;overflow:auto;background:#092a35;padding:24px;color:#eff8f8;border:1px solid #57808a}
+.film-journey .observation-bottom{left:6vw;right:6vw;bottom:32px;color:#eff8f8;gap:8px}
+.film-journey .water-discover{font-size:13px;justify-content:flex-end}
+.film-journey .journey-steps{width:100%;display:flex;gap:24px}
+.film-journey .journey-steps button{flex:1;text-align:left;color:#bfd5da;border-color:#46616a;position:relative}
+.film-journey .journey-steps button[aria-current=step]{color:#fff;border-bottom-color:#b7eef0}
+.film-journey .observation-credit{bottom:5px;left:6vw;font-size:10px;color:#90aeb7}
+@media(max-width:700px){
+.film-journey .observation-copy{top:10%;width:75%}.film-journey .observation-copy h2{font-size:27px}
+.film-journey .observation-note{left:6vw;right:6vw;bottom:145px;grid-template-columns:60px 1fr;gap:8px 18px}
+.film-journey .observation-number{font-size:44px;grid-row:1 / 4}.film-journey .observation-number small{font-size:9px}
+.film-journey .observation-question{font-size:18px}.film-journey .observation-detail{grid-column:2;font-size:12px;line-height:1.7}
+.film-journey .water-research{grid-column:2;font-size:12px}
+.film-journey .observation-stage:after{background:linear-gradient(0deg,#031921 0%,#031921f5 28%,transparent 58%)}
+.film-journey .journey-steps{gap:8px;flex-wrap:nowrap}.film-journey .journey-steps button{font-size:10px}
+.film-journey .water-discover{font-size:11px}.film-journey .observation-bottom{bottom:28px}
+}
+@media(prefers-reduced-motion:reduce){.film-journey .observation-note{opacity:1}}
+.film-journey .observation-question{text-wrap:balance;word-break:normal;overflow-wrap:anywhere}
+.film-journey .observation-detail{text-wrap:pretty}
+.film-journey .journey-steps{position:relative;padding-top:6px}
+.film-journey .journey-steps:before{content:"";position:absolute;left:0;right:0;top:0;height:2px;background:#a4d0d4;transform:scaleX(var(--progress,0));transform-origin:left;pointer-events:none}
+@media(min-width:701px) and (max-height:720px){
+.film-journey .observation-stage:after{background:linear-gradient(0deg,#031921 0%,#031921f5 24%,#031921d9 37%,transparent 57%)}
+.film-journey .observation-note{bottom:132px}
+.film-journey .observation-question{font-size:24px}
+}
+/* Final journey controls: keyboard and pointer share the same scene movement. */
+.film-journey .water-discover{border:0;background:none;color:inherit;padding:8px 0;cursor:pointer;min-height:44px;text-align:right;font-family:inherit}
+.film-journey .water-discover:hover .discover-arrow{transform:translateY(4px)}
+.film-journey .water-discover:focus-visible,.film-journey .journey-next:focus-visible,.film-journey .water-research summary:focus-visible{outline:2px solid #95dce5;outline-offset:4px}
+.film-journey[data-phase=next] .water-discover{visibility:hidden}
+.film-journey .journey-next{bottom:155px;font-size:16px;max-width:80%;left:6vw}
+.film-journey .journey-next span{font-size:clamp(24px,3vw,42px);line-height:1.4}
+.film-journey.journey-reduced .observation-note{opacity:1}
+@media(max-height:500px){.film-journey .observation-copy{top:65px}.film-journey .observation-copy h2{font-size:22px}.film-journey .observation-kicker{display:none}.film-journey .observation-note{bottom:120px}.film-journey .observation-question{font-size:18px}.film-journey .observation-detail{font-size:12px}.film-journey .observation-number{font-size:36px}}
+@media(max-height:500px){
+.film-journey .observation-stage:after{background:linear-gradient(0deg,#031921 0%,#031921f5 38%,#031921df 58%,transparent 82%)}
+.film-journey .observation-note{bottom:108px;grid-template-columns:64px 1fr 1fr;column-gap:18px}
+.film-journey .observation-question{font-size:16px}.film-journey .observation-detail{font-size:11px;line-height:1.5}
+.film-journey .water-research{font-size:11px;margin:0}.film-journey .observation-bottom{bottom:24px;gap:0}
+.film-journey .water-discover{min-height:32px;padding:0;font-size:11px}.film-journey .journey-steps button{min-height:36px;font-size:11px}
+.film-journey .journey-next{bottom:125px;font-size:13px}.film-journey .journey-next span{font-size:24px}
+}
+@media(prefers-reduced-motion:reduce){.film-journey .journey-next{display:block;visibility:visible;opacity:1;bottom:48px;font-size:12px}.film-journey .journey-next span{font-size:20px;margin-top:6px}.film-journey .observation-note{bottom:150px}}

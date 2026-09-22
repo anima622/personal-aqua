@@ -1,0 +1,21 @@
+:root,:host{--interaction-ease:cubic-bezier(.23,1,.32,1)}
+:where(button,[role=button],a,summary){-webkit-tap-highlight-color:#21879a33}
+:where(button,[role=button],summary){cursor:pointer}
+:where(button,[role=button],summary,a){transition:translate 180ms var(--interaction-ease),scale 140ms var(--interaction-ease),color 180ms ease,background-color 180ms ease;text-underline-offset:.22em}
+:where(button,[role=button],summary,a):focus-visible{outline:2px solid #29879a;outline-offset:4px}
+:where(button,[role=button],summary,a):active{scale:.98}
+:where(button:disabled,[aria-disabled=true]){scale:1;translate:none;cursor:default}
+@media(hover:hover) and (pointer:fine){
+ :where(button:not(:disabled),[role=button]:not([aria-disabled=true]),summary):hover{translate:0 -2px}
+ :where(a):hover{text-decoration-thickness:2px;text-decoration-line:underline}
+ :where(a[class*="btn"],a[class*="button"],a[class*="cta"],.return-link,.card-read):hover{translate:0 -2px}
+}
+@media(prefers-reduced-motion:reduce){:where(button,[role=button],summary,a){transition:color 150ms ease,background-color 150ms ease;translate:none!important;scale:1!important}}
+/* Hover carries a slow glide; pressing still responds immediately. */
+:root,:host{--flow-ease:cubic-bezier(.25,.46,.45,.94)}
+:where(button,[role=button],summary,a){transition:translate 700ms var(--flow-ease),scale 140ms var(--interaction-ease),color 650ms ease,background-color 650ms ease}
+@media(hover:hover) and (pointer:fine){
+ :where(button:not(:disabled),[role=button]:not([aria-disabled=true]),summary):hover{translate:0 -5px}
+ :where(a[class*="btn"],a[class*="button"],a[class*="cta"],.return-link,.card-read):hover{translate:0 -5px}
+}
+@media(prefers-reduced-motion:reduce){:where(button,[role=button],summary,a){transition:color 150ms ease,background-color 150ms ease}}
