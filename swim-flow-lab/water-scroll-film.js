@@ -25,9 +25,13 @@ if(section){
  for(const node of nodes){const frag=document.createDocumentFragment();for(const char of Array.from(node.textContent)){const mask=document.createElement('span');mask.className='letter-mask';const glyph=document.createElement('span');glyph.className='letter-rise';glyph.textContent=char;mask.append(glyph);frag.append(mask);}node.replaceWith(frag);}
  }
  const chapterHeading=section.querySelector('.observation-copy h2');splitHeading(chapterHeading);
- let headingEntered=false;
- function riseLetters(el){if(!gs||pref.matches)return;gs.fromTo(el.querySelectorAll('.letter-rise'),{yPercent:110,opacity:0},{yPercent:0,opacity:1,duration:.65,stagger:.035,ease:'power3.out',overwrite:true});}
- function paintHeading(p){const entered=p>=.19||pref.matches;if(entered&&!headingEntered)riseLetters(chapterHeading);headingEntered=entered;}
+ let headingEntered=false,introReady=false,introTimer=0; journey.element.dataset.intro='waiting';
+ function riseLetters(el,delay=0){if(!gs||pref.matches)return;gs.fromTo(el.querySelectorAll('.letter-rise'),{yPercent:135,rotation:5,opacity:0},{yPercent:0,rotation:0,opacity:1,duration:1.25,delay,stagger:Math.min(.055,1.4/Math.max(1,el.querySelectorAll('.letter-rise').length)),ease:'power3.out',overwrite:true});}
+ function paintHeading(p){
+  if(pref.matches){clearTimeout(introTimer);headingEntered=true;introReady=true;journey.element.dataset.intro='detail';return;}
+  if(p<.18){clearTimeout(introTimer);headingEntered=false;introReady=false;detailEntered=false;journey.element.dataset.intro='waiting';gs?.killTweensOf(chapterHeading.querySelectorAll('.letter-rise'));return;}
+  if(p>=.24&&!headingEntered){headingEntered=true;journey.element.dataset.intro='title';riseLetters(chapterHeading);introTimer=setTimeout(()=>{introReady=true;journey.element.dataset.intro='detail';if(!detailEntered){detailEntered=true;animateDetail();}schedule();},gs?2400:0);}
+ }
  const phases=[
  {name:'DROP',title:'落ちるほど、勢いを持つ',text:'重力に引かれ、高さのエネルギーが運動のエネルギーへ変わります。',next:'触れた瞬間、水面の下では？',more:'落下の間に得た勢いは、着水によって水面の変形や周囲の流れへ移ります。まずは水滴だけでなく、受け止める水面にも目を向けてみてください。'},
  {name:'IMPACT',title:'水面の上と下が、一緒に動く',text:'落下の勢いが水面を押し広げ、くぼみと周囲の立ち上がりが連動します。',next:'水は、なぜ上にも立ち上がる？',more:'着水を、接触した瞬間の空気、広がるくぼみ、残される気泡の3つの問いから読み解きます。それぞれ別の研究を紹介します。'},
@@ -56,20 +60,20 @@ if(section){
   const heading=deck.querySelector('h3'),copy=deck.querySelector('.chapter-story>p');
   const active=deck.querySelector('[aria-current="step"]');
   gs.killTweensOf([copy,trigger,trigger.querySelector('span'),...deck.querySelectorAll('.chapter-rail button span,.chapter-rail button small')]);
-  riseLetters(heading);
+  riseLetters(heading);riseLetters(copy,.55);
   if(active){
    gs.fromTo(active.querySelector('span'),{y:34,opacity:0},{y:0,opacity:1,duration:.85,ease:'power3.out',overwrite:true});
    gs.fromTo(active.querySelector('small'),{x:-15,opacity:0},{x:0,opacity:1,duration:.75,delay:.15,ease:'power3.out',overwrite:true});
   }
-  gs.fromTo(copy,{clipPath:'inset(0 100% 0 0)',x:12,opacity:0},{clipPath:'inset(0 0% 0 0)',x:0,opacity:1,duration:1.1,delay:.22,ease:'power3.out',overwrite:true});
-  gs.fromTo(trigger,{y:22,opacity:0,scale:.97},{y:0,opacity:1,scale:1,duration:.8,delay:.42,ease:'power3.out',overwrite:true});
-  gs.fromTo(trigger.querySelector('span'),{rotation:-90},{rotation:0,duration:.8,delay:.5,ease:'power3.out',overwrite:true});
+  
+  gs.fromTo(trigger,{y:22,opacity:0,scale:.97},{y:0,opacity:1,scale:1,duration:1.2,delay:1.15,ease:'power3.out',overwrite:true});
+  gs.fromTo(trigger.querySelector('span'),{rotation:-90},{rotation:0,duration:1.2,delay:1.3,ease:'power3.out',overwrite:true});
  }
- function changePhase(next){gs?.killTweensOf(deck.querySelectorAll('.letter-rise'));const direction=next>phase?1:-1;phase=next;const data=phases[phase];journey.element.dataset.scene=String(phase);deck.querySelector('h3').textContent=data.title;splitHeading(deck.querySelector('h3'));deck.querySelector('.chapter-story>p').textContent=data.text;discover.querySelector('.discover-question').textContent=data.next;deck.querySelectorAll('[data-scene]').forEach((b,i)=>{b.setAttribute('aria-current',i===phase?'step':'false');b.tabIndex=0;});
+ function changePhase(next){gs?.killTweensOf(deck.querySelectorAll('.letter-rise'));const direction=next>phase?1:-1;phase=next;const data=phases[phase];journey.element.dataset.scene=String(phase);deck.querySelector('h3').textContent=data.title;splitHeading(deck.querySelector('h3'));deck.querySelector('.chapter-story>p').textContent=data.text;splitHeading(deck.querySelector('.chapter-story>p'));discover.querySelector('.discover-question').textContent=data.next;deck.querySelectorAll('[data-scene]').forEach((b,i)=>{b.setAttribute('aria-current',i===phase?'step':'false');b.tabIndex=0;});
  if(detailEntered)animateDetail();
  }
- function update(){pending=0;if(dialog.open)return;const p=journey.position();journey.paint(p);paintHeading(p);paintChapterNav(p);const logoT=Math.max(0,Math.min(1,(p-.035)/.205));journey.element.style.setProperty('--logo-progress',String(logoT*logoT*(3-2*logoT)));journey.element.style.setProperty('--film-copy',String(Math.max(0,Math.min(1,(p-.19)/.05))));const t=Math.max(0,Math.min(1,(p-.16)/.67));wanted=pref.matches?Math.max(0,(video.duration||6.29)-.05):t*Math.max(0,(video.duration||6.29)-.05);journey.element.style.setProperty('--progress',t);journey.element.style.setProperty('--film-shade',String(Math.max(0,Math.min(1,(p-.83)/.15))));journey.element.style.setProperty('--chapter-drift',pref.matches?'0px':`${(t-.5)*-12}px`);
- const next=pref.matches?3:t<.2?0:t<.35?1:t<.8?2:3;if(next!==phase)changePhase(next);if(!detailEntered&&p>=.225&&p<.83){detailEntered=true;animateDetail();}/* Reduced motion is a static reading surface: keep its research trigger available. */deck.inert=!pref.matches&&p>=.83;section.querySelectorAll('.journey-steps button').forEach((b,i)=>{b.setAttribute('aria-current',i===(p>=.83&&!pref.matches?4:phase)?'step':'false');});animation?.goToAndStop(t*89,true);seek();}
+ function update(){pending=0;if(dialog.open)return;const p=journey.position();journey.paint(p);paintHeading(p);paintChapterNav(p);const logoT=Math.max(0,Math.min(1,(p-.035)/.205));journey.element.style.setProperty('--logo-progress',String(logoT*logoT*(3-2*logoT)));journey.element.style.setProperty('--film-copy',headingEntered?'1':'0');journey.element.style.setProperty('--detail-ready',introReady?'1':'0');const t=Math.max(0,Math.min(1,(p-.16)/.67));wanted=pref.matches?Math.max(0,(video.duration||6.29)-.05):introReady?t*Math.max(0,(video.duration||6.29)-.05):0;journey.element.style.setProperty('--progress',t);journey.element.style.setProperty('--film-shade',String(Math.max(0,Math.min(1,(p-.83)/.15))));journey.element.style.setProperty('--chapter-drift',pref.matches?'0px':`${(t-.5)*-12}px`);
+ const next=pref.matches?3:t<.2?0:t<.35?1:t<.8?2:3;if(next!==phase)changePhase(next);if(!detailEntered&&introReady&&p>=.24&&p<.83){detailEntered=true;animateDetail();}/* Reduced motion is a static reading surface: keep its research trigger available. */deck.inert=!pref.matches&&p>=.83;section.querySelectorAll('.journey-steps button').forEach((b,i)=>{b.setAttribute('aria-current',i===(p>=.83&&!pref.matches?4:phase)?'step':'false');});animation?.goToAndStop(t*89,true);seek();}
  function schedule(){if(!pending)pending=requestAnimationFrame(update)}
  video.addEventListener('loadeddata',schedule);video.addEventListener('seeked',seek);video.addEventListener('error',()=>section.classList.add('is-unavailable'));addEventListener('scroll',schedule,{passive:true});addEventListener('resize',()=>{lenis.resize();schedule()});pref.addEventListener('change',()=>{lenis.options.smoothWheel=!pref.matches;schedule()});addEventListener('pageshow',schedule);update();
  if(new URLSearchParams(location.search).has('return')){const saved=Number(sessionStorage.getItem('water-return'));if(saved>=.24&&saved<=.83)requestAnimationFrame(()=>journey.go(saved));}

@@ -66,3 +66,11 @@ html{scroll-behavior:auto}.chapter-layout{--ink:#082b39;--muted:#446672;--accent
 @media(prefers-reduced-motion:reduce){.chapter-layout .research-trigger,.chapter-layout .research-trigger span{transition:none}}
 
 .research-links{grid-template-columns:1fr}.research-links a{display:block;padding:18px 0}.research-links small{display:block;font-size:11px;font-weight:400;color:#45636e;margin-top:8px}.research-links span{margin-top:8px}
+
+/*145: background transition, title letters, then scene explanation. */
+.chapter-layout:not(.journey-reduced)[data-intro=waiting] .observation-copy{visibility:hidden}
+.chapter-layout:not(.journey-reduced) .chapter-deck{opacity:var(--detail-ready,0);visibility:hidden}
+.chapter-layout:not(.journey-reduced)[data-intro=detail] .chapter-deck{visibility:visible}
+.chapter-layout:not(.journey-reduced)[data-phase=next] .chapter-deck{opacity:0;visibility:hidden}
+.chapter-story .letter-mask{line-height:inherit}
+@media(prefers-reduced-motion:reduce){.chapter-layout .observation-copy,.chapter-layout .chapter-deck{visibility:visible!important;opacity:1!important}}
