@@ -1,0 +1,1 @@
+import{n as e}from"./index-9Iug5pQ6.js";import{t}from"./body-position-story-DTixaawB.js";var n=e();function r(){return(0,n.jsx)(`main`,{id:`research-main`,children:(0,n.jsx)(t,{standalone:!0})})}export{r as default};
