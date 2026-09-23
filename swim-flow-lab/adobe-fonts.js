@@ -1,8 +1,1 @@
-/* Adobe Fonts: SWIM FLOW LAB web project. */
-(function(d) {
-  var config = {kitId:'nfp3cou',scriptTimeout:3000,async:true},
-  h=d.documentElement,t=setTimeout(function(){h.className=h.className.replace(/\bwf-loading\b/g,'')+' wf-inactive';},config.scriptTimeout),tk=d.createElement('script'),f=false,s=d.getElementsByTagName('script')[0],a;
-  h.className+=' wf-loading';tk.src='https://use.typekit.net/'+config.kitId+'.js';tk.async=true;
-  tk.onload=tk.onreadystatechange=function(){a=this.readyState;if(f||a&&a!='complete'&&a!='loaded')return;f=true;clearTimeout(t);try{Typekit.load(config)}catch(e){}};
-  s.parentNode.insertBefore(tk,s);
-})(document);
+(function(a){var c={kitId:"nfp3cou",scriptTimeout:3e3,async:!0},n=a.documentElement,o=setTimeout(function(){n.className=n.className.replace(/\bwf-loading\b/g,"")+" wf-inactive"},c.scriptTimeout),e=a.createElement("script"),i=!1,s=a.getElementsByTagName("script")[0],t;n.className+=" wf-loading",e.src="https://use.typekit.net/"+c.kitId+".js",e.async=!0,e.onload=e.onreadystatechange=function(){if(t=this.readyState,!(i||t&&t!="complete"&&t!="loaded")){i=!0,clearTimeout(o);try{Typekit.load(c)}catch{}}},s.parentNode.insertBefore(e,s)})(document);

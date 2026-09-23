@@ -1,8 +1,1 @@
-/* A quiet vertical path with a horizontal position marker. Text remains accessible. */
-.chapter-progress{position:fixed;right:26px;top:50%;transform:translateY(-50%);z-index:80;width:22px;display:flex;justify-content:center;pointer-events:none;color:#b7d9e3;filter:drop-shadow(0 0 1px rgba(0,24,34,.8))}
-.chapter-progress[hidden]{display:none}
-.cp-name,.cp-percent,.cp-end,.cp-ticks{display:none}
-.cp-track{--progress:0;position:relative;width:1px;height:clamp(120px,22vh,200px);background:rgba(130,165,179,.45)}
-.cp-track>i{position:absolute;inset:0;background:currentColor;transform:scaleY(0);transform-origin:top}
-.cp-track:after{content:"";position:absolute;left:-7px;top:calc(var(--progress)*100%);width:15px;height:2px;background:currentColor;transform:translateY(-50%)}
-@media(max-width:700px){.chapter-progress{right:10px;width:15px}.cp-track{height:120px}.cp-track:after{left:-5px;width:11px}}
+.chapter-progress{position:fixed;right:26px;top:50%;transform:translateY(-50%);z-index:80;width:22px;display:flex;justify-content:center;pointer-events:none;color:#b7d9e3;filter:drop-shadow(0 0 1px rgba(0,24,34,.8))}.chapter-progress[hidden]{display:none}.cp-name,.cp-percent,.cp-end,.cp-ticks{display:none}.cp-track{--progress:0;position:relative;width:1px;height:clamp(120px,22vh,200px);background:rgba(130,165,179,.45)}.cp-track>i{position:absolute;inset:0;background:currentColor;transform:scaleY(0);transform-origin:top}.cp-track:after{content:"";position:absolute;left:-7px;top:calc(var(--progress)*100%);width:15px;height:2px;background:currentColor;transform:translateY(-50%)}@media(max-width:700px){.chapter-progress{right:10px;width:15px}.cp-track{height:120px}.cp-track:after{left:-5px;width:11px}}
