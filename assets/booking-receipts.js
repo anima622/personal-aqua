@@ -2,7 +2,11 @@
 (() => {
   // Until real-device verification is complete, only the explicit test URL enables this UI.
   // The LINE Login channel remains in development mode (administrators only).
-  const config = {enabled: new URLSearchParams(location.search).get('line_receipt_test') === '1', liffId: '2011810726-i3NW4lrJ', endpoint: 'https://watari-booking-receipts.wayo0402.workers.dev'};
+  const params = new URLSearchParams(location.search);
+  // LIFF first returns to the endpoint with the requested path in liff.state.
+  let testCallback = false;
+  try { testCallback = new URL(params.get('liff.state') || '/', location.origin).searchParams.get('line_receipt_test') === '1'; } catch {}
+  const config = {enabled: params.get('line_receipt_test') === '1' || testCallback, liffId: '2011810726-i3NW4lrJ', endpoint: 'https://watari-booking-receipts.wayo0402.workers.dev'};
   const forms = ['reserve-form', 'training-form'].map(id => document.getElementById(id));
   const messages = {
     line_login_required: '受付控えをお届けするため、先に「LINEと連携する」を押してください。',
