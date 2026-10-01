@@ -50,7 +50,6 @@
   async function init() {
     if(!config.enabled)return;
     if(!config.liffId || !/^(https:\/\/|http:\/\/127\.0\.0\.1:)/.test(config.endpoint))throw new Error('not_ready');
-    restore();
     for(const form of forms){
       const region=document.createElement('div');region.className='field full';
       const note=document.createElement('p');note.className='hint';note.setAttribute('role','status');note.textContent='申込み内容の控えは公式LINEに届きます。初めての方は、送信前にLINEと連携してください。';notices.push(note);
@@ -62,7 +61,10 @@
       const name=form.elements.namedItem('name');if(name)name.maxLength=100;
       const noteField=form.elements.namedItem('note');if(noteField)noteField.maxLength=1500;
     }
-    await loadSDK();await window.liff.init({liffId:config.liffId});await connection();
+    await loadSDK();await window.liff.init({liffId:config.liffId});
+    // Do not consume the draft on LIFF's intermediate redirect.
+    if(!params.has('liff.state'))restore();
+    await connection();
   }
   // Deferred so the existing calendar and its event listeners are ready for restoration.
   ready=new Promise(resolve=>document.addEventListener('DOMContentLoaded',resolve,{once:true})).then(init).catch(error=>{setupError=error;say('LINEとの接続を確認できません。ページを開き直してください。');});
