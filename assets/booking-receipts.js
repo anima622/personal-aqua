@@ -51,7 +51,7 @@
       const connect=document.createElement('button');connect.type='button';connect.className='pill';connect.textContent='LINEと連携する';
       connect.addEventListener('click',async()=>{connect.disabled=true;try{await ready;if(!window.liff.isLoggedIn()){draft();window.liff.login({redirectUri:location.origin+location.pathname});return;}await connection();}catch{say('LINEとの接続を確認できません。ページを開き直してください。');}finally{connect.disabled=false;}});
       const friend=document.createElement('a');friend.href='https://line.me/R/ti/p/%40177onnkx';friend.target='_blank';friend.rel='noopener';friend.className='pill';friend.textContent='公式LINEを友だち追加';
-      const purpose=document.createElement('p');purpose.className='hint';purpose.textContent='LINEの識別情報と申込み内容を、受付控えの送信・予約のご連絡に利用します。';
+      const purpose=document.createElement('p');purpose.className='hint';purpose.textContent='LINEの識別情報と申込み内容を、受付控えの送信・予約のご連絡に利用します。初回シートが未回答の方は、公式LINEに「問診票」とお送りください。初回は問診の確認後に予約確定をご連絡します。';
       region.append(note,connect,document.createTextNode(' '),friend,purpose);form.prepend(region);
       const name=form.elements.namedItem('name');if(name)name.maxLength=100;
       const noteField=form.elements.namedItem('note');if(noteField)noteField.maxLength=1500;
