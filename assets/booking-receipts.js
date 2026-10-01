@@ -80,9 +80,9 @@
       try{
         response=await fetch(config.endpoint+'/reservations',{method:'POST',headers:{'Content-Type':'application/json',Authorization:'Bearer '+window.liff.getAccessToken()},body:JSON.stringify({id:saved.id,booking}),signal:AbortSignal.timeout(20000)});
         data=await response.json();
-      }catch{return {ok:false,message:messages.temporary_failure+' 受付番号：'+saved.id};}
+      }catch{return {ok:false,message:messages.temporary_failure};}
       if(!response.ok || !data.accepted)return {ok:false,message:messages[data.error]||messages.temporary_failure};
-      const message=`お申込みを受け付けました😊 受付番号：${data.id}。公式LINEへ内容の控えをお送りします。予約はまだ確定していません。施設・日程を確認してご連絡します。控えが届かない場合も再申込みせず、この受付番号を公式LINEへお知らせください。`;
+      const message=`お申込みを受け付けました😊 受付番号：${data.receipt_number||data.id}。公式LINEへ内容の控えをお送りします。予約はまだ確定していません。施設・日程を確認してご連絡します。控えが届かない場合も再申込みせず、この受付番号を公式LINEへお知らせください。`;
       states.set(key,{...saved,accepted:true,message});write(key,{...saved,accepted:true,message});clear('watari-booking-draft');
       return {ok:true,message};
     }
