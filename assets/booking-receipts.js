@@ -1,12 +1,7 @@
-/* Activation follows LINE channel setup, staging and a real-device receipt test. */
+/* Production: verified operator email plus customer and operator LINE notifications. */
 (() => {
-  // Until real-device verification is complete, only the explicit test URL enables this UI.
-  // The LINE Login channel remains in development mode (administrators only).
   const params = new URLSearchParams(location.search);
-  // LIFF first returns to the endpoint with the requested path in liff.state.
-  let testCallback = false;
-  try { testCallback = new URL(params.get('liff.state') || '/', location.origin).searchParams.get('line_receipt_test') === '1'; } catch {}
-  const config = {enabled: params.get('line_receipt_test') === '1' || testCallback, liffId: '2011810726-i3NW4lrJ', endpoint: 'https://watari-booking-receipts.wayo0402.workers.dev'};
+  const config = {enabled: true, liffId: '2011810726-i3NW4lrJ', endpoint: 'https://watari-booking-receipts.wayo0402.workers.dev'};
   const forms = ['reserve-form', 'training-form'].map(id => document.getElementById(id));
   const messages = {
     line_login_required: '受付控えをお届けするため、先に「LINEと連携する」を押してください。',
@@ -54,7 +49,7 @@
       const region=document.createElement('div');region.className='field full';
       const note=document.createElement('p');note.className='hint';note.setAttribute('role','status');note.textContent='申込み内容の控えは公式LINEに届きます。初めての方は、送信前にLINEと連携してください。';notices.push(note);
       const connect=document.createElement('button');connect.type='button';connect.className='pill';connect.textContent='LINEと連携する';
-      connect.addEventListener('click',async()=>{connect.disabled=true;try{await ready;if(!window.liff.isLoggedIn()){draft();window.liff.login({redirectUri:location.origin+location.pathname+'?line_receipt_test=1'});return;}await connection();}catch{say('LINEとの接続を確認できません。ページを開き直してください。');}finally{connect.disabled=false;}});
+      connect.addEventListener('click',async()=>{connect.disabled=true;try{await ready;if(!window.liff.isLoggedIn()){draft();window.liff.login({redirectUri:location.origin+location.pathname});return;}await connection();}catch{say('LINEとの接続を確認できません。ページを開き直してください。');}finally{connect.disabled=false;}});
       const friend=document.createElement('a');friend.href='https://line.me/R/ti/p/%40177onnkx';friend.target='_blank';friend.rel='noopener';friend.className='pill';friend.textContent='公式LINEを友だち追加';
       const purpose=document.createElement('p');purpose.className='hint';purpose.textContent='LINEの識別情報と申込み内容を、受付控えの送信・予約のご連絡に利用します。';
       region.append(note,connect,document.createTextNode(' '),friend,purpose);form.prepend(region);
