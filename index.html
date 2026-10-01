@@ -977,6 +977,7 @@ footer{position:relative;z-index:1;background:var(--color-fill-solid);color:var(
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <script src="assets/gsap-starter.js"></script>
+<script src="assets/booking-receipts.js"></script>
 <script>
 /*
   CONTENTS
@@ -1300,6 +1301,9 @@ setTimeout(() => {
   });
 }, 2500);
 
+</script>
+<script>
+/* Booking remains available even if an earlier animation library fails. */
 /* ===== 3. Reservation: passphrase gate, service toggle, slot data, picker, submit =====
    Facility rental is pool-only (パーソナルアクア). Personal training is a
    separate coached service with no fixed slot calendar, handled as a
@@ -1469,15 +1473,19 @@ Object.entries(slotsByDate).forEach(([date, daySlots]) => {
 const FORMSPREE_ENDPOINT = 'https://formspree.io/f/xnjeajvr';
 
 async function submitToFormspree(form) {
+  if (window.WatariBooking?.enabled) {
+    try { return await window.WatariBooking.submit(form); }
+    catch { return {ok: false, message: 'LINEとの接続を確認できませんでした。入力内容を残したまま、もう一度お試しください。'}; }
+  }
   try {
     const res = await fetch(FORMSPREE_ENDPOINT, {
       method: 'POST',
       headers: { Accept: 'application/json' },
       body: new FormData(form),
     });
-    return res.ok;
+    return {ok: res.ok};
   } catch {
-    return false;
+    return {ok: false};
   }
 }
 
@@ -1495,7 +1503,10 @@ let lastFocused = null;
 
 function openConfirmModal(rows, onSend) {
   confirmModalBody.innerHTML = rows
-    .map(([label, value]) => `<div class="confirm-modal-row"><dt>${label}</dt><dd>${value}</dd></div>`)
+    .map(([label, value]) => {
+      const escape = text => String(text).replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+      return `<div class="confirm-modal-row"><dt>${escape(label)}</dt><dd>${escape(value)}</dd></div>`;
+    })
     .join('');
   pendingSend = onSend;
   lastFocused = document.activeElement;
@@ -1566,12 +1577,13 @@ async function sendReserveForm(name, chosen) {
   const originalLabel = submitBtn.textContent;
   submitBtn.disabled = true;
   submitBtn.textContent = '送信中…';
-  const ok = await submitToFormspree(form);
+  const result = await submitToFormspree(form);
+  const ok = result.ok;
 
   confirmMsg.style.display = 'block';
   confirmMsg.classList.toggle('error', !ok);
   if (ok) {
-    confirmMsg.textContent = `${name} 様、以下の日時でご予約リクエストを承りました：${chosen}。24時間以内を目安に、レーンの確保状況についてご返信いたします。`;
+    confirmMsg.textContent = result.message || `${name} 様、以下の日時でご予約リクエストを承りました：${chosen}。24時間以内を目安に、レーンの確保状況についてご返信いたします。`;
     form.reset();
     selectedSlots.clear();
     slotGrid.querySelectorAll('.slot.selected').forEach((el) => { el.classList.remove('selected'); el.setAttribute('aria-pressed', 'false'); });
@@ -1583,7 +1595,7 @@ async function sendReserveForm(name, chosen) {
       submitBtn.disabled = false;
     }, 2600);
   } else {
-    confirmMsg.textContent = ERROR_MESSAGE;
+    confirmMsg.textContent = result.message || ERROR_MESSAGE;
     submitBtn.textContent = originalLabel;
     submitBtn.disabled = false;
   }
@@ -1618,12 +1630,13 @@ async function sendTrainingForm(name, dates) {
   const originalLabel = submitBtn.textContent;
   submitBtn.disabled = true;
   submitBtn.textContent = '送信中…';
-  const ok = await submitToFormspree(trainingForm);
+  const result = await submitToFormspree(trainingForm);
+  const ok = result.ok;
 
   confirmMsgTraining.style.display = 'block';
   confirmMsgTraining.classList.toggle('error', !ok);
   if (ok) {
-    confirmMsgTraining.textContent = `${name} 様、パーソナルトレーニングのご希望日時（${dates}）を承りました。24時間以内を目安に、担当よりご連絡いたします。`;
+    confirmMsgTraining.textContent = result.message || `${name} 様、パーソナルトレーニングのご希望日時（${dates}）を承りました。24時間以内を目安に、担当よりご連絡いたします。`;
     trainingForm.reset();
     submitBtn.textContent = '送信完了';
     submitBtn.classList.add('sent');
@@ -1633,7 +1646,7 @@ async function sendTrainingForm(name, dates) {
       submitBtn.disabled = false;
     }, 2600);
   } else {
-    confirmMsgTraining.textContent = ERROR_MESSAGE;
+    confirmMsgTraining.textContent = result.message || ERROR_MESSAGE;
     submitBtn.textContent = originalLabel;
     submitBtn.disabled = false;
   }
