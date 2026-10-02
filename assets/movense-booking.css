@@ -1,0 +1,29 @@
+/* MOVENSE: existing editorial frame / locked teal + ink / transactional navigation.
+   Existing type, colors and motion preserved; no new animation on booking controls. */
+.booking-paths{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--s6);margin-bottom:var(--s16)}
+.booking-path{display:flex;flex-direction:column;gap:var(--s4);padding:var(--s6);border:1px solid var(--color-border-strong);color:var(--color-text);text-decoration:none}
+.booking-path strong{font-size:var(--t-lg);font-weight:500;line-height:1.5}
+.booking-path>span{font-size:var(--t-sm)}
+.booking-path .path-no{font-size:var(--t-xs);letter-spacing:var(--ls-label);color:var(--color-text-muted)}
+.booking-path .path-action{margin-top:auto;padding-top:var(--s4);color:var(--color-accent-text)}
+.booking-path:focus-visible{outline:3px solid var(--color-focus);outline-offset:4px}
+@media(hover:hover){.booking-path:hover{border-color:var(--color-text)}}
+.personal-intro{max-width:var(--measure-wide);margin-bottom:var(--s8);scroll-margin-top:96px}
+.personal-intro h3{font-size:var(--t-xl);font-weight:500;margin:var(--s3) 0}
+.personal-intro p{margin-bottom:var(--s4)}
+.service-toggle{grid-template-columns:repeat(2,minmax(0,1fr))}
+.program-section{scroll-margin-top:96px}
+.program-empty{border-top:1px solid var(--color-border-strong);padding:var(--s8) 0;margin-bottom:var(--s4);max-width:var(--measure-wide)}
+.program-entry{border-top:1px solid var(--color-border-strong);padding:var(--s8) 0;max-width:var(--measure-wide)}
+.program-entry h3{font-size:var(--t-xl);margin:var(--s3) 0}
+.program-entry dl{display:grid;grid-template-columns:7em 1fr;gap:var(--s3);margin:var(--s6) 0}
+.program-entry dd{margin:0;overflow-wrap:anywhere}
+.lesson-photo{margin:0;align-self:start;overflow:hidden}
+.lesson-photo img{display:block;width:100%;height:auto;aspect-ratio:4/3;object-fit:cover}
+.lesson-terms{max-width:var(--measure-wide)}
+.lesson-terms details{border-top:1px solid var(--color-border-strong);padding:var(--s6) 0}
+.lesson-terms summary{cursor:pointer;font-weight:500;font-size:var(--t-md);min-height:44px}
+.lesson-terms p{margin-top:var(--s4)}
+#lesson-terms{scroll-margin-top:96px}
+@media(max-width:60rem){.booking-paths{grid-template-columns:1fr}.booking-path{gap:var(--s3)}.booking-path .path-action{padding-top:var(--s2)}}
+@media(max-width:30rem){.service-toggle{grid-template-columns:1fr}.wordmark{font-size:var(--t-md)}}

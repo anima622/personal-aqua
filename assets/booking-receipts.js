@@ -2,7 +2,7 @@
 (() => {
   const params = new URLSearchParams(location.search);
   const config = {enabled: true, liffId: '2011810726-i3NW4lrJ', endpoint: 'https://watari-booking-receipts.wayo0402.workers.dev'};
-  const forms = ['reserve-form', 'training-form'].map(id => document.getElementById(id));
+  const forms = ['reserve-form', 'training-form', 'running-form', 'walking-form'].map(id => document.getElementById(id)).filter(Boolean);
   const messages = {
     line_login_required: '受付控えをお届けするため、先に「LINEと連携する」を押してください。',
     friend_required: '公式LINEの友だち追加・ブロック解除後に、もう一度連携を確認してください。まだ申込みは送信していません。',
@@ -23,14 +23,14 @@
   function draft() {
     const values=[];
     for(const form of forms) for(const el of form.elements) if(el.id && ['INPUT','SELECT','TEXTAREA'].includes(el.tagName)) values.push({id:el.id,value:el.value,checked:el.checked});
-    write('watari-booking-draft',{expires:Date.now()+30*60*1000,values,slots:Array.from(document.querySelectorAll('.slot.selected')).map(el=>el.dataset.id),active:document.getElementById('panel-training')?.hidden?'aqua':'training'});
+    write('watari-booking-draft',{expires:Date.now()+30*60*1000,values,slots:Array.from(document.querySelectorAll('.slot.selected')).map(el=>el.dataset.id),active:document.querySelector('.service-toggle [aria-selected="true"]')?.id.replace('toggle-','') || 'aqua'});
   }
   function restore() {
     const saved=read('watari-booking-draft');clear('watari-booking-draft');
     if(!saved || saved.expires<Date.now())return;
     for(const value of saved.values||[]) {const el=document.getElementById(value.id);if(el){el.value=value.value;if(el.type==='checkbox')el.checked=value.checked;}}
     for(const id of saved.slots||[]) for(const el of document.querySelectorAll('.slot')) if(el.dataset.id===id && !el.classList.contains('selected'))el.click();
-    if(saved.active==='training')document.querySelector('[aria-controls="panel-training"]')?.click();
+    if(['aqua','training','running','walking'].includes(saved.active))document.querySelector('[aria-controls="panel-'+saved.active+'"]')?.click();
   }
   async function loadSDK() {
     if(window.liff)return;
