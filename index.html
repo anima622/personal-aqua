@@ -1387,14 +1387,12 @@ toggleTraining.addEventListener('click', () => setService('training'));
    同期した時点の内容（2026-10-02、Claude経由）です。
    この時点でNotion側と完全一致（27枠）。
 
-   ⚠ 過去日時の枠を自動で非表示にする仕組みは未実装です。
-     日付が過ぎた枠は、Notionからアーカイブへ移すのと同時に、
-     この配列からも必ず削除してください。削除を忘れると、
-     過ぎた日時が申込可能なまま表示され続けます。
+   開始日時が過ぎた枠は下の VISIBLE_SLOTS で自動的に非表示になります。
+   ただしこれは表示側の保険であり、配列の掃除の代わりにはなりません。
+   Notionでアーカイブへ移した枠は、この配列からも削除してください。
 
    TODO: サーバー構築後は、この配列を手動同期する代わりに、同データベースを
-   裏で参照するライブAPIから取得するように差し替えてください。
-   あわせて、開始日時が現在より前の枠を描画しないフィルタも入れてください。 */
+   裏で参照するライブAPIから取得するように差し替えてください。 */
 const SLOTS = [
   { id: 's1003', date: '10/3(土)', time: '14:00〜15:00' },
   { id: 's1004', date: '10/8(木)', time: '16:00〜17:00' },
@@ -1425,12 +1423,34 @@ const SLOTS = [
   { id: 's1036', date: '10/16(金)', time: '19:00〜20:00' },
 ];
 
+/* 過ぎた日時の枠は表示しない。
+   SLOTSは「M/D(曜)」「HH:MM〜HH:MM」の表記で年を持たないため、開始日時を
+   今年として組み立て、半年以上前になる場合だけ翌年とみなす（12月に「1/5」の
+   枠を置いたときの年またぎ対策）。
+   形式が想定外の行は除外せずに残す。消して予約機会を失うより、
+   表示されたままスタッフが気づけるほうが被害が小さいため。 */
+function slotStartsAt(slot) {
+  const d = /^(\d{1,2})\/(\d{1,2})/.exec(slot.date);
+  const t = /^(\d{1,2}):(\d{2})/.exec(slot.time);
+  if (!d || !t) return null;
+  const build = (year) => new Date(year, Number(d[1]) - 1, Number(d[2]), Number(t[1]), Number(t[2]));
+  const now = new Date();
+  const thisYear = build(now.getFullYear());
+  const HALF_YEAR = 182 * 24 * 60 * 60 * 1000;
+  return thisYear.getTime() < now.getTime() - HALF_YEAR ? build(now.getFullYear() + 1) : thisYear;
+}
+
+const VISIBLE_SLOTS = SLOTS.filter((slot) => {
+  const startsAt = slotStartsAt(slot);
+  return !startsAt || startsAt.getTime() > Date.now();
+});
+
 const selectedSlots = new Set();
 const slotGrid = document.getElementById('slot-grid');
 const slotError = document.getElementById('slot-error');
 
 /* 日付ごとにグルーピングして表示（SLOTSは既に日付順） */
-const slotsByDate = SLOTS.reduce((acc, slot) => {
+const slotsByDate = VISIBLE_SLOTS.reduce((acc, slot) => {
   (acc[slot.date] ??= []).push(slot);
   return acc;
 }, {});
@@ -1438,6 +1458,14 @@ const slotsByDate = SLOTS.reduce((acc, slot) => {
 /* 祝日（曜日だけでは分からない日）を「M/D(曜)」の形でここに追加してください */
 /* 10/12(月)=スポーツの日（10月の第2月曜）。土日祝料金の対象です */
 const HOLIDAYS = new Set(['10/12(月)']);
+
+/* 枠が1つも残っていないときに、空欄のまま放置しない */
+if (VISIBLE_SLOTS.length === 0) {
+  const empty = document.createElement('div');
+  empty.className = 'slot-notice';
+  empty.textContent = '現在ご案内できる日時がございません。次の日程が決まり次第こちらに掲載しますので、お急ぎの場合はLINEにてお問い合わせください。';
+  slotGrid.appendChild(empty);
+}
 
 Object.entries(slotsByDate).forEach(([date, daySlots]) => {
   const dayEl = document.createElement('div');
