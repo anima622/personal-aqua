@@ -617,12 +617,12 @@ footer{position:relative;z-index:1;background:var(--color-fill-solid);color:var(
         <svg class="cell c-w"    viewBox="0 0 100 100"><use href="#g-w"/></svg>
       </div>
       <div class="about-text measure" data-reveal>
-        <p>パーソナルアクアは、マンツーマンから最大4名までご利用いただける完全予約制の<span class="nowrap">プール</span>貸切サービスです。レーンは貸切のため、周りを気にせず、ご自身のペースで泳ぐこと・練習することに集中できます。</p>
-        <p>施設としての貸切は、プールのみのシンプルな形にしています。泳ぎ込みたい方は「パーソナルアクア」を、フォームやトレーニングメニューのサポートが欲しい方は、コーチによる「パーソナルトレーニング」をご利用いただけます。</p>
-        <p>ご予約はオンラインの空き状況から。担当が実際にレーンの確保を確認したうえで、確定のご連絡をいたします。</p>
+        <p>パーソナルアクアは、<span class="nowrap">貸切レーン</span>でコーチの指導を受けられる水泳レッスンです。1〜4名まで、泳ぎの経験や目標に合わせてご案内します。周りを気にせず、ご自身のペースで泳ぎ方や練習に向き合えます。</p>
+        <p>パーソナルトレーニングは、レンタルジムで行う陸上の個別指導です。運動習慣づくりや体力づくりなど、ご希望に合わせてご相談いただけます。</p>
+        <p>ご予約はこのページからお申し込みください。日程・条件と必要な会場の確保を確認したうえで、予約確定をご連絡します。</p>
         <div class="stats" data-reveal data-reveal-group>
           <div class="stat"><b>1–<span data-count="4">4</span></b><span>名 / 1回のご予約</span></div>
-          <div class="stat"><b><span data-count="55">55</span></b><span>分 / プール利用</span></div>
+          <div class="stat"><b><span data-count="55">55</span></b><span>分 / アクア1レッスン</span></div>
           <div class="stat"><b><span data-count="2">2</span></b><span>サービス</span></div>
         </div>
         <div class="about-cta"><a href="#flow" class="pill">ご予約の流れを見る <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.75 5a.75.75 0 0 0 0 1.5h9.69L5.22 17.72a.75.75 0 1 0 1.06 1.06L17.5 7.56v9.69a.75.75 0 0 0 1.5 0V5.75a.75.75 0 0 0-.75-.75z"/></svg></a></div>
@@ -689,7 +689,7 @@ footer{position:relative;z-index:1;background:var(--color-fill-solid);color:var(
         <div class="svc-prices">
           <table class="ptable">
             <caption>料金（税込）</caption>
-            <tbody><tr><th scope="row">マンツーマン</th><td>¥8,800</td></tr></tbody>
+            <tbody><tr><th scope="row">マンツーマン</th><td>¥9,000</td></tr></tbody>
           </table>
           <p class="note">60分</p>
         </div>
@@ -916,7 +916,7 @@ footer{position:relative;z-index:1;background:var(--color-fill-solid);color:var(
             </div>
             <div class="reserve-submit">
               <button type="submit" class="pill solid">パーソナルトレーニングを申し込む</button>
-              <p class="pay-note">料金：¥8,800（60分・税込、マンツーマン）。送信後24時間以内を目安に、担当よりご連絡いたします（LINEまたはお電話・メールにて）。</p>
+              <p class="pay-note">料金：¥9,000（60分・税込、マンツーマン）。送信後24時間以内を目安に、担当よりご連絡いたします（LINEまたはお電話・メールにて）。</p>
               <p id="confirm-msg-training" class="confirm-msg" aria-live="polite"></p>
             </div>
           </form>
@@ -1384,15 +1384,18 @@ toggleTraining.addEventListener('click', () => setService('training'));
 
 /* --- パーソナルアクア: slot data, picker, submit ---
    SLOTS mirrors Notion's 「空き状況カレンダー」データベースを、最後に手動で
-   同期した時点の内容（2026-09-25、Claude経由）です。
-   ※10月分はホームページ側のみ更新済み。Notion「空き状況カレンダー」への
-     枠登録がまだのため、次回の同期時に必ず突き合わせてください。
+   同期した時点の内容（2026-10-02、Claude経由）です。
+   この時点でNotion側と完全一致（27枠）。
+
+   ⚠ 過去日時の枠を自動で非表示にする仕組みは未実装です。
+     日付が過ぎた枠は、Notionからアーカイブへ移すのと同時に、
+     この配列からも必ず削除してください。削除を忘れると、
+     過ぎた日時が申込可能なまま表示され続けます。
+
    TODO: サーバー構築後は、この配列を手動同期する代わりに、同データベースを
-   裏で参照するライブAPIから取得するように差し替えてください。 */
+   裏で参照するライブAPIから取得するように差し替えてください。
+   あわせて、開始日時が現在より前の枠を描画しないフィルタも入れてください。 */
 const SLOTS = [
-  { id: 's937', date: '9/27(日)', time: '12:00〜13:00' },
-  { id: 's1001', date: '10/2(金)', time: '19:00〜20:00' },
-  { id: 's1002', date: '10/2(金)', time: '20:00〜21:00' },
   { id: 's1003', date: '10/3(土)', time: '14:00〜15:00' },
   { id: 's1004', date: '10/8(木)', time: '16:00〜17:00' },
   { id: 's1005', date: '10/8(木)', time: '17:00〜18:00' },
@@ -1416,7 +1419,6 @@ const SLOTS = [
   { id: 's1023', date: '10/12(月)', time: '16:00〜17:00' },
   { id: 's1024', date: '10/12(月)', time: '17:00〜18:00' },
   { id: 's1025', date: '10/12(月)', time: '18:00〜19:00' },
-  { id: 's1028', date: '10/13(火)', time: '18:00〜19:00' },
   { id: 's1029', date: '10/13(火)', time: '19:00〜20:00' },
   { id: 's1030', date: '10/13(火)', time: '20:00〜21:00' },
   { id: 's1031', date: '10/15(木)', time: '16:00〜17:00' },
