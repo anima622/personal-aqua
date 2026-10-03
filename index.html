@@ -452,7 +452,7 @@ footer{position:relative;z-index:1;background:var(--color-fill-solid);color:var(
   .composition .g1{left:calc(var(--cw) + var(--s4) / 2)}
   .composition .g2{display:none}
   .composition .c-tri{grid-area:1/1}.composition .c-dot{grid-area:1/2;fill:var(--color-accent-solid)}
-  .composition .c-photo{grid-area:2/1}.composition .c-lane{grid-area:2/1}
+  .composition .c-photo{grid-area:2/2}.composition .c-lane{grid-area:2/1}
   .composition .c-w{grid-area:3/1}
   .svc{grid-template-columns:120px minmax(0,1fr);justify-content:start}
   .svc-note{margin-inline-start:calc(120px + var(--s8))}
@@ -492,6 +492,7 @@ footer{position:relative;z-index:1;background:var(--color-fill-solid);color:var(
 .svc .lesson-photo{grid-column:1;grid-row:1/3;align-self:start}.svc .lesson-photo img{aspect-ratio:4/3;object-fit:cover}
 .svc:has(.lesson-photo) .svc-body{grid-column:2}.svc:has(.lesson-photo) .svc-prices{grid-column:2;max-width:none;justify-self:stretch}.svc-note{margin-inline-start:0}
 @media(max-width:760px){.svc:has(.lesson-photo){grid-template-columns:minmax(0,1fr)}.svc .lesson-photo{grid-column:1;grid-row:auto}.svc:has(.lesson-photo) .svc-body,.svc:has(.lesson-photo) .svc-prices{grid-column:1}.brand img{width:48px;height:48px}}
+.composition .letter-hole{fill:var(--color-surface)}.composition .t-bar{clip-path:inset(0 0 76% 0)}
 </style>
 </head>
 <body>
@@ -625,13 +626,13 @@ footer{position:relative;z-index:1;background:var(--color-fill-solid);color:var(
      assert a lane count nobody has stated -->
       <div class="composition" aria-hidden="true">
         <span class="guide g0"></span><span class="guide g1"></span><span class="guide g2"></span><span class="guide g3"></span>
-        <svg class="cell c-tri"  viewBox="0 0 100 100"><use href="#g-tri"/></svg>
-        <svg class="cell c-dot"  viewBox="0 0 100 100"><use href="#g-dot"/></svg>
+        <svg class="cell c-tri" viewBox="0 0 100 100"><g class="b-top"><circle cx="51" cy="27" r="23"/></g><g class="b-bottom"><circle cx="53" cy="73" r="25"/></g><path class="b-spine" d="M8 4H51V98H8Z"/><path class="letter-hole b-hole" d="M25 24H55V30H25ZM25 71H60V77H25Z"/></svg>
+        <svg class="cell c-dot" viewBox="0 0 100 100"><rect class="t-bar" x="6" y="5" width="88" height="90"/><path class="t-stem" d="M36 25H64V95H36Z"/></svg>
         <figure class="cell c-photo">
           <img src="assets/photos/lane-427.jpg" width="427" height="427" alt="" loading="lazy" decoding="async">
         </figure>
-        <svg class="cell c-lane" viewBox="0 0 100 100"><use href="#g-lane"/></svg>
-        <svg class="cell c-w"    viewBox="0 0 100 100"><use href="#g-w"/></svg>
+        <svg class="cell c-lane" viewBox="0 0 100 100"><path class="r-body" d="M8 5H50C90 5 90 59 50 59H33V95H8Z"/><path class="r-leg" d="M44 48Q69 48 76 68L90 95H63L49 65Q45 61 33 61V48Z"/><path class="letter-hole r-hole" d="M33 25H50A9 9 0 0 1 50 43H33Z"/></svg>
+        <svg class="cell c-w" viewBox="0 0 100 100"><use href="#g-s"/></svg>
       </div>
       <div class="about-text measure" data-reveal>
         <p>MOVENSE（ムーヴェンス）は、泳ぐ・鍛える・走る・歩くを通じて、あなたの「こうなりたい」に向き合うレッスンブランドです。</p>
@@ -1337,37 +1338,42 @@ if (typeof gsap !== 'undefined') {
       });
     });
 
-    /* ── 01 ABOUT ── the guides rule the grid, the page holds still for a
-       third of a second, then each form arrives the way that form should:
-       the triangle wipes down the way it points, the circle lands like a drop,
-       the photographs are drawn back like a curtain, the W strokes across.
-       Five identical fade-ups in a row is what made this section monotonous. ── */
+    /* ABOUT: B / T / R / S, built from the supplied storyboards. */
     const comp = document.querySelector('.composition');
-    if (comp) {
-      const guides = comp.querySelectorAll('.guide');
-      const pick = (sel) => comp.querySelector(sel);
-      const cells = [...comp.querySelectorAll('.cell')];
-      if (reduce || !ST) {
-        gsap.set(guides, { scaleY: 1 });
-        gsap.set(cells, { opacity: 1, y: 0, scale: 1, clipPath: 'none' });
-      } else {
-        gsap.set(guides, { scaleY: 0 });
-        gsap.set(cells, { opacity: 1 });
-        gsap.set(pick('.c-tri'), { clipPath: 'inset(0 0 100% 0)' });
-        gsap.set(pick('.c-dot'), { opacity: 0, scale: 0.82, transformOrigin: 'center' });
-        gsap.set(pick('.c-photo'), { clipPath: 'inset(0 100% 0 0)' });
-        gsap.set(pick('.c-lane'), { clipPath: 'inset(0 100% 0 0)' });
-        gsap.set(pick('.c-w'), { clipPath: 'inset(100% 0 0 0)' });
-
-        gsap.timeline({ scrollTrigger: { trigger: comp, start: 'top 74%', once: true } })
-          .to(guides, { scaleY: 1, duration: 0.85, ease: 'power2.inOut', stagger: 0.12 })
-          /* ── a third of a second of nothing ── */
-          .to(pick('.c-tri'),   { clipPath: 'inset(0 0 -4% 0)', duration: 0.7, ease: 'power2.inOut' }, '+=0.35')
-          .to(pick('.c-dot'),   { opacity: 1, scale: 1, duration: 0.55, ease: 'power2.out' }, '-=0.42')
-          .to(pick('.c-photo'), { clipPath: 'inset(0 -2% 0 0)', duration: 0.8, ease: 'power2.inOut' }, '-=0.3')
-          .to(pick('.c-lane'),  { clipPath: 'inset(0 -2% 0 0)', duration: 0.7, ease: 'power2.inOut' }, '-=0.45')
-          .to(pick('.c-w'),     { clipPath: 'inset(-4% 0 0 0)', duration: 0.7, ease: 'power2.inOut' }, '-=0.35');
-      }
+    if (comp && !reduce && ST) {
+      const pick = s => comp.querySelector(s);
+      const guides=comp.querySelectorAll('.guide');
+      gsap.set(guides,{scaleY:0});
+      gsap.set(pick('.b-top'),{scale:.13,svgOrigin:'51 27'});
+      gsap.set(pick('.b-bottom'),{scale:.1,svgOrigin:'53 73',opacity:0});
+      gsap.set(pick('.b-spine'),{clipPath:'inset(0 0 100% 0)'});
+      gsap.set(pick('.b-hole'),{clipPath:'inset(0 100% 0 0)'});
+      gsap.set(pick('.t-bar'),{clipPath:'polygon(6% 0%,7% 0%,94% 100%,93% 100%)'});
+      gsap.set(pick('.t-stem'),{clipPath:'inset(0 0 100% 0)'});
+      gsap.set(pick('.r-body'),{clipPath:'inset(0 67% 97% 0)'});
+      gsap.set(pick('.r-leg'),{clipPath:'inset(0 0 100% 0)'});
+      gsap.set(pick('.r-hole'),{clipPath:'inset(48% 100% 48% 0)'});
+      gsap.set(pick('.c-w'),{clipPath:'inset(0 100% 0 0)',rotation:180,transformOrigin:'50% 50%'});
+      gsap.set(pick('.c-photo'),{clipPath:'inset(0 100% 0 0)'});
+      const marks=gsap.timeline({scrollTrigger:{trigger:comp,start:'top 74%',once:true},defaults:{ease:'power2.inOut'}});
+      marks.to(guides,{scaleY:1,duration:.7,stagger:.08},0)
+        .to(pick('.b-top'),{scale:1,duration:.6},.35)
+        .to(pick('.b-bottom'),{opacity:1,scale:.13,duration:.2},.85)
+        .to(pick('.b-bottom'),{scale:1,duration:.55},1.2)
+        .to(pick('.b-spine'),{clipPath:'inset(0 0 76% 0)',duration:.3},1.85)
+        .to(pick('.b-spine'),{clipPath:'inset(0 0 0% 0)',duration:.5},2.3)
+        .to(pick('.b-hole'),{clipPath:'inset(0 0% 0 0)',duration:.5},3)
+        .to(pick('.t-bar'),{clipPath:'polygon(0% 0%,100% 0%,100% 100%,0% 100%)',duration:.6},.65)
+        .to(pick('.t-bar'),{clipPath:'polygon(0% 0%,100% 0%,100% 24%,0% 24%)',duration:.5},1.65)
+        .to(pick('.t-stem'),{clipPath:'inset(0 0 0% 0)',duration:.6},2.4)
+        .to(pick('.r-body'),{clipPath:'inset(0 25% 0% 0)',duration:.65},.95)
+        .to(pick('.r-body'),{clipPath:'inset(0 0% 0% 0)',duration:.45},1.9)
+        .to(pick('.r-hole'),{clipPath:'inset(40% 0% 40% 0)',duration:.4},2.55)
+        .to(pick('.r-hole'),{clipPath:'inset(0% 0% 0% 0)',duration:.4},3.15)
+        .to(pick('.r-leg'),{clipPath:'inset(0 0 0% 0)',duration:.55},3.15)
+        .to(pick('.c-w'),{clipPath:'inset(0 0% 0 0)',duration:.6},1.3)
+        .to(pick('.c-w'),{rotation:0,duration:.8},2.5)
+        .to(pick('.c-photo'),{clipPath:'inset(0 0% 0 0)',duration:.7},.7);
     }
 
     /* ── FOOTER ── the two wave strokes wipe in, one after the other ── */
