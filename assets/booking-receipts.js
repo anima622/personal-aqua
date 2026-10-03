@@ -2,7 +2,7 @@
 (() => {
   const params = new URLSearchParams(location.search);
   const config = {enabled: true, liffId: '2011810726-i3NW4lrJ', endpoint: 'https://watari-booking-receipts.wayo0402.workers.dev'};
-  const forms = ['reserve-form', 'training-form', 'running-form', 'walking-form'].map(id => document.getElementById(id)).filter(Boolean);
+  const forms = ['reserve-form', 'training-form', 'running-form', 'walking-form', 'event-form'].map(id => document.getElementById(id)).filter(Boolean);
   const messages = {
     line_login_required: 'ご予約には公式LINEの友だち追加が必要です。①友だち追加 → ②LINEでログインの順に進めてください。追加済みの方は②からで大丈夫です。',
     friend_required: '公式LINEの友だち追加を確認できませんでした。①友だち追加・ブロック解除を行い、このページに戻って②LINEでログインを押してください。まだ申込みは送信していません。',
@@ -10,6 +10,7 @@
     request_conflict: '受付内容の確認が必要です。再申込みせず、公式LINEへお問い合わせください。',
     too_many_requests: '短時間に多くの申込みがありました。公式LINEへお問い合わせください。',
     not_ready: 'LINE受付は現在準備中です。公式LINEへ直接ご相談ください。',
+    event_closed: 'このイベントの受付は終了しました。公式LINEへお問い合わせください。',
     temporary_failure: '受付結果を確認できませんでした。入力内容を変えずに再度送信すると、同じ受付番号で確認します。'
   };
   const states = new Map();
@@ -20,10 +21,10 @@
   function clear(key) {try{sessionStorage.removeItem(key);}catch{}}
   function say(text) {for(const n of notices)n.textContent=text;}
   const hash = async text => Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(text))),b=>b.toString(16).padStart(2,'0')).join('');
-  function draft() {
+  function draft(anchor=location.hash) {
     const values=[];
     for(const form of forms) for(const el of form.elements) if(el.id && ['INPUT','SELECT','TEXTAREA'].includes(el.tagName)) values.push({id:el.id,value:el.value,checked:el.checked});
-    write('watari-booking-draft',{expires:Date.now()+30*60*1000,values,slots:Array.from(document.querySelectorAll('.slot.selected')).map(el=>el.dataset.id),active:document.querySelector('.service-toggle [aria-selected="true"]')?.id.replace('toggle-','') || 'aqua'});
+    write('watari-booking-draft',{expires:Date.now()+30*60*1000,values,anchor,slots:Array.from(document.querySelectorAll('.slot.selected')).map(el=>el.dataset.id),active:document.querySelector('.service-toggle [aria-selected="true"]')?.id.replace('toggle-','') || 'aqua'});
   }
   function restore() {
     const saved=read('watari-booking-draft');clear('watari-booking-draft');
@@ -31,6 +32,7 @@
     for(const value of saved.values||[]) {const el=document.getElementById(value.id);if(el){el.value=value.value;if(el.type==='checkbox')el.checked=value.checked;}}
     for(const id of saved.slots||[]) for(const el of document.querySelectorAll('.slot')) if(el.dataset.id===id && !el.classList.contains('selected'))el.click();
     if(['aqua','training','running','walking'].includes(saved.active))document.querySelector('[aria-controls="panel-'+saved.active+'"]')?.click();
+    if(saved.anchor==='#event-reserve')location.hash='event-reserve';
   }
   async function loadSDK() {
     if(window.liff)return;
@@ -50,9 +52,13 @@
       const guide=document.createElement('p');guide.className='line-booking-guide';guide.textContent='ご予約の受付控え・日程調整は、公式LINEでお届けします😊 ①友だち追加 → ②LINEでログインの順に進めてください。追加済みの方は②からで大丈夫です。';
       const note=document.createElement('p');note.className='hint';note.setAttribute('role','status');note.textContent='ご予約には公式LINEの友だち追加とLINE連携が必要です。';notices.push(note);
       const connect=document.createElement('button');connect.type='button';connect.className='line-official-login';connect.setAttribute('aria-label','LINEでログインして予約用に連携する');connect.innerHTML='<img src="assets/line/login-icon.png" width="44" height="44" alt=""><span>LINEでログイン</span>';
-      connect.addEventListener('click',async()=>{connect.disabled=true;try{await ready;if(!window.liff.isLoggedIn()){draft();window.liff.login({redirectUri:location.origin+location.pathname});return;}await connection();}catch{say('LINEとの接続を確認できません。ページを開き直してください。');}finally{connect.disabled=false;}});
+      connect.addEventListener('click',async()=>{connect.disabled=true;try{await ready;if(!window.liff.isLoggedIn()){draft(form.id==='event-form'?'#event-reserve':location.hash);window.liff.login({redirectUri:location.origin+location.pathname});return;}await connection();}catch{say('LINEとの接続を確認できません。ページを開き直してください。');}finally{connect.disabled=false;}});
       const friend=document.createElement('a');friend.href='https://line.me/R/ti/p/%40177onnkx';friend.target='_blank';friend.rel='noopener';friend.className='line-official-friend';friend.setAttribute('aria-label','MOVENSE公式LINEを友だち追加（新しいタブ）');friend.innerHTML='<img src="assets/line/add-friend-ja.png" alt="友だち追加" width="232" height="72">';
       const purpose=document.createElement('p');purpose.className='hint';purpose.textContent='LINEの識別情報と申込み内容を、受付控えの送信・予約のご連絡に利用します。初回シートが未回答の方は、公式LINEに「問診票」とお送りください。初回は問診の確認後に予約確定をご連絡します。';
+      if(form.id==='event-form'){
+        guide.textContent='参加申込の受付控えと参加可否は、公式LINEでお届けします。①友だち追加 → ②LINEでログインの順に進めてください。追加済みの方は②からお進みください。';
+        purpose.textContent='LINEの識別情報と申込み内容を、受付控えの送信・参加可否やお支払いのご連絡に利用します。送信だけでは予約確定・席の確保にはなりません。';
+      }
       const actions=document.createElement('div');actions.className='line-official-actions';const friendStep=document.createElement('div');friendStep.className='line-official-step';const friendLabel=document.createElement('p');friendLabel.textContent='① 公式LINEを友だち追加';friendStep.append(friendLabel,friend);const loginStep=document.createElement('div');loginStep.className='line-official-step';const loginLabel=document.createElement('p');loginLabel.textContent='② LINEでログインして連携';loginStep.append(loginLabel,connect);actions.append(friendStep,loginStep);region.append(guide,actions,note,purpose);form.prepend(region);
       const name=form.elements.namedItem('name');if(name)name.maxLength=100;
       const noteField=form.elements.namedItem('note');if(noteField)noteField.maxLength=1500;
@@ -83,7 +89,8 @@
         data=await response.json();
       }catch{return {ok:false,message:messages.temporary_failure};}
       if(!response.ok || !data.accepted)return {ok:false,message:messages[data.error]||messages.temporary_failure};
-      const message=`お申込みを受け付けました😊 受付番号：${data.receipt_number||data.id}。公式LINEへ内容の控えをお送りします。予約はまだ確定していません。施設・日程を確認してご連絡します。控えが届かない場合も再申込みせず、この受付番号を公式LINEへお知らせください。`;
+      const next=booking.service==='特別イベント'?'定員・お申込み内容を確認し、参加可否とお支払いのご案内を公式LINEでお送りします。':'施設・日程を確認してご連絡します。';
+      const message=`お申込みを受け付けました😊 受付番号：${data.receipt_number||data.id}。公式LINEへ内容の控えをお送りします。予約はまだ確定していません。${next}控えが届かない場合も再申込みせず、この受付番号を公式LINEへお知らせください。`;
       states.set(key,{...saved,accepted:true,message});write(key,{...saved,accepted:true,message});clear('watari-booking-draft');
       return {ok:true,message};
     }
