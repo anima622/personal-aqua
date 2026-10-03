@@ -4,16 +4,16 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#f8fbfc">
-<title>パーソナルMOVENSE | 水泳・トレーニング・ランニング・ウォーキング</title>
+<title>MOVENSE（ムーヴェンス） | 水泳・トレーニング・ランニング・ウォーキング</title>
 <meta name="description" content="MOVENSEの個別レッスン予約と、グループレッスン・特別イベントのご案内。水泳・パーソナルトレーニング・ランニング・ウォーキングから、目的に合うレッスンをお選びください。">
-<link rel="icon" href="favicon.png">
+<link rel="icon" href="assets/movense-logo.png">
 <link rel="stylesheet" href="assets/movense-booking.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant:wght@300;400&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
 <!--
   Visual assets:
-  · logo-icon.png — the project's own brand mark, preserved unchanged. The page
+  · assets/movense-logo.png — approved MOVENSE brand mark. The page
     references logo-icon-96.png, the same mark at the size it actually renders:
     the 760px master was 220KB for a 34px slot, the largest asset on the page.
   · assets/photos/*.jpg — licensed by the site owner from photo-AC
@@ -476,6 +476,14 @@ footer{position:relative;z-index:1;background:var(--color-fill-solid);color:var(
   .confirm-modal-row{grid-template-columns:minmax(0,1fr)}
 }
 .swim-lab-entry{display:grid;grid-template-columns:1fr 1fr;gap:8vw;padding:80px max(6vw,24px);border-top:1px solid var(--color-border);background:var(--color-accent-wash)}.swim-lab-entry h2{font-size:clamp(28px,4vw,48px);line-height:1.5;margin:12px 0}.swim-lab-entry p{line-height:2;max-width:34em}.swim-lab-eyebrow{font-size:13px;letter-spacing:.12em}.swim-lab-entry .pill{margin-top:20px}.swim-lab-entry svg{width:20px;height:20px}@media(max-width:700px){.swim-lab-entry{grid-template-columns:1fr;gap:20px;padding-block:48px}}
+/* MOVENSE brand and generous lesson photography, 2026-10-03 */
+.brand img{width:64px;height:64px;object-fit:contain}.brand .wordmark{font-family:var(--font-body);font-weight:700;letter-spacing:.12em}
+.hero h1 .l2{font-family:var(--font-body);font-size:var(--t-lg);letter-spacing:var(--ls-label);margin-top:var(--s4)}
+.lesson-formats{display:grid;gap:var(--s4);margin-top:var(--s8)}.lesson-formats a{display:flex;flex-wrap:wrap;gap:var(--s3) var(--s6);padding:var(--s4) 0;border-bottom:1px solid var(--color-border);color:var(--color-text);text-decoration:none}.lesson-formats span{font-size:var(--t-sm);color:var(--color-text-muted)}
+.svc:has(.lesson-photo){grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:var(--s6) var(--s12)}
+.svc .lesson-photo{grid-column:1;grid-row:1/3;align-self:start}.svc .lesson-photo img{aspect-ratio:4/3;object-fit:cover}
+.svc:has(.lesson-photo) .svc-body{grid-column:2}.svc:has(.lesson-photo) .svc-prices{grid-column:2;max-width:none;justify-self:stretch}.svc-note{margin-inline-start:0}
+@media(max-width:760px){.svc:has(.lesson-photo){grid-template-columns:minmax(0,1fr)}.svc .lesson-photo{grid-column:1;grid-row:auto}.svc:has(.lesson-photo) .svc-body,.svc:has(.lesson-photo) .svc-prices{grid-column:1}.brand img{width:48px;height:48px}}
 </style>
 </head>
 <body>
@@ -531,9 +539,9 @@ footer{position:relative;z-index:1;background:var(--color-fill-solid);color:var(
 
 
 <header id="site-header">
-  <a href="#hero" class="brand" aria-label="パーソナルMOVENSE トップへ">
-    <img src="logo-icon-96.png" alt="" width="34" height="34" decoding="async">
-    <span class="wordmark">Personal MOVENSE</span>
+  <a href="#hero" class="brand" aria-label="MOVENSE（ムーヴェンス） トップへ">
+    <img src="assets/movense-logo.png" alt="" width="34" height="34" decoding="async">
+    <span class="wordmark">MOVENSE</span>
   </a>
   <nav aria-label="メイン">
     <ul>
@@ -551,7 +559,7 @@ footer{position:relative;z-index:1;background:var(--color-fill-solid);color:var(
 
 <div class="mobile-menu" id="mobile-menu">
   <a href="#about">About<small>01 MOVENSEについて</small></a>
-  <a href="#service">Service<small>02 ご利用シーン</small></a>
+  <a href="#service">Service<small>02 個別レッスン</small></a>
   <a href="#flow">Flow<small>03 ご予約の流れ</small></a>
   <a href="#reserve">Reserve<small>04 ご予約</small></a>
   <a href="swim-flow-lab.html">Swim Flow Lab<small>水泳のしくみを学ぶ</small></a>
@@ -576,12 +584,12 @@ footer{position:relative;z-index:1;background:var(--color-fill-solid);color:var(
   </div>
   <div class="hero-right">
     <p class="tagline" id="tagline">あなたの「こうなりたい」を、動きから。</p>
-    <h1 class="display" id="hero-h1"><span class="l1">Personal</span> <span class="l2">MOVENSE</span></h1>
+    <h1 class="display" id="hero-h1"><span class="l1">MOVENSE</span> <span class="l2">ムーヴェンス</span></h1>
     <div class="pickup" id="pickup">
-      <div class="pu-in label">Pick up</div>
-      <div class="pu-in t">パーソナルアクア</div>
-      <div class="pu-in p">¥11,000<small>〜 ／ 1名・55分・税込</small></div>
-      <p class="pu-in note">マンツーマンから最大4名まで、レーンを完全貸切。</p>
+      <div class="pu-in label">Find your movement</div>
+      <div class="pu-in t">泳ぐ・鍛える・走る・歩く。</div>
+      <p class="pu-in p"><small>あなたに合うレッスンを、ここから。</small></p>
+      <p class="pu-in note">一人ひとりに合わせた個別指導から、仲間と学ぶグループ・特別イベントへ。</p>
       <a href="#service" class="pu-in textlink">More</a>
     </div>
   </div>
@@ -602,7 +610,7 @@ footer{position:relative;z-index:1;background:var(--color-fill-solid);color:var(
       <span class="head-guide" aria-hidden="true"></span>
       <div class="no">01</div>
       <h2 class="display">About<br>MOVENSE</h2>
-      <p class="jp">周りを気にせず、自分のペースで。</p>
+      <p class="jp">動き方が変わる。楽しみ方が広がる。</p>
     </div>
     <div class="about-grid">
       <!-- decorative: the prose beside it carries the meaning, and the mark must not
@@ -618,15 +626,11 @@ footer{position:relative;z-index:1;background:var(--color-fill-solid);color:var(
         <svg class="cell c-w"    viewBox="0 0 100 100"><use href="#g-w"/></svg>
       </div>
       <div class="about-text measure" data-reveal>
-        <p>MOVENSEは、水泳・パーソナルトレーニング・ランニング・ウォーキングを通じて、一人ひとりの目標をサポートします。</p>
-        <p>水泳の個別レッスン「パーソナルアクア」は、<span class="nowrap">貸切レーン</span>でコーチの指導を受けられる水泳レッスンです。1〜4名まで、泳ぎの経験や目標に合わせてご案内します。周りを気にせず、ご自身のペースで泳ぎ方や練習に向き合えます。</p>
-        <p>パーソナルトレーニングは、レンタルジムで行う陸上の個別指導です。運動習慣づくりや体力づくりなど、ご希望に合わせてご相談いただけます。</p>
-        <p>ご予約はこのページからお申し込みください。日程・条件と必要な会場の確保を確認したうえで、予約確定をご連絡します。</p>
-        <div class="stats" data-reveal data-reveal-group>
-          <div class="stat"><b>1–<span data-count="4">4</span></b><span>名 / アクア1回のご予約</span></div>
-          <div class="stat"><b><span data-count="55">55</span></b><span>分 / アクア1レッスン</span></div>
-          <div class="stat"><b><span data-count="4">4</span></b><span>個別レッスンの種目</span></div>
-        </div>
+        <p>MOVENSE（ムーヴェンス）は、泳ぐ・鍛える・走る・歩くを通じて、あなたの「こうなりたい」に向き合うレッスンブランドです。</p>
+        <p>きれいに泳ぎたい。体力をつけたい。自分に合った走り方や歩き方を知りたい。今の状態や経験、目標を伺い、無理なく取り組める内容を一緒に考えます。</p>
+        <p>自分のペースで取り組む個別レッスンに加え、テーマを共有して学ぶグループレッスン、外部コーチを迎える特別イベントも準備しています。開催内容・対象・日程は、決まり次第ご案内します。</p>
+        <p>水泳の個別指導「パーソナルアクア」も、MOVENSEのレッスンのひとつとして引き続きご利用いただけます。</p>
+        <div class="lesson-formats"><a href="#service"><b>個別レッスン</b><span>目的とペースに合わせて</span></a><a href="#groups"><b>グループレッスン</b><span>仲間とテーマを学ぶ・準備中</span></a><a href="#events"><b>特別イベント</b><span>コーチとの新たな学び・準備中</span></a></div>
         <div class="about-cta"><a href="#flow" class="pill">ご予約の流れを見る <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.75 5a.75.75 0 0 0 0 1.5h9.69L5.22 17.72a.75.75 0 1 0 1.06 1.06L17.5 7.56v9.69a.75.75 0 0 0 1.5 0V5.75a.75.75 0 0 0-.75-.75z"/></svg></a></div>
       </div>
     </div>
@@ -639,8 +643,8 @@ footer{position:relative;z-index:1;background:var(--color-fill-solid);color:var(
     <div class="sec-head">
       <span class="head-guide" aria-hidden="true"></span>
       <div class="no">02</div>
-      <h2 class="display">Service</h2>
-      <p class="jp">ご利用シーンに合わせて</p>
+      <h2 class="display">Personal<br>Lessons</h2>
+      <p class="jp">あなたに合う、個別レッスンを。</p>
     </div>
     <div class="svc-list">
       <article class="svc" data-reveal>
@@ -655,10 +659,10 @@ footer{position:relative;z-index:1;background:var(--color-fill-solid);color:var(
           </svg>
         </div>
         <div class="svc-body">
-          <div class="step">STEP 01</div>
+          <div class="step">01 / SWIMMING</div>
           <h3 class="display">Personal Aqua</h3>
-          <p class="sub">パーソナルアクア — 水中でマンツーマン指導</p>
-          <p><strong>マンツーマン指導。</strong>プールレーンを貸切り、コーチが直接泳ぎ方を指導するプランです。1〜4名まで対応可能で、人数が増えるほどお一人あたりに対しての指導時間は短くなります（おおよその時間です　1名55分／2名27分30秒／3名約18分／4名約12分）、グループレッスンとしての対応も可能です。どちらもコーチがつきっきりで指導します。</p>
+          <p class="sub">パーソナルアクア — 泳ぎを、自分のペースで。</p>
+          <p>貸切レーンで、泳ぎの経験や目標に合わせてコーチが指導します。泳ぎ方の見直しから、得意種目の磨き上げまでご相談ください。1〜4名でご利用いただけます。複数名の場合は指導時間を分け合うため、ご希望に合わせて進め方をご案内します。</p>
         </div>
         <div class="svc-prices">
           <table class="ptable">
@@ -677,10 +681,10 @@ footer{position:relative;z-index:1;background:var(--color-fill-solid);color:var(
       <article class="svc" data-reveal>
         <figure class="lesson-photo"><img src="assets/photos/training.webp" width="1920" height="1280" loading="lazy" decoding="async" alt="ダンベルを使ったトレーニングのイメージ"></figure>
         <div class="svc-body">
-          <div class="step">STEP 02</div>
+          <div class="step">02 / TRAINING</div>
           <h3 class="display">Personal Training</h3>
-          <p class="sub">パーソナルトレーニング — 陸上でマンツーマン</p>
-          <p><strong>陸上トレーニング。</strong>ダンベルなどの器具を備えたレンタルルームで行う、コーチによるマンツーマントレーニングです。ご希望の日時をお伺いし、個別にご連絡します。</p>
+          <p class="sub">パーソナルトレーニング — なりたい自分へ、体づくりから。</p>
+          <p>運動習慣を身につけたい、体力をつけたい、体型を整えたい。一人ひとりの目的や運動経験に合わせ、レンタルジムで個別にサポートします。日時と場所の候補をお送りいただき、相談して決めます。</p>
         </div>
         <div class="svc-prices">
           <table class="ptable">
@@ -700,7 +704,7 @@ footer{position:relative;z-index:1;background:var(--color-fill-solid);color:var(
   <div class="svc-prices"><table class="ptable"><caption>60分・税込・会場費込み</caption><tbody><tr><th scope="row">初回体験（1名）</th><td>¥4,000</td></tr><tr><th scope="row">通常1名</th><td>¥6,000</td></tr><tr><th scope="row">通常2名・合計</th><td>¥9,000</td></tr></tbody></table></div>
 </article>    </div>
     <p class="note">写真は各種目のイメージです。実際の会場・担当者を示すものではありません。</p>
-    <p class="svc-note measure" data-reveal>ランニング・ウォーキングも個別にご相談いただけます。運動習慣づくりから目標に向けた練習まで、ご希望日時・目的に合わせてご案内します。料金と実施場所は予約確定前にお知らせします。</p>
+    <p class="svc-note measure" data-reveal>迷ったときは、やってみたいことや今の悩みからご相談ください。グループレッスン・特別イベントは、下の開催案内からご確認いただけます。</p>
   </div>
 </section>
 
@@ -732,9 +736,10 @@ footer{position:relative;z-index:1;background:var(--color-fill-solid);color:var(
       </div>
     </div>
 
+    <p class="svc-note"><a class="textlink" href="#lesson-terms">全種目の料金・お支払い・変更条件はこちら ↗</a></p>
     <div class="policy" data-reveal>
       <div>
-        <h3 class="display">Cancellation<br>Policy</h3>
+        <h3 class="display">Aqua<br>Cancellation</h3>
         <p class="note"><strong>以下は八重洲のパーソナルアクアの規定です。</strong>他の種目・会場・グループ・イベントには、それぞれの事前案内条件を適用します。</p>
         <p class="lead">ご利用日の<strong>前日まで</strong>のキャンセルは、施設利用料（枠1件あたり、税込・平日4,950円／土日祝6,600円）に対し、キャンセル時期に応じた料金をご請求いたします。<strong>当日のキャンセルは、ご予約総額の全額</strong>をご請求いたします。あらかじめご了承のうえご予約ください。</p>
         <p class="note">複数枠のご予約は、キャンセルする枠数分を合算してご請求します。</p>
@@ -801,12 +806,12 @@ footer{position:relative;z-index:1;background:var(--color-fill-solid);color:var(
 
 
     <nav class="booking-paths" aria-label="レッスンの参加方法">
-      <a class="booking-path" href="#personal"><span class="path-no">01 / PERSONAL</span><strong>パーソナルMOVENSE</strong><span>水泳・トレーニング・ランニング・ウォーキング</span><span class="path-action">個別レッスンを予約する ↗</span></a>
+      <a class="booking-path" href="#personal"><span class="path-no">01 / PERSONAL</span><strong>個別レッスン</strong><span>水泳・トレーニング・ランニング・ウォーキング</span><span class="path-action">個別レッスンを予約する ↗</span></a>
       <a class="booking-path" href="#groups"><span class="path-no">02 / GROUP</span><strong>グループレッスン</strong><span>テーマやレベルに合わせて、一緒に学ぶ</span><span class="path-action">開催のご案内を見る ↗</span></a>
       <a class="booking-path" href="#events"><span class="path-no">03 / SPECIAL</span><strong>特別イベント</strong><span>スイムクリニック・ゲストコーチのレッスンなど</span><span class="path-action">イベントのご案内を見る ↗</span></a>
     </nav>
     <div class="personal-intro" id="personal">
-      <p class="rl">PERSONAL MOVENSE</p><h3>あなたに合わせた、個別レッスン。</h3>
+      <p class="rl">PERSONAL LESSONS</p><h3>あなたに合わせた、個別レッスン。</h3>
       <p>初めての方は、公式LINEから初回カウンセリングシートへ。回答と参加者のお名前を確認後、合言葉と予約方法をご案内します。回答済み・受講中の方は再提出不要です。</p>
       <a class="textlink" href="https://line.me/R/ti/p/%40177onnkx" target="_blank" rel="noopener">公式LINEで初回のご案内を見る ↗</a>
     </div>
@@ -1070,7 +1075,7 @@ footer{position:relative;z-index:1;background:var(--color-fill-solid);color:var(
         <svg class="foot-mark" viewBox="0 0 100 100" aria-hidden="true">
           <path d="M0 0 H79 L39.5 100 Z"/><path d="M88.4 0 H100 L60.4 100 H48.8 Z"/>
         </svg>
-        <div class="display">Personal<br>MOVENSE<small>水泳・トレーニング・ランニング・ウォーキング</small></div>
+        <div class="display">MOVENSE<small>水泳・トレーニング・ランニング・ウォーキング</small></div>
       </div>
       <nav class="foot-links" aria-label="フッター" data-reveal data-reveal-group>
         <a href="swim-flow-lab.html">SWIM FLOW LAB 水泳のしくみを学ぶ <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></a>
@@ -1081,7 +1086,7 @@ footer{position:relative;z-index:1;background:var(--color-fill-solid);color:var(
       </nav>
     </div>
     <div class="foot-bottom">
-      <div class="brand"><img src="logo-icon-96.png" alt="" width="34" height="34" decoding="async"><span class="wordmark">Personal MOVENSE</span></div>
+      <div class="brand"><img src="assets/movense-logo.png" alt="" width="34" height="34" decoding="async"><span class="wordmark">MOVENSE</span></div>
       <div>&copy; 2026 MOVENSE. All rights reserved.</div>
     </div>
   </div>
