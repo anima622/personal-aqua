@@ -1,5 +1,9 @@
 /* Event requests use the existing authenticated, durable LINE receipt path. */
 (() => {
+  const openEvent=()=>{if(location.hash==='#event-reserve')setService('event');};
+  document.querySelectorAll('a[href="#event-reserve"]').forEach(link=>link.addEventListener('click',()=>setService('event')));
+  window.addEventListener('hashchange',openEvent);
+  openEvent();
   const form=document.getElementById('event-form');
   const result=document.getElementById('event-result');
   const button=form.querySelector('button[type="submit"]');

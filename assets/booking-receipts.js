@@ -31,7 +31,7 @@
     if(!saved || saved.expires<Date.now())return;
     for(const value of saved.values||[]) {const el=document.getElementById(value.id);if(el){el.value=value.value;if(el.type==='checkbox')el.checked=value.checked;}}
     for(const id of saved.slots||[]) for(const el of document.querySelectorAll('.slot')) if(el.dataset.id===id && !el.classList.contains('selected'))el.click();
-    if(['aqua','training','running','walking'].includes(saved.active))document.querySelector('[aria-controls="panel-'+saved.active+'"]')?.click();
+    if(['aqua','training','running','walking','event'].includes(saved.active))document.querySelector('[aria-controls="panel-'+saved.active+'"]')?.click();
     if(saved.anchor==='#event-reserve')location.hash='event-reserve';
   }
   async function loadSDK() {

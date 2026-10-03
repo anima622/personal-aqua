@@ -537,7 +537,7 @@ footer{position:relative;z-index:1;background:var(--color-fill-solid);color:var(
 .policy-venue{display:block;font-size:17px;white-space:nowrap;margin-top:4px}.line-official-actions{display:flex;align-items:center;flex-wrap:wrap;gap:24px;padding:16px 0;margin:8px 0}.line-official-login{display:inline-flex;align-items:center;padding:0;min-height:44px;background:#06c755;color:#fff;border:0;border-radius:4px;overflow:hidden;letter-spacing:0;position:relative;flex-shrink:0}.line-official-login img{width:44px;height:44px;flex-shrink:0;border-right:1px solid rgba(0,0,0,.08)}.line-official-login span{font:700 16px/1.4 var(--font-body);padding:0 32px;white-space:nowrap}.line-official-login::after{content:"";position:absolute;inset:0;pointer-events:none;background:#000;opacity:0}.line-official-login:active::after{opacity:.3}.line-official-login:disabled{cursor:wait}.line-official-friend{display:inline-flex;align-items:center;min-height:44px;flex-shrink:0}.line-official-friend img{width:auto;height:44px;max-width:none}@media(hover:hover){.line-official-login:hover::after{opacity:.1}.line-official-login:active::after{opacity:.3}}
 .line-booking-guide{font-size:16px;font-weight:500;line-height:1.8}.line-official-step{display:flex;flex-direction:column;align-items:flex-start;gap:12px}.line-official-step>p{font-size:14px;font-weight:700;margin:0}.line-official-actions{align-items:flex-start;gap:28px}</style>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/event-diving.css">
+<link rel="stylesheet" href="assets/event-diving.css?v=20261004-tab">
 </head>
 <body>
 <a href="#main" class="skip">本文へ移動</a>
@@ -901,21 +901,7 @@ footer{position:relative;z-index:1;background:var(--color-fill-solid);color:var(
       <a class="booking-path" href="#events"><span class="path-no">03 / SPECIAL</span><strong>特別イベント</strong><span>10/18（日）飛び込み練習会<br>マスターズ向け｜講師：亘洋祐</span><span class="path-action">開催内容・申込方法を見る ↗</span></a>
     </nav>
 
-    <section class="event-reserve" id="event-reserve" aria-labelledby="event-form-title">
-      <div class="event-reserve-heading"><p class="rl">SPECIAL EVENT / 10.18</p><h3 id="event-form-title">飛び込み練習会への参加申込</h3><p>2026年10月18日（日）11:00〜13:00<br>BumB東京スポーツ文化館｜集合 10:45｜3,000円／名</p><a class="textlink" href="#diving-20261018">開催内容を確認する ↑</a></div>
-      <form id="event-form">
-        <input type="hidden" name="service" value="特別イベント">
-        <input type="hidden" name="event_id" value="diving-20261018">
-        <div class="form-grid">
-          <div class="field full"><label for="event-name">参加される方のお名前 <span class="req">必須</span></label><input type="text" id="event-name" name="name" autocomplete="name" maxlength="100" required placeholder="フルネームでご入力ください"><p class="hint">1名ずつお申し込みください。LINEの表示名と異なる場合も、参加者のお名前をご入力ください。</p></div>
-          <div class="field full"><label for="event-payment">支払方法 <span class="req">必須</span></label><select id="event-payment" name="payment_method" required><option value="">お選びください</option><option>現金</option><option>銀行振込</option><option>PayPay</option></select><p class="hint">支払先・お支払いの詳細は公式LINEでご案内します。</p></div>
-          <div class="field full"><label for="event-note">ご相談・連絡事項 <span class="hint">任意</span></label><textarea id="event-note" name="note" rows="3" maxlength="1500" placeholder="練習したいことなどがあればご記入ください"></textarea></div>
-          <div class="field full"><label class="event-consent"><input type="checkbox" id="event-consent" name="request_ack" value="yes" required><span>キャンセルは前日まで受付、当日キャンセルは返金不可の条件を確認しました。送信は参加申込の受付であり、予約確定・席の確保ではありません。参加可否・お支払いの詳細と予約確定は公式LINEで案内されます。</span></label></div>
-        </div>
-        <div class="reserve-submit"><button class="pill solid" type="submit">申込内容を確認する</button><p class="note">氏名・連絡事項・LINEの識別情報は、参加申込の受付と連絡に利用します。</p></div>
-        <p class="event-result" id="event-result" role="status" aria-live="polite" tabindex="-1" hidden></p>
-      </form>
-    </section>
+
     <div class="personal-intro" id="personal">
       <p class="rl">PERSONAL LESSONS</p><h3>あなたに合わせた、個別レッスン。</h3>
       <p>初めての方は、公式LINEから初回カウンセリングシートへ。回答と参加者のお名前を確認後、合言葉と予約方法をご案内します。回答済み・受講中の方は再提出不要です。</p>
@@ -944,7 +930,7 @@ footer{position:relative;z-index:1;background:var(--color-fill-solid);color:var(
         </div>
       </div>
 
-      <div class="gated-content" id="gated-content" hidden>
+      <div class="gated-content" id="gated-content">
         <div class="tog-lab" id="tog-lab">ご希望のサービスをお選びください</div>
         <div class="service-toggle" role="tablist" aria-labelledby="tog-lab">
           <button type="button" class="service-btn active" id="toggle-aqua" role="tab" aria-selected="true" aria-controls="panel-aqua">
@@ -955,8 +941,26 @@ footer{position:relative;z-index:1;background:var(--color-fill-solid);color:var(
           </button>
           <button type="button" class="service-btn" id="toggle-running" role="tab" aria-selected="false" aria-controls="panel-running" tabindex="-1"><span class="sb-txt"><b>ランニング</b><span>走り方・目標に合わせた練習</span></span></button>
           <button type="button" class="service-btn" id="toggle-walking" role="tab" aria-selected="false" aria-controls="panel-walking" tabindex="-1"><span class="sb-txt"><b>ウォーキング</b><span>歩き方・無理のない運動習慣</span></span></button>
+          <button type="button" class="service-btn" id="toggle-event" role="tab" aria-selected="false" aria-controls="panel-event" tabindex="-1"><span class="sb-txt"><b>飛び込み練習会</b><span>10/18（日）11:00〜13:00・BumB</span></span></button>
         </div>
 
+        <div class="service-panel" id="panel-event" role="tabpanel" aria-labelledby="toggle-event" hidden>
+    <section class="event-reserve" id="event-reserve" aria-labelledby="event-form-title">
+      <div class="event-reserve-heading"><p class="rl">SPECIAL EVENT / 10.18</p><h3 id="event-form-title">飛び込み練習会への参加申込</h3><p>2026年10月18日（日）11:00〜13:00<br>BumB東京スポーツ文化館｜集合 10:45｜3,000円／名</p><a class="textlink" href="#diving-20261018">開催内容を確認する ↑</a></div>
+      <form id="event-form">
+        <input type="hidden" name="service" value="特別イベント">
+        <input type="hidden" name="event_id" value="diving-20261018">
+        <div class="form-grid">
+          <div class="field full"><label for="event-name">参加される方のお名前 <span class="req">必須</span></label><input type="text" id="event-name" name="name" autocomplete="name" maxlength="100" required placeholder="フルネームでご入力ください"><p class="hint">1名ずつお申し込みください。LINEの表示名と異なる場合も、参加者のお名前をご入力ください。</p></div>
+          <div class="field full"><label for="event-payment">支払方法 <span class="req">必須</span></label><select id="event-payment" name="payment_method" required><option value="">お選びください</option><option>現金</option><option>銀行振込</option><option>PayPay</option></select><p class="hint">支払先・お支払いの詳細は公式LINEでご案内します。</p></div>
+          <div class="field full"><label for="event-note">ご相談・連絡事項 <span class="hint">任意</span></label><textarea id="event-note" name="note" rows="3" maxlength="1500" placeholder="練習したいことなどがあればご記入ください"></textarea></div>
+          <div class="field full"><label class="event-consent"><input type="checkbox" id="event-consent" name="request_ack" value="yes" required><span>キャンセルは前日まで受付、当日キャンセルは返金不可の条件を確認しました。送信は参加申込の受付であり、予約確定・席の確保ではありません。参加可否・お支払いの詳細と予約確定は公式LINEで案内されます。</span></label></div>
+        </div>
+        <div class="reserve-submit"><button class="pill solid" type="submit">申込内容を確認する</button><p class="note">氏名・連絡事項・LINEの識別情報は、参加申込の受付と連絡に利用します。</p></div>
+        <p class="event-result" id="event-result" role="status" aria-live="polite" tabindex="-1" hidden></p>
+      </form>
+    </section>
+        </div>
         <div class="service-panel" id="panel-aqua" role="tabpanel" aria-labelledby="toggle-aqua">
           <form id="reserve-form">
             <input type="hidden" name="service" value="パーソナルアクア">
@@ -1188,7 +1192,7 @@ footer{position:relative;z-index:1;background:var(--color-fill-solid);color:var(
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <script src="assets/gsap-starter.js"></script>
-<script src="assets/booking-receipts.js?v=20261004-events"></script>
+<script src="assets/booking-receipts.js?v=20261004-event-tab"></script>
 <script>
 /*
   CONTENTS
@@ -1535,8 +1539,12 @@ const gatedContent = document.getElementById('gated-content');
 const gateInput = document.getElementById('gate-input');
 const gateSubmit = document.getElementById('gate-submit');
 const gateError = document.getElementById('gate-error');
+let personalGateUnlocked = false;
 
 function unlockGate() {
+  personalGateUnlocked = true;
+  const activeTab=document.querySelector('.service-toggle [aria-selected="true"]');
+  if(activeTab)document.getElementById(activeTab.getAttribute('aria-controls')).hidden=false;
   gateEl.hidden = true;
   gatedContent.hidden = false;
   try { localStorage.setItem(GATE_STORAGE_KEY, '1'); } catch {}
@@ -1572,10 +1580,12 @@ gateInput.addEventListener('keydown', (e) => {
 
 const personalTabs = Array.from(document.querySelectorAll('.service-toggle [role="tab"]'));
 function setService(service) {
+  gateEl.hidden = service === 'event' || personalGateUnlocked;
+  gatedContent.hidden = false;
   for (const tab of personalTabs) {
     const active = tab.id === 'toggle-' + service;
     tab.classList.toggle('active', active); tab.setAttribute('aria-selected', String(active)); tab.tabIndex = active ? 0 : -1;
-    document.getElementById(tab.getAttribute('aria-controls')).hidden = !active;
+    document.getElementById(tab.getAttribute('aria-controls')).hidden = !active || (service !== 'event' && !personalGateUnlocked);
   }
   if (typeof ScrollTrigger !== 'undefined') ScrollTrigger.refresh();
 }
@@ -1589,6 +1599,8 @@ personalTabs.forEach((tab,index)=>{
     personalTabs[next].click();personalTabs[next].focus();
   });
 });
+
+setService('aqua');
 
 /* --- パーソナルアクア: slot data, picker, submit ---
    SLOTS mirrors Notion's 「空き状況カレンダー」データベースを、最後に手動で
@@ -1861,7 +1873,7 @@ for (const service of ['training', 'running', 'walking']) {
 }
 </script>
 <script src="assets/movense-programs.js" defer></script>
-<script src="assets/event-diving.js" defer></script>
+<script src="assets/event-diving.js?v=20261004-tab" defer></script>
 <script>
 document.querySelectorAll('#lesson-terms details').forEach(detail => detail.addEventListener('toggle', () => { if (typeof ScrollTrigger !== 'undefined') ScrollTrigger.refresh(); }));
 document.querySelector('a[href="#aqua-policy"]').addEventListener('click', () => { document.getElementById('aqua-policy').open = true; });
