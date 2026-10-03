@@ -493,6 +493,23 @@ footer{position:relative;z-index:1;background:var(--color-fill-solid);color:var(
 .svc:has(.lesson-photo) .svc-body{grid-column:2}.svc:has(.lesson-photo) .svc-prices{grid-column:2;max-width:none;justify-self:stretch}.svc-note{margin-inline-start:0}
 @media(max-width:760px){.svc:has(.lesson-photo){grid-template-columns:minmax(0,1fr)}.svc .lesson-photo{grid-column:1;grid-row:auto}.svc:has(.lesson-photo) .svc-body,.svc:has(.lesson-photo) .svc-prices{grid-column:1}.brand img{width:48px;height:48px}}
 .composition .letter-hole{fill:var(--color-surface)}.composition .t-bar{clip-path:inset(0 0 76% 0)}
+/* Photo titles and ordered service journey */
+.lesson-photo{position:relative;isolation:isolate;container-type:inline-size}
+.lesson-photo::after{content:"";position:absolute;inset:0;background:linear-gradient(transparent 24%,rgba(8,26,32,.38) 50%,transparent 80%);pointer-events:none}
+.photo-label{position:absolute;inset:0;z-index:1;display:flex;align-items:center;justify-content:center;padding:4%;font-family:var(--font-display);font-weight:600;font-size:clamp(24px,9cqw,100px);line-height:1;letter-spacing:-.04em;white-space:nowrap;color:#fff9e9;text-shadow:0 2px 18px rgba(0,0,0,.3)}
+.brand-meaning{width:min(100%,480px);display:grid;grid-template-columns:repeat(4,1fr);gap:8px;line-height:1.2;padding-block:var(--s4)}
+.brand-meaning span{grid-column:1/-1;font-size:clamp(28px,3.3vw,52px);font-weight:400;animation:meaning-in 1s var(--ease-out) both;animation-delay:2s}
+.brand-meaning span:nth-child(2){padding-left:30%;font-size:clamp(22px,2.3vw,36px);animation-delay:2.3s}
+.brand-meaning span:nth-child(3){padding-left:53%;font-size:clamp(22px,2.3vw,36px);animation-delay:2.6s}
+.brand-meaning span:nth-child(4){text-align:right;animation-delay:2.9s}
+@keyframes meaning-in{from{opacity:0}to{opacity:1}}
+#site-header nav ul{gap:clamp(12px,1.6vw,26px)}
+@media(max-width:1200px){#site-header nav,.header-cta{display:none}.nav-toggle{display:flex}.head-guide,.hero-marks .guide,.hero-marks .hrule,.composition .guide,.composition .g1,.composition .g2{display:none!important}}
+@media(max-width:960px){.hero-right{gap:var(--s6)}.brand-meaning{align-self:center}.pickup{margin-top:var(--s4)}}
+.mobile-menu{overflow-y:auto;justify-content:flex-start;padding-top:100px;padding-bottom:32px}
+.mobile-menu a{font-size:clamp(24px,4vh,38px);padding:8px 0;flex-shrink:0}
+@media(prefers-reduced-motion:reduce){.brand-meaning span{animation:none;opacity:1}}
+.cancellation-overview{margin-bottom:var(--s8)}.cancellation-overview>h3{font-size:clamp(24px,3vw,36px);margin-bottom:16px}.cancel-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;margin-top:32px}.cancel-card{border:1px solid var(--color-border);padding:clamp(20px,3vw,40px)}.cancel-card h4{font-size:20px;margin:8px 0 24px}.cancel-card dl{margin:0}.cancel-card dt{font-weight:700;margin-top:20px}.cancel-card dd{margin:4px 0 0;color:var(--color-text-muted);font-size:var(--t-sm)}.cancel-card strong{color:var(--color-text)}.aqua-policy-detail{border-block:1px solid var(--color-border);margin-bottom:40px;scroll-margin-top:110px}.aqua-policy-detail>summary{cursor:pointer;padding:24px 8px;font-weight:600}.aqua-policy-detail .policy{margin-top:24px}#cancellation{scroll-margin-top:110px}@media(max-width:760px){.cancel-grid{grid-template-columns:minmax(0,1fr)}}
 </style>
 </head>
 <body>
@@ -552,28 +569,14 @@ footer{position:relative;z-index:1;background:var(--color-fill-solid);color:var(
     <img src="assets/movense-logo.png" alt="" width="34" height="34" decoding="async">
     <span class="wordmark">MOVENSE</span>
   </a>
-  <nav aria-label="メイン">
-    <ul>
-      <li><a href="#about"><small>01</small>About</a></li>
-      <li><a href="#service"><small>02</small>Service</a></li>
-      <li><a href="#flow"><small>03</small>Flow</a></li>
-      <li><a href="#reserve"><small>04</small>Reserve</a></li>
-    </ul>
-  </nav>
+  <nav aria-label="メイン"><ul><li><a href="#about"><small>01</small>About</a></li><li><a href="#service"><small>02</small>Personal</a></li><li><a href="#groups"><small>03</small>Group</a></li><li><a href="#events"><small>04</small>Events</a></li><li><a href="#flow"><small>05</small>Flow</a></li><li><a href="#lesson-terms"><small>06</small>Guide</a></li><li><a href="#reserve"><small>07</small>Reserve</a></li></ul></nav>
   <a href="#reserve" class="pill solid header-cta">ご予約へ <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.75 5a.75.75 0 0 0 0 1.5h9.69L5.22 17.72a.75.75 0 1 0 1.06 1.06L17.5 7.56v9.69a.75.75 0 0 0 1.5 0V5.75a.75.75 0 0 0-.75-.75z"/></svg></a>
   <button class="nav-toggle" id="nav-toggle" aria-label="メニューを開く" aria-expanded="false" aria-controls="mobile-menu">
     <span></span><span></span><span></span>
   </button>
 </header>
 
-<div class="mobile-menu" id="mobile-menu">
-  <a href="#about">About<small>01 MOVENSEについて</small></a>
-  <a href="#service">Service<small>02 個別レッスン</small></a>
-  <a href="#flow">Flow<small>03 ご予約の流れ</small></a>
-  <a href="#reserve">Reserve<small>04 ご予約</small></a>
-  <a href="swim-flow-lab.html">Swim Flow Lab<small>水泳のしくみを学ぶ</small></a>
-  <a href="#reserve" class="pill solid mm-cta">ご予約へ</a>
-</div>
+<div class="mobile-menu" id="mobile-menu"><a href="#about">About<small>01 MOVENSEについて</small></a><a href="#service">Personal<small>02 個別レッスン</small></a><a href="#groups">Group<small>03 グループレッスン</small></a><a href="#events">Events<small>04 特別イベント</small></a><a href="#flow">Flow<small>05 ご予約の流れ</small></a><a href="#lesson-terms">Guide<small>06 ご利用条件</small></a><a href="#reserve">Reserve<small>07 ご予約</small></a></div>
 
 <main id="main">
 
@@ -594,6 +597,7 @@ footer{position:relative;z-index:1;background:var(--color-fill-solid);color:var(
   <div class="hero-right">
     <p class="tagline" id="tagline">あなたの「こうなりたい」を、動きから。</p>
     <h1 class="display" id="hero-h1"><span class="l1">MOVENSE</span> <span class="l2">ムーヴェンス</span></h1>
+    <div class="brand-meaning" aria-label="MOVE 動く、BALANCE 調和"><span>MOVE</span><span lang="ja">動く</span><span lang="ja">調和</span><span>BALANCE</span></div>
     <div class="pickup" id="pickup">
       <div class="pu-in label">Find your movement</div>
       <div class="pu-in t">泳ぐ・鍛える・走る・歩く。</div>
@@ -657,7 +661,7 @@ footer{position:relative;z-index:1;background:var(--color-fill-solid);color:var(
     </div>
     <div class="svc-list">
       <article class="svc" data-reveal>
-        <figure class="lesson-photo"><img src="assets/photos/swim.jpg" width="1920" height="1280" loading="lazy" decoding="async" alt="水中で両腕を伸ばして泳ぐ様子のイメージ"></figure>
+        <figure class="lesson-photo"><img src="assets/photos/swim.jpg" width="1920" height="1280" loading="lazy" decoding="async" alt="水中で両腕を伸ばして泳ぐ様子のイメージ"><figcaption class="photo-label" aria-hidden="true">PERSONAL AQUA</figcaption></figure>
         <div class="svc-body">
           <div class="step">01 / SWIMMING</div>
           <h3 class="display">Personal Aqua</h3>
@@ -679,7 +683,7 @@ footer{position:relative;z-index:1;background:var(--color-fill-solid);color:var(
         </div>
       </article>
       <article class="svc" data-reveal>
-        <figure class="lesson-photo"><img src="assets/photos/training.webp" width="1920" height="1280" loading="lazy" decoding="async" alt="ダンベルを使ったトレーニングのイメージ"></figure>
+        <figure class="lesson-photo"><img src="assets/photos/training.webp" width="1920" height="1280" loading="lazy" decoding="async" alt="ダンベルを使ったトレーニングのイメージ"><figcaption class="photo-label" aria-hidden="true">PERSONAL TRAINING</figcaption></figure>
         <div class="svc-body">
           <div class="step">02 / TRAINING</div>
           <h3 class="display">Personal Training</h3>
@@ -695,13 +699,13 @@ footer{position:relative;z-index:1;background:var(--color-fill-solid);color:var(
         </div>
       </article>
 <article class="svc" data-reveal>
-  <figure class="lesson-photo"><img src="assets/photos/running.webp" width="1920" height="1440" loading="lazy" decoding="async" alt="ランニングのイメージ"></figure>
+  <figure class="lesson-photo"><img src="assets/photos/running.webp" width="1920" height="1440" loading="lazy" decoding="async" alt="ランニングのイメージ"><figcaption class="photo-label" aria-hidden="true">RUNNING</figcaption></figure>
   <div class="svc-body"><h3 class="display">Running</h3><p class="sub">ランニング — 目的に合わせた個別指導</p><p>フォームやペースづくり、目標に向けた練習をサポートします。日時と場所の候補をお送りいただき、実施内容を相談して決めます。</p><a class="textlink" href="#personal" data-personal-service="running">日時・場所を相談する ↗</a></div>
-  <div class="svc-prices"><table class="ptable"><caption>60分・税込・会場費込み</caption><tbody><tr><th scope="row">初回体験（1名）</th><td>¥5,000</td></tr><tr><th scope="row">通常1名</th><td>¥7,000</td></tr><tr><th scope="row">通常2名・合計</th><td>¥10,000</td></tr></tbody></table></div>
+  <div class="svc-prices"><table class="ptable"><caption>60分・税込・会場費込み</caption><tbody><tr><th scope="row">初回体験（1名）</th><td>¥5,000</td></tr><tr><th scope="row">通常1名</th><td>¥7,000</td></tr><tr><th scope="row">通常2名・合計</th><td>¥8,000</td></tr></tbody></table><p class="note">通常料金は2人目以降、1名追加につき＋1,000円（税込・会場費込み）。参加人数・実施場所は事前にご相談ください。</p></div>
 </article><article class="svc" data-reveal>
-  <figure class="lesson-photo"><img src="assets/photos/walking.webp" width="1920" height="1280" loading="lazy" decoding="async" alt="ウォーキングのイメージ"></figure>
+  <figure class="lesson-photo"><img src="assets/photos/walking.webp" width="1920" height="1280" loading="lazy" decoding="async" alt="ウォーキングのイメージ"><figcaption class="photo-label" aria-hidden="true">WALKING</figcaption></figure>
   <div class="svc-body"><h3 class="display">Walking</h3><p class="sub">ウォーキング — 目的に合わせた個別指導</p><p>歩き方を見直し、無理なく続けられる運動習慣へ。運動が久しぶりの方も、日時と場所の候補を添えてご相談ください。</p><a class="textlink" href="#personal" data-personal-service="walking">日時・場所を相談する ↗</a></div>
-  <div class="svc-prices"><table class="ptable"><caption>60分・税込・会場費込み</caption><tbody><tr><th scope="row">初回体験（1名）</th><td>¥4,000</td></tr><tr><th scope="row">通常1名</th><td>¥6,000</td></tr><tr><th scope="row">通常2名・合計</th><td>¥9,000</td></tr></tbody></table></div>
+  <div class="svc-prices"><table class="ptable"><caption>60分・税込・会場費込み</caption><tbody><tr><th scope="row">初回体験（1名）</th><td>¥4,000</td></tr><tr><th scope="row">通常1名</th><td>¥6,000</td></tr><tr><th scope="row">通常2名・合計</th><td>¥7,000</td></tr></tbody></table><p class="note">通常料金は2人目以降、1名追加につき＋1,000円（税込・会場費込み）。参加人数・実施場所は事前にご相談ください。</p></div>
 </article>    </div>
     <p class="note">写真は各種目のイメージです。実際の会場・担当者を示すものではありません。</p>
     <p class="svc-note measure" data-reveal>迷ったときは、やってみたいことや今の悩みからご相談ください。グループレッスン・特別イベントは、下の開催案内からご確認いただけます。</p>
@@ -709,11 +713,22 @@ footer{position:relative;z-index:1;background:var(--color-fill-solid);color:var(
 </section>
 
 <!-- ===== How it works: 03 FLOW (F4 steps + F6 policy) ===== -->
+<section class="sec-con program-section" id="groups" aria-labelledby="groups-title"><div class="wrap">
+  <div class="sec-head"><div class="no">03</div><h2 class="display" id="groups-title">Group Lessons</h2><p class="jp">仲間と学ぶ、グループレッスン。</p><p class="lede">テーマやレベルに合わせたレッスンを準備しています。開催ごとに対象・定員・料金をご案内します。</p></div>
+  <div class="program-list" data-program-kind="group"><p class="program-empty"><strong>開催案内を準備中です。</strong><br>日程・会場などが決まり次第、こちらに掲載します。現在、お申込みの受付は行っていません。</p></div>
+  <a class="textlink" href="https://line.me/R/ti/p/%40177onnkx" target="_blank" rel="noopener">公式LINEで相談する ↗</a>
+</div></section>
+<section class="sec-con program-section" id="events" aria-labelledby="events-title"><div class="wrap">
+  <div class="sec-head"><div class="no">04</div><h2 class="display" id="events-title">Special Events</h2><p class="jp">いつもの練習に、新しい視点を。</p><p class="lede">マスターズ向けスイムクリニックや、ゲストコーチを迎えるレッスンなどを企画しています。</p></div>
+  <div class="program-list" data-program-kind="event"><p class="program-empty"><strong>イベントを企画中です。</strong><br>内容・担当コーチ・対象泳力・参加費を確認できる開催ページをご用意します。現在、お申込みの受付は行っていません。</p></div>
+  <p class="note">個別レッスンとは受付条件が異なります。開催ごとの案内をご確認ください。</p>
+  <a class="textlink" href="https://line.me/R/ti/p/%40177onnkx" target="_blank" rel="noopener">公式LINEで相談する ↗</a>
+</div></section>
 <section class="sec-con" id="flow">
   <div class="wrap">
     <div class="sec-head">
       <span class="head-guide" aria-hidden="true"></span>
-      <div class="no">03</div>
+      <div class="no">05</div>
       <h2 class="display">Flow</h2>
       <p class="jp">ご予約の流れ</p>
     </div>
@@ -737,7 +752,22 @@ footer{position:relative;z-index:1;background:var(--color-fill-solid);color:var(
     </div>
 
     <p class="svc-note"><a class="textlink" href="#lesson-terms">全種目の料金・お支払い・変更条件はこちら ↗</a></p>
-    <div class="policy" data-reveal>
+
+  </div>
+</section>
+
+<!-- ===== Close: 04 RESERVE (C1 inline gated form) ===== -->
+<section class="sec-con" id="lesson-terms" aria-labelledby="terms-title"><div class="wrap">
+ <div class="sec-head"><div class="no">06</div><p class="rl">BEFORE YOU BOOK</p><h2 class="display" id="terms-title">Lesson Guide</h2><p class="jp">料金・ご利用条件について</p></div>
+<div class="cancellation-overview" id="cancellation">
+<h3>キャンセル・日時変更</h3><p class="note">ご希望の種目をご確認ください。変更・キャンセルは公式LINEへご連絡ください。</p>
+<div class="cancel-grid">
+<article class="cancel-card"><p class="label">SWIMMING</p><h4>パーソナルアクア（八重洲）</h4><dl><dt>前日までのキャンセル</dt><dd>施設利用料の30〜100%。お申し出の時期で変わります。</dd><dt>当日キャンセル</dt><dd><strong>予約総額の全額</strong>（施設利用料＋レッスン料）。</dd><dt>日時変更</dt><dd>コース確保前は無料。確保後は元の枠のキャンセル料が発生します。</dd></dl><a class="textlink" href="#aqua-policy">金額・日数の詳細を見る ↓</a></article>
+<article class="cancel-card"><p class="label">TRAINING</p><h4>パーソナルトレーニング</h4><dl><dt>前日までのキャンセル・日時変更</dt><dd><strong>会場の規定に応じた場所代</strong>をご負担いただきます。</dd><dt>当日キャンセル</dt><dd><strong>セッション代を含む予約総額の全額</strong>をご負担いただきます。</dd><dt>場所代の確認</dt><dd>利用するジムで条件が異なるため、会場を確保する前に金額と期限をご案内します。</dd></dl></article>
+<article class="cancel-card"><p class="label">RUNNING / WALKING</p><h4>ランニング・ウォーキング</h4><dl><dt>雨天など安全に実施できない場合</dt><dd><strong>日時変更</strong>で対応します。セッション代のキャンセル料はかかりません。お支払い済みのセッション代は振替先に充当します。</dd><dt>実施可能な日の当日キャンセル</dt><dd><strong>セッション代</strong>をご負担いただきます。</dd><dt>会場費が発生する場合</dt><dd>事前にご案内した会場の規定に従います。</dd></dl></article>
+<article class="cancel-card"><p class="label">GROUP / EVENTS</p><h4>グループ・特別イベント</h4><dl><dt>キャンセル・日時変更</dt><dd><strong>各開催案内に記載する条件</strong>を適用します。</dd><dt>申込み前に確認できること</dt><dd>キャンセル期限・金額・主催者中止時の対応を、募集開始時にお知らせします。</dd></dl><p class="note">現在は準備中です。</p></article>
+</div></div>
+<details class="aqua-policy-detail" id="aqua-policy"><summary>パーソナルアクア：キャンセル料の詳細・キープについて</summary>    <div class="policy">
       <div>
         <h3 class="display">Aqua<br>Cancellation</h3>
         <p class="note"><strong>以下は八重洲のパーソナルアクアの規定です。</strong>他の種目・会場・グループ・イベントには、それぞれの事前案内条件を適用します。</p>
@@ -789,16 +819,20 @@ footer{position:relative;z-index:1;background:var(--color-fill-solid);color:var(
           <p>プールコースのキャンセル料は予約の30日前から発生するため、ご予定がまだ確定しきっていない場合は、ご利用日の1週間前を目安に枠を「キープ」いただけます（コースの予約手続きは、進めてよいタイミングになってから行います）。キープの間はまだコースを確定させていないため、直前になって空きがなくなっている可能性がある点はご了承ください。皆様に気持ちよくご利用いただけるよう、必要以上に多くの枠を長期間キープすることは控えていただけますと幸いです。</p>
         </div>
       </div>
-    </div>
-  </div>
-</section>
+    </div></details>
+ <div class="lesson-terms">
+ <details open><summary>日時・会場と予約確定</summary><p>パーソナルアクアは掲載された枠・指定会場から選択します。トレーニング・ランニング・ウォーキングは、日時と場所の候補を送信いただき、実施可能な条件を相談して決めます。グループ・特別イベントは、主催者が指定する日時・会場で行います。</p><p>申込み控えの到着だけでは予約は確定しません。初回の問診・本人確認、実施条件の合意と必要な会場の確保後、公式LINEで確定をご案内します。</p></details>
+ <details><summary>お支払い・体験・回数券</summary><p>掲載料金は税込・会場費込みです。水泳以外は初回体験をご用意しています。トレーニング回数券の有効期限は3か月。起算日や利用条件は購入前にご案内します。</p><p>新規のご予約は、確定から3日以内（72時間）、またはレッスン前日18時の早い方をお支払期限とします。前日18時以降に確定した場合は開始前までです。具体的な期限と支払方法は確定時にご案内します。既に個別にお約束している条件は、その内容を優先します。</p></details>
 
-<!-- ===== Close: 04 RESERVE (C1 inline gated form) ===== -->
+ <details><summary>グループ・特別イベント</summary><p>日時・会場・担当コーチ・対象・定員・参加費は開催ごとに指定します。申込期限、支払期限、参加者のキャンセル条件、主催者中止時の対応も開催案内に掲載します。個別レッスンの規定をそのまま適用するものではありません。</p><p>現在は企画・準備中です。募集開始前のお申込みや席の確保は行っていません。</p></details>
+ <details><summary>問診・個人情報とご相談</summary><p>初回シートとお申込み内容は、本人確認、レッスンの準備、予約・連絡のために利用します。回答済みの方は、変更した内容がある場合にお知らせください。体調など個別のご相談は公式LINEからご連絡ください。</p></details>
+ </div>
+</div></section>
 <section class="sec-piv" id="reserve">
   <div class="wrap">
     <div class="sec-head">
       <span class="head-guide" aria-hidden="true"></span>
-      <div class="no">04</div>
+      <div class="no">07</div>
       <h2 class="display">Reserve</h2>
       <p class="jp">レッスン予約・イベントのご案内</p>
       <p class="lede">自分のペースで学ぶ個別レッスン。仲間と取り組むグループレッスン。テーマを深める特別イベント。ご希望の参加方法をお選びください。</p>
@@ -907,7 +941,7 @@ footer{position:relative;z-index:1;background:var(--color-fill-solid);color:var(
             <div class="field full"><label class="checkbox-row"><input type="checkbox" required> <span><a href="#lesson-terms">ご利用条件</a>を確認しました。申込み時点では予約未確定であることを了承します。</span></label></div>
             <div class="reserve-submit">
               <button type="submit" class="pill solid">予約をリクエストする</button>
-              <p class="pay-note">料金：1名 ¥11,000〜4名 ¥24,500（55分利用・税込、人数別の詳細は上記「02 Service」をご覧ください）。<strong>ご利用日当日のキャンセルは、体調不良の場合を含めご予約総額の全額をご請求いたします</strong>（前日までのキャンセル料は上記「03 Flow」のキャンセルポリシーをご覧ください）。送信後24時間以内を目安に、レーンの確保状況についてご返信いたします（状況により前後する場合がございます）。お支払い方法（銀行振込／手渡し／PayPay）は、その際に合わせてご案内いたします。申込み内容の控えは公式LINEへ自動送信します。レーンの確保後、予約確定についてあらためてご連絡します。</p>
+              <p class="pay-note">料金：1名 ¥11,000〜4名 ¥24,500（55分利用・税込、人数別の詳細は上記「02 Personal」をご覧ください）。<strong>ご利用日当日のキャンセルは、体調不良の場合を含めご予約総額の全額をご請求いたします</strong>（前日までのキャンセル料は上記「06 Guide」のキャンセルポリシーをご覧ください）。送信後24時間以内を目安に、レーンの確保状況についてご返信いたします（状況により前後する場合がございます）。お支払い方法（銀行振込／手渡し／PayPay）は、その際に合わせてご案内いたします。申込み内容の控えは公式LINEへ自動送信します。レーンの確保後、予約確定についてあらためてご連絡します。</p>
               <p id="confirm-msg" class="confirm-msg" aria-live="polite"></p>
             </div>
           </form>
@@ -1035,29 +1069,10 @@ footer{position:relative;z-index:1;background:var(--color-fill-solid);color:var(
 
 
 
-<section class="sec-con program-section" id="groups" aria-labelledby="groups-title"><div class="wrap">
-  <div class="sec-head"><div class="no">05</div><h2 class="display" id="groups-title">Group Lessons</h2><p class="jp">仲間と学ぶ、グループレッスン。</p><p class="lede">テーマやレベルに合わせたレッスンを準備しています。開催ごとに対象・定員・料金をご案内します。</p></div>
-  <div class="program-list" data-program-kind="group"><p class="program-empty"><strong>開催案内を準備中です。</strong><br>日程・会場などが決まり次第、こちらに掲載します。現在、お申込みの受付は行っていません。</p></div>
-  <a class="textlink" href="https://line.me/R/ti/p/%40177onnkx" target="_blank" rel="noopener">公式LINEで相談する ↗</a>
-</div></section>
-<section class="sec-con program-section" id="events" aria-labelledby="events-title"><div class="wrap">
-  <div class="sec-head"><div class="no">06</div><h2 class="display" id="events-title">Special Events</h2><p class="jp">いつもの練習に、新しい視点を。</p><p class="lede">マスターズ向けスイムクリニックや、ゲストコーチを迎えるレッスンなどを企画しています。</p></div>
-  <div class="program-list" data-program-kind="event"><p class="program-empty"><strong>イベントを企画中です。</strong><br>内容・担当コーチ・対象泳力・参加費を確認できる開催ページをご用意します。現在、お申込みの受付は行っていません。</p></div>
-  <p class="note">個別レッスンとは受付条件が異なります。開催ごとの案内をご確認ください。</p>
-  <a class="textlink" href="https://line.me/R/ti/p/%40177onnkx" target="_blank" rel="noopener">公式LINEで相談する ↗</a>
-</div></section>
 
-<section class="sec-con" id="lesson-terms" aria-labelledby="terms-title"><div class="wrap">
- <div class="sec-head"><p class="rl">BEFORE YOU BOOK</p><h2 class="display" id="terms-title">Lesson Guide</h2><p class="jp">料金・ご利用条件について</p></div>
- <div class="lesson-terms">
- <details open><summary>日時・会場と予約確定</summary><p>パーソナルアクアは掲載された枠・指定会場から選択します。トレーニング・ランニング・ウォーキングは、日時と場所の候補を送信いただき、実施可能な条件を相談して決めます。グループ・特別イベントは、主催者が指定する日時・会場で行います。</p><p>申込み控えの到着だけでは予約は確定しません。初回の問診・本人確認、実施条件の合意と必要な会場の確保後、公式LINEで確定をご案内します。</p></details>
- <details><summary>お支払い・体験・回数券</summary><p>掲載料金は税込・会場費込みです。水泳以外は初回体験をご用意しています。トレーニング回数券の有効期限は3か月。起算日や利用条件は購入前にご案内します。</p><p>新規のご予約は、確定から3日以内（72時間）、またはレッスン前日18時の早い方をお支払期限とします。前日18時以降に確定した場合は開始前までです。具体的な期限と支払方法は確定時にご案内します。既に個別にお約束している条件は、その内容を優先します。</p></details>
- <details><summary>トレーニングの変更・キャンセル</summary><p>キャンセル・日時変更に伴う会場費は、予約前にご案内する会場の規定に従ってご負担いただきます。当日キャンセルは、セッション代を含むご予約総額の全額が対象です。会場ごとの条件は確保前にお知らせします。</p></details>
- <details><summary>ランニング・ウォーキングの天候とキャンセル</summary><p>雨天など安全に実施できない天候は、日時変更をご相談します。天候による振替ではセッション代のキャンセル料はかからず、お支払い済みのセッション代は振替先へ充当します。発生する会場費は事前にご案内した会場規定に従います。</p><p>安全に実施できる日のお客様都合による当日キャンセルは、セッション代をご負担いただきます。変更・キャンセルのご連絡は公式LINEへお願いします。</p></details>
- <details><summary>グループ・特別イベント</summary><p>日時・会場・担当コーチ・対象・定員・参加費は開催ごとに指定します。申込期限、支払期限、参加者のキャンセル条件、主催者中止時の対応も開催案内に掲載します。個別レッスンの規定をそのまま適用するものではありません。</p><p>現在は企画・準備中です。募集開始前のお申込みや席の確保は行っていません。</p></details>
- <details><summary>問診・個人情報とご相談</summary><p>初回シートとお申込み内容は、本人確認、レッスンの準備、予約・連絡のために利用します。回答済みの方は、変更した内容がある場合にお知らせください。体調など個別のご相談は公式LINEからご連絡ください。</p></details>
- </div>
-</div></section>
+
+
+
 <!-- SWIM FLOW LAB: optional learning entry; reservation flow is unchanged. -->
 <section class="swim-lab-entry" aria-labelledby="swim-lab-title">
  <div><p class="swim-lab-eyebrow">水泳をもっと知る</p><h2 id="swim-lab-title">水の流れから<br>泳ぎを見つめる</h2></div>
@@ -1077,13 +1092,7 @@ footer{position:relative;z-index:1;background:var(--color-fill-solid);color:var(
         </svg>
         <div class="display">MOVENSE<small>水泳・トレーニング・ランニング・ウォーキング</small></div>
       </div>
-      <nav class="foot-links" aria-label="フッター" data-reveal data-reveal-group>
-        <a href="swim-flow-lab.html">SWIM FLOW LAB 水泳のしくみを学ぶ <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></a>
-        <a href="#about">01 MOVENSEについて <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.75 5a.75.75 0 0 0 0 1.5h9.69L5.22 17.72a.75.75 0 1 0 1.06 1.06L17.5 7.56v9.69a.75.75 0 0 0 1.5 0V5.75a.75.75 0 0 0-.75-.75z"/></svg></a>
-        <a href="#service">02 ご利用シーン <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.75 5a.75.75 0 0 0 0 1.5h9.69L5.22 17.72a.75.75 0 1 0 1.06 1.06L17.5 7.56v9.69a.75.75 0 0 0 1.5 0V5.75a.75.75 0 0 0-.75-.75z"/></svg></a>
-        <a href="#flow">03 ご予約の流れ <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.75 5a.75.75 0 0 0 0 1.5h9.69L5.22 17.72a.75.75 0 1 0 1.06 1.06L17.5 7.56v9.69a.75.75 0 0 0 1.5 0V5.75a.75.75 0 0 0-.75-.75z"/></svg></a>
-        <a href="#reserve">04 ご予約 <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.75 5a.75.75 0 0 0 0 1.5h9.69L5.22 17.72a.75.75 0 1 0 1.06 1.06L17.5 7.56v9.69a.75.75 0 0 0 1.5 0V5.75a.75.75 0 0 0-.75-.75z"/></svg></a>
-      </nav>
+      <nav class="foot-links" aria-label="フッター" data-reveal data-reveal-group><a href="#about">01 MOVENSEについて<span aria-hidden="true">↗</span></a><a href="#service">02 個別レッスン<span aria-hidden="true">↗</span></a><a href="#groups">03 グループレッスン<span aria-hidden="true">↗</span></a><a href="#events">04 特別イベント<span aria-hidden="true">↗</span></a><a href="#flow">05 ご予約の流れ<span aria-hidden="true">↗</span></a><a href="#lesson-terms">06 ご利用条件<span aria-hidden="true">↗</span></a><a href="#reserve">07 ご予約<span aria-hidden="true">↗</span></a><a href="swim-flow-lab.html">SWIM FLOW LAB 水泳のしくみを学ぶ ↗</a></nav>
     </div>
     <div class="foot-bottom">
       <div class="brand"><img src="assets/movense-logo.png" alt="" width="34" height="34" decoding="async"><span class="wordmark">MOVENSE</span></div>
@@ -1780,5 +1789,8 @@ for (const service of ['training', 'running', 'walking']) {
 }
 </script>
 <script src="assets/movense-programs.js" defer></script>
-</body>
+<script>
+document.querySelectorAll('#lesson-terms details').forEach(detail => detail.addEventListener('toggle', () => { if (typeof ScrollTrigger !== 'undefined') ScrollTrigger.refresh(); }));
+document.querySelector('a[href="#aqua-policy"]').addEventListener('click', () => { document.getElementById('aqua-policy').open = true; });
+</script></body>
 </html>
