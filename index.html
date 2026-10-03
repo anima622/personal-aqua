@@ -191,7 +191,15 @@ section{position:relative;z-index:1;scroll-margin-top:96px}
 .hero-marks .o-photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center}
 .hero-marks .m-o{grid-area:1/1}
 .hero-marks .m-s{grid-area:1/2;fill:var(--color-accent-solid)}
-.hero-marks .m-c{grid-area:2/1}
+.hero-marks .m-m{grid-area:2/1;overflow:visible}
+/* Reference storyboard: diagonal → inverted triangle → turn → separate right facet. */
+.m-turn{transform-origin:50px 50px;animation:m-turn 3.8s cubic-bezier(.77,0,.175,1) both}
+.m-triangle{clip-path:polygon(8% 90%,40% 10%,72% 90%);animation:m-build 1.2s cubic-bezier(.77,0,.175,1) both}
+.m-facet{transform:translateX(16px);animation:m-separate 3.8s cubic-bezier(.77,0,.175,1) both}
+@keyframes m-build{0%,20%{clip-path:polygon(39% 10%,40% 10%,72% 90%)}100%{clip-path:polygon(8% 90%,40% 10%,72% 90%)}}
+@keyframes m-turn{0%,38%{transform:rotate(180deg)}72%,100%{transform:rotate(0deg)}}
+@keyframes m-separate{0%,72%{transform:translateX(0);opacity:0}73%{opacity:1}100%{transform:translateX(16px);opacity:1}}
+@media(prefers-reduced-motion:reduce){.m-turn,.m-triangle,.m-facet{animation:none}.m-turn{transform:none}}
 .hero-marks .guide{position:absolute;top:0;bottom:0;width:1px;background:var(--color-border);transform-origin:top;z-index:0}
 .hero-marks .hg1{left:0}.hero-marks .hg2{left:50%}.hero-marks .hg3{left:100%}
 .hero-marks .hrule{position:absolute;left:0;right:0;top:50%;height:1px;background:var(--color-border);transform-origin:left;z-index:0}
@@ -579,7 +587,7 @@ footer{position:relative;z-index:1;background:var(--color-fill-solid);color:var(
         <div class="o-shell"></div>
       </div>
       <svg class="hmark m-s" viewBox="0 0 100 100"><use href="#g-s"/></svg>
-      <svg class="hmark m-c" viewBox="0 0 100 100"><use href="#g-c"/></svg>
+      <svg class="hmark m-m" viewBox="0 0 100 100" aria-hidden="true"><g class="m-turn"><rect class="m-triangle" width="100" height="100"/><path class="m-facet" d="M40 10 L72 90 H62 L35 23 Z"/></g></svg>
     </div>
   </div>
   <div class="hero-right">
@@ -1210,7 +1218,7 @@ if (typeof gsap !== 'undefined') {
       gsap.set('#s-cut-bot', { scaleX: 0, svgOrigin: '0 75' });
       gsap.set('.hero-marks .guide', { scaleY: 0 });
       gsap.set('.hero-marks .hrule', { scaleX: 0 });
-      gsap.set('.hmark', { clipPath: WIPE_IN });
+      gsap.set('.hmark:not(.m-m)', { clipPath: WIPE_IN });
       const h1Glyphs = ['#hero-h1 .l1', '#hero-h1 .l2']
         .flatMap((sel) => splitChars(document.querySelector(sel)));
       gsap.set(h1Glyphs, { opacity: 0, y: 26 });
@@ -1246,9 +1254,6 @@ if (typeof gsap !== 'undefined') {
         .to('#s-cut-top', { scaleX: 1, duration: 0.45, ease: 'power2.inOut' }, 2.95)
         .to('#s-cut-bot', { scaleX: 1, duration: 0.45, ease: 'power2.inOut' }, 3.1)
 
-        /* C — last in, and its notch lands after everything else has settled */
-        .to('.m-c', { clipPath: WIPE_OUT, duration: 0.6, ease: 'power2.inOut' }, 2.6)
-        .to('#c-cut', { scaleX: 1, duration: 0.45, ease: 'power2.inOut' }, 3.85)
 
         /* the card is built: frame first, contents into it */
         .to('#pickup', { clipPath: 'inset(0 0 -4% 0)', duration: 0.6, ease: 'power2.inOut' }, 3.5)
@@ -1403,7 +1408,7 @@ if (typeof gsap !== 'undefined') {
 
     /* ── hero marks drift at slightly different rates as the fold leaves ── */
     if (!reduce && ST) {
-      [['.m-o', -16], ['.m-s', 10], ['.m-c', -7]].forEach(([sel, y]) => {
+      [['.m-o', -16], ['.m-s', 10], ['.m-m', -7]].forEach(([sel, y]) => {
         gsap.to(sel, { y, ease: 'none',
           scrollTrigger: { trigger: '#hero', start: 'top top', end: 'bottom top', scrub: true } });
       });
