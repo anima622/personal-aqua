@@ -515,7 +515,7 @@ footer{position:relative;z-index:1;background:var(--color-fill-solid);color:var(
 .cancellation-overview>.note{font-size:17px;font-weight:500;color:var(--color-text);line-height:1.65}
 .cancel-grid{gap:24px;margin-top:36px;align-items:stretch}
 .cancel-card{--card-text:#17282e;--card-muted:#38494f;--card-accent:#006e80;background:#fff;color:var(--card-text);border:0;border-radius:28px;padding:clamp(28px,3.5vw,48px);box-shadow:0 5px 20px rgba(21,37,43,.07);letter-spacing:0;overflow-wrap:break-word}
-.cancel-card:nth-child(1),.cancel-card:nth-child(4){--card-text:#fff;--card-muted:#e0e8eb;--card-accent:#8ddfea;background:#15252b}
+
 .cancel-card .label{color:var(--card-accent);font-size:13px;font-weight:700;letter-spacing:.08em;line-height:1.5}
 .cancel-card h4{font-family:var(--font-body);font-size:clamp(24px,2.2vw,32px);font-weight:700;letter-spacing:-.035em;line-height:1.4;margin:12px 0 32px;text-wrap:balance;color:var(--card-text)}
 .cancel-card dt{font-size:18px;line-height:1.5;font-weight:700;margin-top:28px;color:var(--card-text)}
@@ -525,7 +525,16 @@ footer{position:relative;z-index:1;background:var(--color-fill-solid);color:var(
 .cancel-card .textlink{color:var(--card-text);font-size:15px;font-weight:700;letter-spacing:0;margin-top:24px;min-height:44px;text-decoration:underline;text-underline-offset:5px}
 .cancel-card .textlink::before{display:none}
 @media(max-width:760px){.cancel-grid{gap:20px}.cancel-card{border-radius:24px;padding:28px 24px}.cancel-card h4{font-size:26px}.cancel-card dt{font-size:17px}.cancel-card dd{font-size:16px}}
-</style>
+
+/* One continuous card row on every screen size. */
+.cancel-grid{display:flex;flex-wrap:nowrap;gap:24px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding-inline:8px;overscroll-behavior-x:contain;padding:8px 8px 24px;margin:16px -8px 0;scrollbar-width:thin;scrollbar-color:var(--color-accent-solid) transparent}
+.cancel-card{flex:0 0 clamp(340px,30vw,420px);min-width:0;scroll-snap-align:start;padding:32px;background:#fff;border-top:4px solid var(--color-accent-solid)}
+.cancel-card h4{font-size:26px;min-height:2.8em;text-wrap:wrap;margin-bottom:24px}
+.cancel-card dt{font-size:17px;margin-top:24px}.cancel-card dd{font-size:16px;line-height:1.7}
+.policy-carousel-controls{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-top:28px;font-size:14px;font-weight:500;color:var(--color-text-muted)}
+.policy-carousel-controls>div{display:flex;gap:12px;flex-shrink:0}.policy-carousel-controls button{width:44px;height:44px;border-radius:50%;background:var(--color-accent-solid);color:#fff;font-size:24px;line-height:1}.policy-carousel-controls button:disabled{opacity:.35;cursor:default}
+@media(max-width:760px){.cancel-grid{gap:16px}.cancel-card{flex-basis:86%;padding:28px 24px}.cancel-card h4{font-size:24px}.policy-carousel-controls{font-size:12px}}
+.policy-venue{display:block;font-size:17px;white-space:nowrap;margin-top:4px}</style>
 </head>
 <body>
 <a href="#main" class="skip">本文へ移動</a>
@@ -776,8 +785,8 @@ footer{position:relative;z-index:1;background:var(--color-fill-solid);color:var(
  <div class="sec-head"><div class="no">06</div><p class="rl">BEFORE YOU BOOK</p><h2 class="display" id="terms-title">Lesson Guide</h2><p class="jp">料金・ご利用条件について</p></div>
 <div class="cancellation-overview" id="cancellation">
 <h3>キャンセル・日時変更</h3><p class="note">ご希望の種目をご確認ください。変更・キャンセルは公式LINEへご連絡ください。</p>
-<div class="cancel-grid">
-<article class="cancel-card"><p class="label">SWIMMING</p><h4>パーソナルアクア（八重洲）</h4><dl><dt>前日までのキャンセル</dt><dd>施設利用料の30〜100%。お申し出の時期で変わります。</dd><dt>当日キャンセル</dt><dd><strong>予約総額の全額</strong>（施設利用料＋レッスン料）。</dd><dt>日時変更</dt><dd>コース確保前は無料。確保後は元の枠のキャンセル料が発生します。</dd></dl><a class="textlink" href="#aqua-policy">金額・日数の詳細を見る ↓</a></article>
+<div class="policy-carousel-controls"><span id="policy-swipe-hint">横にスクロールして各種目をご確認ください</span><div><button type="button" data-policy-step="-1" aria-label="前のキャンセル条件へ" aria-controls="policy-carousel">←</button><button type="button" data-policy-step="1" aria-label="次のキャンセル条件へ" aria-controls="policy-carousel">→</button></div></div><div class="cancel-grid" id="policy-carousel" role="region" aria-label="種目別のキャンセル条件" aria-describedby="policy-swipe-hint" tabindex="0">
+<article class="cancel-card"><p class="label">SWIMMING</p><h4>パーソナルアクア<span class="policy-venue">（八重洲）</span></h4><dl><dt>前日までのキャンセル</dt><dd>施設利用料の30〜100%。お申し出の時期で変わります。</dd><dt>当日キャンセル</dt><dd><strong>予約総額の全額</strong>（施設利用料＋レッスン料）。</dd><dt>日時変更</dt><dd>コース確保前は無料。確保後は元の枠のキャンセル料が発生します。</dd></dl><a class="textlink" href="#aqua-policy">金額・日数の詳細を見る ↓</a></article>
 <article class="cancel-card"><p class="label">TRAINING</p><h4>パーソナルトレーニング</h4><dl><dt>前日までのキャンセル・日時変更</dt><dd><strong>会場の規定に応じた場所代</strong>をご負担いただきます。</dd><dt>当日キャンセル</dt><dd><strong>セッション代を含む予約総額の全額</strong>をご負担いただきます。</dd><dt>場所代の確認</dt><dd>利用するジムで条件が異なるため、会場を確保する前に金額と期限をご案内します。</dd></dl></article>
 <article class="cancel-card"><p class="label">RUNNING / WALKING</p><h4>ランニング・ウォーキング</h4><dl><dt>雨天など安全に実施できない場合</dt><dd><strong>日時変更</strong>で対応します。セッション代のキャンセル料はかかりません。お支払い済みのセッション代は振替先に充当します。</dd><dt>実施可能な日の当日キャンセル</dt><dd><strong>セッション代</strong>をご負担いただきます。</dd><dt>会場費が発生する場合</dt><dd>事前にご案内した会場の規定に従います。</dd></dl></article>
 <article class="cancel-card"><p class="label">GROUP / EVENTS</p><h4>グループ・特別イベント</h4><dl><dt>キャンセル・日時変更</dt><dd><strong>各開催案内に記載する条件</strong>を適用します。</dd><dt>申込み前に確認できること</dt><dd>キャンセル期限・金額・主催者中止時の対応を、募集開始時にお知らせします。</dd></dl><p class="note">現在は準備中です。</p></article>
@@ -1807,5 +1816,7 @@ for (const service of ['training', 'running', 'walking']) {
 <script>
 document.querySelectorAll('#lesson-terms details').forEach(detail => detail.addEventListener('toggle', () => { if (typeof ScrollTrigger !== 'undefined') ScrollTrigger.refresh(); }));
 document.querySelector('a[href="#aqua-policy"]').addEventListener('click', () => { document.getElementById('aqua-policy').open = true; });
+</script><script>
+(()=>{const row=document.getElementById('policy-carousel');const buttons=[...document.querySelectorAll('[data-policy-step]')];const update=()=>{buttons[0].disabled=row.scrollLeft<=1;buttons[1].disabled=row.scrollLeft+row.clientWidth>=row.scrollWidth-2;};buttons.forEach(button=>button.addEventListener('click',()=>{const card=row.querySelector('.cancel-card');const gap=parseFloat(getComputedStyle(row).gap)||0;row.scrollBy({left:Number(button.dataset.policyStep)*(card.getBoundingClientRect().width+gap),behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'});}));row.addEventListener('scroll',update,{passive:true});new ResizeObserver(update).observe(row);update();})();
 </script></body>
 </html>
