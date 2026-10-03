@@ -4,8 +4,8 @@
   const config = {enabled: true, liffId: '2011810726-i3NW4lrJ', endpoint: 'https://watari-booking-receipts.wayo0402.workers.dev'};
   const forms = ['reserve-form', 'training-form', 'running-form', 'walking-form'].map(id => document.getElementById(id)).filter(Boolean);
   const messages = {
-    line_login_required: '受付控えをお届けするため、先に「LINEでログイン」を押してください。',
-    friend_required: '公式LINEの友だち追加・ブロック解除後に、もう一度連携を確認してください。まだ申込みは送信していません。',
+    line_login_required: 'ご予約には公式LINEの友だち追加が必要です。①友だち追加 → ②LINEでログインの順に進めてください。追加済みの方は②からで大丈夫です。',
+    friend_required: '公式LINEの友だち追加を確認できませんでした。①友だち追加・ブロック解除を行い、このページに戻って②LINEでログインを押してください。まだ申込みは送信していません。',
     invalid_booking: '入力内容を確認してください。お名前は100文字、備考は1500文字以内で入力できます。',
     request_conflict: '受付内容の確認が必要です。再申込みせず、公式LINEへお問い合わせください。',
     too_many_requests: '短時間に多くの申込みがありました。公式LINEへお問い合わせください。',
@@ -47,12 +47,13 @@
     if(!config.liffId || !/^(https:\/\/|http:\/\/127\.0\.0\.1:)/.test(config.endpoint))throw new Error('not_ready');
     for(const form of forms){
       const region=document.createElement('div');region.className='field full';
-      const note=document.createElement('p');note.className='hint';note.setAttribute('role','status');note.textContent='申込み内容の控えは公式LINEに届きます。初めての方は、「LINEでログイン」から予約用にLINEと連携してください。';notices.push(note);
+      const guide=document.createElement('p');guide.className='line-booking-guide';guide.textContent='ご予約の受付控え・日程調整は、公式LINEでお届けします😊 ①友だち追加 → ②LINEでログインの順に進めてください。追加済みの方は②からで大丈夫です。';
+      const note=document.createElement('p');note.className='hint';note.setAttribute('role','status');note.textContent='ご予約には公式LINEの友だち追加とLINE連携が必要です。';notices.push(note);
       const connect=document.createElement('button');connect.type='button';connect.className='line-official-login';connect.setAttribute('aria-label','LINEでログインして予約用に連携する');connect.innerHTML='<img src="assets/line/login-icon.png" width="44" height="44" alt=""><span>LINEでログイン</span>';
       connect.addEventListener('click',async()=>{connect.disabled=true;try{await ready;if(!window.liff.isLoggedIn()){draft();window.liff.login({redirectUri:location.origin+location.pathname});return;}await connection();}catch{say('LINEとの接続を確認できません。ページを開き直してください。');}finally{connect.disabled=false;}});
       const friend=document.createElement('a');friend.href='https://line.me/R/ti/p/%40177onnkx';friend.target='_blank';friend.rel='noopener';friend.className='line-official-friend';friend.setAttribute('aria-label','MOVENSE公式LINEを友だち追加（新しいタブ）');friend.innerHTML='<img src="assets/line/add-friend-ja.png" alt="友だち追加" width="232" height="72">';
       const purpose=document.createElement('p');purpose.className='hint';purpose.textContent='LINEの識別情報と申込み内容を、受付控えの送信・予約のご連絡に利用します。初回シートが未回答の方は、公式LINEに「問診票」とお送りください。初回は問診の確認後に予約確定をご連絡します。';
-      const actions=document.createElement('div');actions.className='line-official-actions';actions.append(connect,friend);region.append(note,actions,purpose);form.prepend(region);
+      const actions=document.createElement('div');actions.className='line-official-actions';const friendStep=document.createElement('div');friendStep.className='line-official-step';const friendLabel=document.createElement('p');friendLabel.textContent='① 公式LINEを友だち追加';friendStep.append(friendLabel,friend);const loginStep=document.createElement('div');loginStep.className='line-official-step';const loginLabel=document.createElement('p');loginLabel.textContent='② LINEでログインして連携';loginStep.append(loginLabel,connect);actions.append(friendStep,loginStep);region.append(guide,actions,note,purpose);form.prepend(region);
       const name=form.elements.namedItem('name');if(name)name.maxLength=100;
       const noteField=form.elements.namedItem('note');if(noteField)noteField.maxLength=1500;
     }
