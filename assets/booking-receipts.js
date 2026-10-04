@@ -3,7 +3,7 @@
   const params = new URLSearchParams(location.search);
   const config = {enabled: true, liffId: '2011810726-i3NW4lrJ', endpoint: 'https://watari-booking-receipts.wayo0402.workers.dev'};
   // Enable only after the participant / questionnaire integration is verified end to end.
-  const onboardingConfig = {enabled:false,intakeUrl:'',intakeCodeEntry:''};
+  const onboardingConfig = {enabled:true,intakeUrl:'https://docs.google.com/forms/d/e/1FAIpQLSe-IXjpAZPVBa8f1LVDQy-pEXFxd-gkNz_fRn4wQoSY22cpZQ/viewform',intakeCodeEntry:'entry.642782807'};
   const forms = ['reserve-form', 'training-form', 'running-form', 'walking-form', 'event-form'].map(id => document.getElementById(id)).filter(Boolean);
   const messages = {
     line_login_required: 'ご予約には公式LINEの友だち追加が必要です。①友だち追加 → ②LINEでログインの順に進めてください。追加済みの方は②からで大丈夫です。',

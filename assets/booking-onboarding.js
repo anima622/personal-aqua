@@ -2,6 +2,7 @@
 (() => {
   const normalizeName = value => String(value || '').normalize('NFKC').replace(/\s/g, '');
   const submitted = person => ['submitted','legacy_verified'].includes(person.intake_status);
+  const singleParticipant = form => ['event-form','training-form'].includes(form.id);
   function configured(config) {
     try {
       const url = new URL(config.intakeUrl);
@@ -51,10 +52,14 @@
     async function api(path, body) {
       const token = getToken();
       if (!token) throw new Error('LINEでログインしてからお進みください。');
-      const response = await fetch(endpoint + path, {method:body ? 'POST' : 'GET',headers:{Authorization:'Bearer ' + token,...(body ? {'Content-Type':'application/json'} : {})},...(body ? {body:JSON.stringify(body)} : {}),signal:AbortSignal.timeout(15000)});
-      const data = await response.json();
+      let response,data;
+      try {
+        response = await fetch(endpoint + path, {method:body ? 'POST' : 'GET',headers:{Authorization:'Bearer ' + token,...(body ? {'Content-Type':'application/json'} : {})},...(body ? {body:JSON.stringify(body)} : {}),signal:AbortSignal.timeout(15000)});
+        data = await response.json();
+        if(!data || typeof data!=='object')throw new Error('invalid_response');
+      } catch {throw new Error('接続を確認できませんでした。入力を残したまま、もう一度お試しください。');}
       if (!response.ok) {
-        const errors={friend_required:'公式LINEを友だち追加して、もう一度確認してください。',message_required:'公式LINEにメッセージかスタンプを1つ送ってください。',participant_not_found:'参加者を選び直してください。',participant_conflict:'参加者情報を確認できません。公式LINEへご相談ください。',too_many_requests:'少し時間をおいてから、もう一度お試しください。',not_ready:'初回受付の準備ができていません。時間をおいて再度お試しください。'};
+        const errors={line_login_required:'LINEでログインし直してからお進みください。',friend_required:'公式LINEを友だち追加して、もう一度確認してください。',message_required:'公式LINEにメッセージかスタンプを1つ送ってください。',intake_required:'参加される全員の初回シートをご提出ください。',invalid_participants:'参加人数と参加者の選択を確認してください。',participant_name_mismatch:'参加者のお名前を確認してください。',participant_not_found:'参加者を選び直してください。',participant_conflict:'参加者情報を確認できません。公式LINEへご相談ください。',too_many_requests:'少し時間をおいてから、もう一度お試しください。',not_ready:'初回受付の準備ができていません。時間をおいて再度お試しください。'};
         throw new Error(errors[data.error] || '確認できませんでした。少し待って、もう一度お試しください。');
       }
       return data;
@@ -68,19 +73,27 @@
       if(name){name.readOnly=true;if(people[0]){name.value=people[0].name;name.dispatchEvent(new Event('input',{bubbles:true}));}else{name.value='';}}
       const participants=form.elements.namedItem('participants');
       if(participants){participants.value=people.length ? `${people.length}名（${people.map(person=>person.name).join('・')}）` : '';participants.readOnly=true;}
+      if(status?.friend && status?.message_received && people.length){
+        view.note.textContent=people.every(submitted)?'連絡設定・初回シートは確認済みです。このまま申込みへお進みください。':'選んだ参加者の初回シートをご提出ください。';
+      }
     }
     function render() {
       for(const [form,view] of regions){
-        const previous=selected(view);view.list.replaceChildren();
+        const previous=selected(view);
+        // Only a sole participant is unambiguous. Never guess between siblings or overwrite a deliberate deselection.
+        if(!view.initialized && !previous.length && status?.participants?.length===1)previous.push(status.participants[0].id);
+        view.initialized=true;view.list.replaceChildren();
         const received=status?.enabled===true && status.friend===true && status.message_received===true;
         view.talk.hidden=received || !getToken();view.retry.hidden=!getToken();view.people.hidden=!received;
-        view.note.textContent=status?.enabled!==true ? '初回受付の準備ができていません。時間をおいて再度お試しください。' : !received ? '公式LINEにメッセージかスタンプを1つ送ってください😊' : '参加者を選んでください。初回シートは未提出の方だけ必要です。';
+        view.note.textContent=status?.enabled!==true ? '初回受付の準備ができていません。時間をおいて再度お試しください。' : status.friend!==true ? '公式LINEを友だち追加して、もう一度確認してください。' : !received ? '公式LINEにメッセージかスタンプを1つ送ってください😊' : '参加者を選んでください。初回シートは未提出の方だけ必要です。';
         for(const person of status?.participants || []){
-          const row=element('div',null,'field');const label=element('label');const input=element('input');input.type='checkbox';input.value=person.id;input.checked=previous.includes(person.id);input.addEventListener('change',()=>sync(form,view));
+          const row=element('div',null,'field');const label=element('label');const input=element('input');input.type='checkbox';input.value=person.id;input.checked=previous.includes(person.id);input.addEventListener('change',()=>{if(singleParticipant(form) && input.checked)for(const other of view.list.querySelectorAll('input'))if(other!==input)other.checked=false;sync(form,view);});
           label.append(input,document.createTextNode(' '+person.name+' · '+(submitted(person)?'シート提出済み':'初回シート未提出')));row.append(label);
           if(!submitted(person)){
             const start=element('button','初回シートを開く','pill');start.type='button';
             start.addEventListener('click',async()=>{start.disabled=true;try{const session=await api('/intake-session',{participant_id:person.id});if(session.submitted===true && session.participant_id===person.id){await refresh();return;}if(!session.code || session.participant_id!==person.id || !(session.expires_at*1000>Date.now()))throw new Error('初回シートを開けませんでした。もう一度お試しください。');const url=new URL(config.intakeUrl);url.searchParams.set('usp','pp_url');url.searchParams.set(config.intakeCodeEntry,session.code);const link=element('a','初回シートへ（別タブ）','pill solid');link.href=url.href;link.target='_blank';link.rel='noopener noreferrer';link.referrerPolicy='no-referrer';start.replaceWith(link);view.note.textContent='シート送信後、このページへ戻り「送信状況を確認」を押してください。';}catch(error){view.note.textContent=error.message;start.disabled=false;}});row.append(start);
+            const existing=element('p','すでに回答済みの方は、再記入せずご連絡ください。','hint');
+            const contact=element('a','回答済みをLINEで知らせる');contact.href='https://line.me/R/oaMessage/%40177onnkx/?'+encodeURIComponent('問診票回答済みです。参加者名：');contact.target='_blank';contact.rel='noopener noreferrer';existing.append(document.createTextNode(' '),contact);row.append(existing);
           }
           view.list.append(row);
         }
@@ -91,7 +104,7 @@
       if(refreshing)return refreshing;
       if(!configured(config))throw new Error('初回シートの接続を準備しています。時間をおいて再度お試しください。');
       refreshing=(async()=>{
-        status=null;lastRefresh=Date.now();
+        lastRefresh=Date.now();
         const next=await api('/onboarding/status');
         if(next.enabled!==true || !Array.isArray(next.participants))throw new Error('初回受付の準備ができていません。時間をおいて再度お試しください。');
         status=next;render();return status;
@@ -112,7 +125,7 @@
         const addName=element('input');addName.type='text';addName.maxLength=100;addName.autocomplete='off';addName.setAttribute('aria-label','追加する参加者のフルネーム');addName.placeholder='参加者のフルネーム';
         const relation=element('select');relation.setAttribute('aria-label','LINEご利用者との関係');for(const [value,text] of [['self','ご本人'],['child','お子さま'],['other','その他の参加者']]){const option=element('option',text);option.value=value;relation.append(option);}
         const add=element('button','参加者を追加','pill');add.type='button';let pending=null;
-        add.addEventListener('click',async()=>{const name=addName.value.trim();if(!name){note.textContent='参加者のお名前をご入力ください。';return;}add.disabled=true;try{if(!pending || pending.name!==name || pending.relationship!==relation.value)pending={id:crypto.randomUUID(),name,relationship:relation.value};const created=await api('/participants',pending);const newId=created.participant?.id;if(!newId)throw new Error('参加者を確認できませんでした。もう一度お試しください。');pending=null;addName.value='';await refresh();for(const input of list.querySelectorAll('input')){if(input.value===newId)input.checked=true;}sync(form,regions.get(form));}catch(error){note.textContent=error.message;}finally{add.disabled=false;}});
+        add.addEventListener('click',async()=>{const name=addName.value.trim();if(!name){note.textContent='参加者のお名前をご入力ください。';return;}add.disabled=true;try{if(!pending || pending.name!==name || pending.relationship!==relation.value)pending={id:crypto.randomUUID(),name,relationship:relation.value};const created=await api('/participants',pending);const newId=created.participant?.id;if(!newId)throw new Error('参加者を確認できませんでした。もう一度お試しください。');pending=null;addName.value='';await refresh();for(const input of list.querySelectorAll('input')){if(singleParticipant(form))input.checked=input.value===newId;else if(input.value===newId)input.checked=true;}sync(form,regions.get(form));}catch(error){note.textContent=error.message;}finally{add.disabled=false;}});
         people.append(explanation,list,addName,relation,add);region.append(note,talk,retry,people);const loginRegion=form.querySelector('[data-line-login-region]');if(loginRegion)loginRegion.after(region);else form.append(region);regions.set(form,{note,talk,retry,people,list});
       }
       if(!listenersMounted){
