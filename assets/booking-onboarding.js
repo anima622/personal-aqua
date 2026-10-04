@@ -81,7 +81,7 @@
       const participants=form.elements.namedItem('participants');
       if(participants){participants.value=people.length ? `${people.length}名（${people.map(person=>person.name).join('・')}）` : '';participants.readOnly=true;}
       if(status?.friend && status?.message_received && people.length){
-        view.note.textContent=people.every(submitted)?'連絡設定・初回シートは確認済みです。このまま申込みへお進みください。':'選んだ参加者の初回シートをご提出ください。';
+        view.note.textContent=people.every(submitted)?'準備完了 ✓ この下で申込み内容をご入力ください。':'② 初回シートをご提出ください。提出だけでは申込みは完了しません。';
       }
     }
     function render() {
@@ -92,7 +92,7 @@
         view.initialized=true;view.list.replaceChildren();
         const received=status?.enabled===true && status.friend===true && status.message_received===true;
         view.talk.hidden=received || !getToken();view.retry.hidden=!getToken();view.people.hidden=!received;
-        view.note.textContent=status?.enabled!==true ? '初回受付の準備ができていません。時間をおいて再度お試しください。' : status.friend!==true ? '公式LINEを友だち追加して、もう一度確認してください。' : !received ? '公式LINEにメッセージかスタンプを1つ送ってください😊' : '参加者を選んでください。初回シートは未提出の方だけ必要です。';
+        view.note.textContent=status?.enabled!==true ? '初回受付の準備ができていません。時間をおいて再度お試しください。' : status.friend!==true ? '公式LINEを友だち追加して、もう一度確認してください。' : !received ? '① 公式LINEにメッセージかスタンプを1つ送り、このページに戻ってください。' : status.participants.length ? '② 参加者を選んでください。提出済みの初回シートは再入力不要です。' : '② 参加される方のお名前を登録し、初回シートへ進んでください。';
         for(const person of status?.participants || []){
           const row=element('div',null,'field');const label=element('label');const input=element('input');input.type='checkbox';input.value=person.id;input.checked=previous.includes(person.id);input.addEventListener('change',()=>{if(singleParticipant(form) && input.checked)for(const other of view.list.querySelectorAll('input'))if(other!==input)other.checked=false;sync(form,view);});
           label.append(input,document.createTextNode(' '+person.name+' · '+(submitted(person)?'シート提出済み':'初回シート未提出')));row.append(label);
@@ -128,7 +128,7 @@
         const talk=element('a','公式LINEへ送信する','pill solid');talk.hidden=true;talk.href='https://line.me/R/oaMessage/%40177onnkx/?'+encodeURIComponent('申込みの連絡設定');talk.target='_blank';talk.rel='noopener noreferrer';
         const retry=element('button','送信状況を確認','pill');retry.hidden=true;retry.type='button';retry.addEventListener('click',async()=>{retry.disabled=true;try{await refresh();}catch(error){note.textContent=error.message;}finally{retry.disabled=false;}});
         const people=element('div');people.hidden=true;const list=element('div');
-        const explanation=element('p','参加者全員を選択。お名前欄には最初に選んだ方が入ります。','hint');
+        const explanation=element('p',singleParticipant(form)?'参加される方を1名選んでください。お名前は自動で入ります。':'参加者全員を選択。お名前欄には最初に選んだ方が入ります。','hint');
         const addName=element('input');addName.type='text';addName.maxLength=100;addName.autocomplete='off';addName.setAttribute('aria-label','追加する参加者のフルネーム');addName.placeholder='参加者のフルネーム';
         const relation=element('select');relation.setAttribute('aria-label','LINEご利用者との関係');for(const [value,text] of [['self','ご本人'],['child','お子さま'],['other','その他の参加者']]){const option=element('option',text);option.value=value;relation.append(option);}
         const add=element('button','参加者を追加','pill');add.type='button';let pending=null;

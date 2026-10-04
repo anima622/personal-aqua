@@ -17,6 +17,7 @@
   };
   const states = new Map();
   const notices = [];
+  const loginActions = [];
   let ready, setupError, onboarding, initializationStage='not-started';
   function read(key) {try{return JSON.parse(sessionStorage.getItem(key));}catch{return null;}}
   function write(key,value) {try{sessionStorage.setItem(key,JSON.stringify(value));}catch{/* In-memory retry keys still work until reload. */}}
@@ -43,10 +44,12 @@
   }
   async function connection() {
     initializationStage='login-state';
+    for(const actions of loginActions) actions.hidden=false;
     if(!window.liff.isLoggedIn()) {say(messages.line_login_required);return false;}
     initializationStage='friendship';
     const friend=await window.liff.getFriendship();
     if(!friend.friendFlag){say(messages.friend_required);return false;}
+    for(const actions of loginActions) actions.hidden=true;
     say('LINE連携済み ✓ 申込み後、このLINEアカウントに受付控えをお送りします。');
     if(onboardingConfig.enabled){initializationStage='onboarding-status';await onboarding.refresh();}
     return true;
@@ -72,6 +75,7 @@
         purpose.textContent='初回シートは未提出の方だけ。参加確定は申込み後にLINEでご案内します。';
       }
       const actions=document.createElement('div');actions.className='line-official-actions';const friendStep=document.createElement('div');friendStep.className='line-official-step';const friendLabel=document.createElement('p');friendLabel.textContent=onboardingConfig.enabled?'公式LINEを友だち追加':'① 公式LINEを友だち追加';friendStep.append(friendLabel,friend);const loginStep=document.createElement('div');loginStep.className='line-official-step';const loginLabel=document.createElement('p');loginLabel.textContent=onboardingConfig.enabled?'LINEでログインして連携':'② LINEでログインして連携';loginStep.append(loginLabel,connect);actions.append(friendStep,loginStep);region.append(guide,actions,note,purpose);form.prepend(region);
+      loginActions.push(actions);
       const name=form.elements.namedItem('name');if(name)name.maxLength=100;
       const noteField=form.elements.namedItem('note');if(noteField)noteField.maxLength=1500;
     }

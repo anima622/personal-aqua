@@ -797,8 +797,8 @@ footer{position:relative;z-index:1;background:var(--color-fill-solid);color:var(
       </div>
       <div class="stepc">
         <div class="n">02</div>
-        <h3>初回の確認・お申込み</h3>
-        <p>初めての方は公式LINEで問診・本人確認を行います。案内後、予約フォームから1回送信すると、ご本人のLINEに控えが届きます。</p>
+        <h3>連絡設定・初回シート・申込み</h3>
+        <p>LINE連絡設定と初回シートの送信後、そのまま申込みへ。受付控えはLINEに届きます。</p>
       </div>
       <div class="stepc">
         <div class="n">03</div>
@@ -904,8 +904,8 @@ footer{position:relative;z-index:1;background:var(--color-fill-solid);color:var(
 
     <div class="personal-intro" id="personal">
       <p class="rl">PERSONAL LESSONS</p><h3>あなたに合わせた、個別レッスン。</h3>
-      <p>初めての方は、公式LINEから初回カウンセリングシートへ。回答と参加者のお名前を確認後、合言葉と予約方法をご案内します。回答済み・受講中の方は再提出不要です。</p>
-      <a class="textlink" href="https://line.me/R/ti/p/%40177onnkx" target="_blank" rel="noopener">公式LINEで初回のご案内を見る ↗</a>
+      <p>LINE連絡設定 → 初回シート → 申込み。初回シートは未提出の方だけ必要です。</p>
+      <a class="textlink" href="#tog-lab">申込みに進む ↓</a>
     </div>
     <div class="reserve-grid">
       <aside class="reserve-aside">
@@ -917,7 +917,7 @@ footer{position:relative;z-index:1;background:var(--color-fill-solid);color:var(
         </ol>
       </aside>
     <div class="reserve-card" data-reveal>
-      <div class="gate" id="reserve-gate">
+      <div class="gate" id="reserve-gate" hidden>
         <div class="gate-form">
         <p class="gate-label">合言葉を入力してください</p>
         <div class="gate-row">
@@ -926,7 +926,7 @@ footer{position:relative;z-index:1;background:var(--color-fill-solid);color:var(
           <button type="button" class="pill solid" id="gate-submit">進む</button>
         </div>
         <p class="gate-error" id="gate-error" role="alert">合言葉が違います。もう一度お試しください。</p>
-        <p class="gate-hint" id="gate-hint">初回シートの確認後に合言葉をご案内します。分からない場合は公式LINEへご連絡ください。</p>
+        <p class="gate-hint" id="gate-hint">現在の受付は、LINE連絡設定と初回シートの提出確認で進めます。</p>
         </div>
       </div>
 
@@ -951,7 +951,7 @@ footer{position:relative;z-index:1;background:var(--color-fill-solid);color:var(
         <input type="hidden" name="service" value="特別イベント">
         <input type="hidden" name="event_id" value="diving-20261018">
         <div class="form-grid">
-          <div class="field full"><label for="event-name">参加される方のお名前 <span class="req">必須</span></label><input type="text" id="event-name" name="name" autocomplete="name" maxlength="100" required placeholder="フルネームでご入力ください"><p class="hint">1名ずつお申し込みください。LINEの表示名と異なる場合も、参加者のお名前をご入力ください。</p></div>
+          <div class="field full"><label for="event-name">参加される方のお名前 <span class="req">必須</span></label><input type="text" id="event-name" name="name" autocomplete="name" maxlength="100" required placeholder="フルネームでご入力ください"><p class="hint">1名ずつお申し込みください。上で選んだ参加者のお名前が入ります。</p></div>
           <div class="field full"><label for="event-payment">支払方法 <span class="req">必須</span></label><select id="event-payment" name="payment_method" required><option value="">お選びください</option><option>現金</option><option>銀行振込</option><option>PayPay</option></select><p class="hint">支払先・お支払いの詳細は公式LINEでご案内します。</p></div>
           <div class="field full"><label for="event-note">ご相談・連絡事項 <span class="hint">任意</span></label><textarea id="event-note" name="note" rows="3" maxlength="1500" placeholder="練習したいことなどがあればご記入ください"></textarea></div>
           <div class="field full"><label class="event-consent"><input type="checkbox" id="event-consent" name="request_ack" value="yes" required><span>キャンセルは前日まで受付、当日キャンセルは返金不可の条件を確認しました。送信は参加申込の受付であり、予約確定・席の確保ではありません。参加可否・お支払いの詳細と予約確定は公式LINEで案内されます。</span></label></div>
@@ -1192,8 +1192,8 @@ footer{position:relative;z-index:1;background:var(--color-fill-solid);color:var(
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <script src="assets/gsap-starter.js"></script>
-<script src="assets/booking-onboarding.js?v=20261005-onboarding-visible"></script>
-<script src="assets/booking-receipts.js?v=20261005-onboarding-visible"></script>
+<script src="assets/booking-onboarding.js?v=20261005-entry-aligned"></script>
+<script src="assets/booking-receipts.js?v=20261005-entry-aligned"></script>
 <script>
 /*
   CONTENTS
