@@ -17,7 +17,7 @@
   };
   const states = new Map();
   const notices = [];
-  let ready, setupError, onboarding;
+  let ready, setupError, onboarding, initializationStage='not-started';
   function read(key) {try{return JSON.parse(sessionStorage.getItem(key));}catch{return null;}}
   function write(key,value) {try{sessionStorage.setItem(key,JSON.stringify(value));}catch{/* In-memory retry keys still work until reload. */}}
   function clear(key) {try{sessionStorage.removeItem(key);}catch{}}
@@ -42,14 +42,17 @@
     await new Promise((resolve,reject)=>{const script=document.createElement('script');script.src='https://static.line-scdn.net/liff/edge/2/sdk.js';script.onload=resolve;script.onerror=reject;document.head.append(script);});
   }
   async function connection() {
+    initializationStage='login-state';
     if(!window.liff.isLoggedIn()) {say(messages.line_login_required);return false;}
+    initializationStage='friendship';
     const friend=await window.liff.getFriendship();
     if(!friend.friendFlag){say(messages.friend_required);return false;}
     say('LINE連携済み ✓ 申込み後、このLINEアカウントに受付控えをお送りします。');
-    if(onboardingConfig.enabled)await onboarding.refresh();
+    if(onboardingConfig.enabled){initializationStage='onboarding-status';await onboarding.refresh();}
     return true;
   }
   async function init() {
+    initializationStage='form-ui';
     if(!config.enabled)return;
     if(!config.liffId || !/^(https:\/\/|http:\/\/127\.0\.0\.1:)/.test(config.endpoint))throw new Error('not_ready');
     for(const form of forms){
@@ -73,10 +76,13 @@
       const noteField=form.elements.namedItem('note');if(noteField)noteField.maxLength=1500;
     }
     if(onboardingConfig.enabled){
+      initializationStage='onboarding-mount';
       if(!window.MovenseOnboarding || !window.MovenseOnboarding.configured(onboardingConfig))throw new Error('onboarding_not_ready');
       onboarding=window.MovenseOnboarding.create({config:onboardingConfig,endpoint:config.endpoint,getToken:()=>window.liff?.getAccessToken(),forms});onboarding.mount();
     }
-    await loadSDK();await window.liff.init({liffId:config.liffId});
+    initializationStage='sdk-load';await loadSDK();
+    initializationStage='sdk-init';await window.liff.init({liffId:config.liffId});
+    initializationStage='restore';
     // Do not consume the draft on LIFF's intermediate redirect.
     if(!params.has('liff.state'))restore();
     const resumedService=params.get('booking_service');
@@ -85,9 +91,10 @@
       if(resumedService==='event')location.hash='event-reserve';
     }
     await connection();
+    initializationStage='ready';
   }
   // Deferred so the existing calendar and its event listeners are ready for restoration.
-  ready=new Promise(resolve=>document.addEventListener('DOMContentLoaded',resolve,{once:true})).then(init).catch(error=>{setupError=error;say('LINEとの接続を確認できません。ページを開き直してください。');});
+  ready=new Promise(resolve=>document.addEventListener('DOMContentLoaded',resolve,{once:true})).then(init).catch(error=>{setupError=error;console.warn('MOVENSE booking initialization failed at stage',initializationStage);for(const note of notices)note.dataset.setupStage=initializationStage;say('LINEとの接続を確認できません。ページを開き直してください。');});
   window.WatariBooking={
     enabled:config.enabled,
     async submit(form){

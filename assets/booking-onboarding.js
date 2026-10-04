@@ -45,6 +45,13 @@
     if(typeof unlock!=='function')throw new Error('申込み画面を開けませんでした。ページを開き直してください。');
     // Do not persist this override: switching the feature off must restore the legacy gate.
     unlock(false);
+    const content=document.getElementById('gated-content');
+    if(content){
+      // The legacy reveal animation can leave an unlocked form at opacity zero.
+      window.gsap?.killTweensOf?.(content);
+      content.style.setProperty('opacity','1','important');
+      content.style.setProperty('visibility','visible','important');
+    }
   }
   function create({config, endpoint, getToken, forms}) {
     const regions = new Map();
