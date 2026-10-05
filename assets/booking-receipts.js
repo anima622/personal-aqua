@@ -30,13 +30,38 @@
     for(const form of forms) for(const el of form.elements) if(el.id && ['INPUT','SELECT'].includes(el.tagName) && el.name!=='note') values.push({id:el.id,value:el.value,checked:el.checked});
     write('watari-booking-draft',{expires:Date.now()+30*60*1000,values,anchor,slots:Array.from(document.querySelectorAll('.slot.selected')).map(el=>el.dataset.id),active:document.querySelector('.service-toggle [aria-selected="true"]')?.id.replace('toggle-','') || 'aqua'});
   }
+  const serviceForms={aqua:'reserve-form',training:'training-form',running:'running-form',walking:'walking-form',event:'event-form'};
+  function returnService() {
+    const pending=read('watari-line-return');
+    if(pending?.expires>Date.now() && serviceForms[pending.service])return pending.service;
+    const service=params.get('booking_service');
+    return params.get('booking_return')==='1' && serviceForms[service]?service:null;
+  }
+  function returnToBooking(service) {
+    if(!serviceForms[service])return;
+    document.querySelector('[aria-controls="panel-'+service+'"]')?.click();
+    const form=document.getElementById(serviceForms[service]);
+    const target=form?.querySelector('[data-line-login-region]')||form;
+    if(!target)return;
+    requestAnimationFrame(()=>{
+      const top=target.getBoundingClientRect().top+window.scrollY-(document.querySelector('header')?.getBoundingClientRect().height||80)-20;
+      window.scrollTo({top:Math.max(0,top),behavior:'instant'});
+    });
+  }
+  function finishReturn(service) {
+    returnToBooking(service);
+    clear('watari-line-return');
+    params.delete('booking_return');
+    const url=new URL(location.href);url.searchParams.delete('booking_return');
+    url.hash=serviceForms[service];history.replaceState(history.state,'',url.href);
+  }
   function restore() {
     const saved=read('watari-booking-draft');clear('watari-booking-draft');
     if(!saved || saved.expires<Date.now())return;
     for(const value of saved.values||[]) {const el=document.getElementById(value.id);if(el && el.tagName!=='TEXTAREA' && el.name!=='note'){el.value=value.value;if(el.type==='checkbox')el.checked=value.checked;}}
     for(const id of saved.slots||[]) for(const el of document.querySelectorAll('.slot')) if(el.dataset.id===id && !el.classList.contains('selected'))el.click();
     if(['aqua','training','running','walking','event'].includes(saved.active))document.querySelector('[aria-controls="panel-'+saved.active+'"]')?.click();
-    if(saved.anchor==='#event-reserve')location.hash='event-reserve';
+
   }
   async function loadSDK() {
     if(window.liff)return;
@@ -63,7 +88,7 @@
       const guide=document.createElement('p');guide.className='line-booking-guide';guide.textContent='ご予約の受付控え・日程調整は、公式LINEでお届けします😊 ①友だち追加 → ②LINEでログインの順に進めてください。追加済みの方は②からで大丈夫です。';
       const note=document.createElement('p');note.className='hint';note.setAttribute('role','status');note.textContent='ご予約には公式LINEの友だち追加とLINE連携が必要です。';notices.push(note);
       const connect=document.createElement('button');connect.type='button';connect.className='line-official-login';connect.setAttribute('aria-label','LINEでログインして予約用に連携する');connect.innerHTML='<img src="assets/line/login-icon.png" width="44" height="44" alt=""><span>LINEでログイン</span>';
-      connect.addEventListener('click',async()=>{connect.disabled=true;try{await ready;if(!window.liff.isLoggedIn()){draft(form.id==='event-form'?'#event-reserve':location.hash);const service={'reserve-form':'aqua','training-form':'training','running-form':'running','walking-form':'walking','event-form':'event'}[form.id];const redirect=new URL(location.origin+location.pathname);redirect.searchParams.set('booking_service',service);const eventId=form.elements.namedItem('event_id')?.value;if(service==='event' && /^[a-z0-9-]{1,80}$/.test(eventId||''))redirect.searchParams.set('booking_event',eventId);window.liff.login({redirectUri:redirect.href});return;}await connection();}catch{say('LINEとの接続を確認できません。ページを開き直してください。');}finally{connect.disabled=false;}});
+      connect.addEventListener('click',async()=>{connect.disabled=true;try{await ready;if(!window.liff.isLoggedIn()){draft();const service={'reserve-form':'aqua','training-form':'training','running-form':'running','walking-form':'walking','event-form':'event'}[form.id];const redirect=new URL(location.origin+location.pathname);redirect.searchParams.set('booking_service',service);redirect.searchParams.set('booking_return','1');redirect.hash=serviceForms[service];write('watari-line-return',{service,expires:Date.now()+30*60*1000});const eventId=form.elements.namedItem('event_id')?.value;if(service==='event' && /^[a-z0-9-]{1,80}$/.test(eventId||''))redirect.searchParams.set('booking_event',eventId);window.liff.login({redirectUri:redirect.href});return;}await window.liff.init({liffId:config.liffId});if(await connection())setupError=null;}catch{say('LINEの確認ができませんでした。通信状態を確認して、もう一度押してください。');}finally{connect.disabled=false;}});
       const friend=document.createElement('a');friend.href='https://line.me/R/ti/p/%40177onnkx';friend.target='_blank';friend.rel='noopener';friend.className='line-official-friend';friend.setAttribute('aria-label','MOVENSE公式LINEを友だち追加（新しいタブ）');friend.innerHTML='<img src="assets/line/add-friend-ja.png" alt="友だち追加" width="232" height="72">';
       const purpose=document.createElement('p');purpose.className='hint';purpose.textContent='LINEの識別情報と申込み内容を、受付控えの送信・予約のご連絡に利用します。初回問診票が未回答の方は、公式LINEに「問診票」とお送りください。初回は問診の確認後に予約確定をご連絡します。';
       if(form.id==='event-form'){
@@ -88,17 +113,44 @@
     initializationStage='sdk-init';await window.liff.init({liffId:config.liffId});
     initializationStage='restore';
     // Do not consume the draft on LIFF's intermediate redirect.
-    if(!params.has('liff.state'))restore();
+    if(params.has('liff.state'))return;
+    restore();
     const resumedService=params.get('booking_service');
     if(['aqua','training','running','walking','event'].includes(resumedService)){
       document.querySelector('[aria-controls="panel-'+resumedService+'"]')?.click();
-      if(resumedService==='event')location.hash='event-reserve';
+
     }
-    await connection();
+    const service=returnService();
+    if(service)returnToBooking(service);
+    if(await connection() && service)finishReturn(service);
     initializationStage='ready';
   }
   // Deferred so the existing calendar and its event listeners are ready for restoration.
   ready=new Promise(resolve=>document.addEventListener('DOMContentLoaded',resolve,{once:true})).then(init).catch(error=>{setupError=error;console.warn('MOVENSE booking initialization failed at stage',initializationStage);for(const note of notices)note.dataset.setupStage=initializationStage;say('LINEとの接続を確認できません。ページを開き直してください。');});
+  // App switching / back-forward cache can restore a page without DOMContentLoaded.
+  // Refresh the SDK and verified server status, never infer authentication from the URL.
+  let reconnecting=null,lastReconnect=0;
+  async function resumeConnection() {
+    if(params.has('liff.state') || document.visibilityState==='hidden' || reconnecting || Date.now()-lastReconnect<1500)return reconnecting;
+    lastReconnect=Date.now();
+    reconnecting=(async()=>{
+      await ready;
+      if(!window.liff)return;
+      const service=returnService();
+      try {
+        if(service || setupError || !window.liff.isLoggedIn())await window.liff.init({liffId:config.liffId});
+        if(service)restore();
+        if(await connection()){
+          setupError=null;
+          if(service)finishReturn(service);
+        }
+      } catch {for(const actions of loginActions)actions.hidden=false;say('LINEの確認ができませんでした。通信状態を確認して「LINEでログイン」をもう一度押してください。入力内容は残っています。');}
+    })().finally(()=>{reconnecting=null;});
+    return reconnecting;
+  }
+  window.addEventListener?.('pageshow',resumeConnection);
+  window.addEventListener?.('focus',resumeConnection);
+  document.addEventListener('visibilitychange',resumeConnection);
   window.WatariBooking={
     enabled:config.enabled,
     async submit(form){
