@@ -61,6 +61,9 @@
         var TALL = window.innerHeight * 0.45;
 
         document.querySelectorAll("[data-reveal]").forEach(function (el) {
+          // Interactive forms change height after login and async status updates.
+          // Never hide them (or their ancestors) behind a cached scroll trigger.
+          if (el.matches('form') || el.closest('form') || el.querySelector('form')) return;
           var isGroup = el.hasAttribute("data-reveal-group");
           var kids = Array.prototype.slice.call(el.children);
           var tall = !isGroup && kids.length > 1 &&
