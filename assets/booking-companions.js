@@ -71,7 +71,10 @@
       }
       v.outgoing.hidden=!ready || !multi(form) || !!code;v.body.replaceChildren();
       if(!v.outgoing.hidden){
-        v.body.append(e('p','同行者1名につきリンクを1つ作り、普段のLINEなどでご本人へ送ってください。各自のスマホで登録できます。','hint'));
+        v.body.append(e('p','一緒に参加する方へ、次の手順でご案内を送ってください。','hint'));
+        const steps=e('ol');steps.style.paddingLeft='1.5em';
+        for(const text of ['下の「同行者用リンクを作る」を押します。','「リンクをコピー」を押します。','一緒に参加する方とのLINEのトークを開き、コピーしたものを貼り付けて送ります。'])steps.append(e('li',text));
+        v.body.append(steps,e('p','受け取った方には、届いた案内を押して、ご自身のスマートフォンで手続きしていただきます。2人以上に送る場合は、1人ずつ同じ手順を繰り返してください。','hint'));
         const result=e('p',null,'onboarding-result');result.setAttribute('role','status');
         if(selves.length){
           const label=e('label','代表者として表示するご本人の名前');const select=e('select');select.setAttribute('aria-label','招待する代表者の名前');
