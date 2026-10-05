@@ -110,7 +110,9 @@
           if(singleParticipant(form) && person.shared)continue;
           const row=element('div',null,'field');const label=element('label');const input=element('input');input.type='checkbox';input.value=person.id;input.checked=previous.includes(person.id);input.addEventListener('change',()=>{if(singleParticipant(form) && input.checked)for(const other of view.list.querySelectorAll('input'))if(other!==input)other.checked=false;sync(form,view);});
           if(person.relationship==='other'){input.disabled=true;input.checked=false;}
-          label.append(input,document.createTextNode(' '+person.name+' · '+(submitted(person)?'シート提出済み':'初回シート未提出')));row.append(label);
+          label.className='participant-choice';
+          label.append(input,document.createTextNode(' '+person.name));row.append(label);
+          row.append(element('p',submitted(person)?'初回問診票：提出済み':'初回問診票：未提出','participant-intake-status'));
           if(person.shared)row.append(element('p',submitted(person)?'本人が代理申込みを許可済みです。':'ご本人の初回シート提出をお待ちください。代表者による記入は不要です。','hint'));
           if(person.relationship==='other')row.append(element('p','同行者ご本人のLINEとの連携が必要です。「同行者と一緒に申し込む」から招待してください。','hint'));
           if(!submitted(person) && !person.shared && person.relationship!=='other'){
@@ -165,7 +167,8 @@
         const retry=element('button','送信状況を確認','pill');retry.hidden=true;retry.type='button';retry.addEventListener('click',async()=>{retry.disabled=true;retry.textContent='確認中…';checkResult.textContent='LINEの送信状況を確認しています。';try{const current=await refresh();checkResult.textContent=receiptFeedback(current);}catch(error){checkResult.textContent=error.message;}finally{retry.disabled=false;retry.textContent='送信状況を確認';}});
         const actions=element('div',null,'onboarding-actions');actions.append(retry);
         const people=element('div',null,'onboarding-people');people.hidden=true;const list=element('div',null,'onboarding-list');
-        const explanation=element('p',singleParticipant(form)?'1名ずつのお申込みです。ご本人（または保護者として登録したお子さま）を選んでください。':'参加者全員を選択。登録済みの方は再入力不要です。同行者はご本人の許可後に表示されます。','hint');
+        const heading=element('h3','今回参加する方');
+        const explanation=element('p',singleParticipant(form)?'参加する方を1名選んでください。':'今回参加する方全員にチェックしてください。','hint');
         const addName=element('input');addName.type='text';addName.maxLength=100;addName.autocomplete='off';addName.setAttribute('aria-label','追加する参加者のフルネーム');addName.placeholder='参加者のフルネーム';
         const relation=element('select');relation.setAttribute('aria-label','LINEご利用者との関係');for(const [value,text] of [['self','ご本人'],['child','お子さま（保護者として登録）']]){const option=element('option',text);option.value=value;relation.append(option);}
         const add=element('button','参加者を追加','pill');add.type='button';let pending=null;
@@ -177,7 +180,7 @@
         const addFields=element('div',null,'onboarding-add');addFields.append(nameLabel,relationLabel,add);
         const registration=element('details',null,'companion-box');registration.append(element('summary','本人・お子さまのお名前を登録する'),addFields,addResult);
         const price=element('p',null,'onboarding-result');price.setAttribute('role','status');
-        people.append(explanation,list,price,registration);region.append(note,talk,actions,checkResult,people);companionUI?.mount(form,region,people);const loginRegion=form.querySelector('[data-line-login-region]');if(loginRegion)loginRegion.after(region);else form.append(region);regions.set(form,{note,talk,retry,people,list,checkResult,registration,price});
+        people.append(heading,explanation,list,price,registration);region.append(note,talk,actions,checkResult,people);companionUI?.mount(form,region,people);const loginRegion=form.querySelector('[data-line-login-region]');if(loginRegion)loginRegion.after(region);else form.append(region);regions.set(form,{note,talk,retry,people,list,checkResult,registration,price});
       }
       if(!listenersMounted){
         const resume=()=>{if(document.visibilityState==='hidden' || !getToken() || refreshing || Date.now()-lastRefresh<1500)return;refresh().catch(error=>{for(const view of regions.values())view.note.textContent=error.message;});};

@@ -85,17 +85,20 @@
         }else v.body.append(e('p','先にご本人のお名前を登録してください。'));
         for(const invite of status.invitations||[]){
           const row=e('div',null,'companion-row');
+          const actions=e('div',null,'companion-actions');
+          const feedback=e('div');
           row.append(e('strong',invite.accepted_at?`${invite.participant_name} · ${['submitted','legacy_verified'].includes(invite.intake_status)?'申込み可能 ✓':'初回準備待ち'}`:'同行者の許可待ち'));
           if(!invite.accepted_at){
-            row.append(e('p',`有効期限：${new Date(invite.expires_at*1000).toLocaleDateString('ja-JP')}。このリンクでは席を確保しません。`,'hint'));
+            row.append(e('p','リンクを同行者へ送り、ご本人に「この代表者に許可する」を押してもらってください。','hint'));
+            row.append(e('p',`リンクの有効期限：${new Date(invite.expires_at*1000).toLocaleDateString('ja-JP')}。予約はまだ完了していません。`,'hint'));
             if(links.has(invite.id)){
               const link=e('input');link.type='text';link.readOnly=true;link.value=links.get(invite.id);link.setAttribute('aria-label','同行者に送る招待リンク');row.append(link);
               const copied=e('p',null,'onboarding-result');copied.setAttribute('role','status');
-              const copy=e('button','リンクをコピー','pill');copy.type='button';copy.addEventListener('click',async()=>{try{await navigator.clipboard.writeText(link.value);copied.textContent='コピーしました。同行者へ送ってください。';}catch{link.focus();link.select();copied.textContent='リンクを選択しました。コピーして送ってください。';}});row.append(copy,copied);
+              const copy=e('button','リンクをコピー','pill');copy.type='button';copy.addEventListener('click',async()=>{try{await navigator.clipboard.writeText(link.value);copied.textContent='コピーしました。同行者へ送ってください。';}catch{link.focus();link.select();copied.textContent='リンクを選択しました。コピーして送ってください。';}});actions.append(copy);feedback.append(copied);
             }else row.append(e('p','リンクは作成直後だけ表示します。紛失した場合は取り消して作り直してください。','hint'));
           }
           const result=e('p',null,'onboarding-result');result.setAttribute('role','status');
-          const cancel=e('button',invite.accepted_at?'この同行者との連携を外す':'この招待を取り消す','pill');cancel.type='button';cancel.addEventListener('click',()=>action(cancel,result,async()=>{await api('/companions/revoke',{id:invite.id});links.delete(invite.id);await refresh();}));row.append(cancel,result);v.body.append(row);
+          const cancel=e('button',invite.accepted_at?'この同行者との連携を外す':'この招待を取り消す','pill');cancel.type='button';cancel.addEventListener('click',()=>action(cancel,result,async()=>{await api('/companions/revoke',{id:invite.id});links.delete(invite.id);await refresh();}));actions.append(cancel);feedback.append(result);row.append(actions,feedback);v.body.append(row);
         }
         const waiting=(status.invitations||[]).filter(i=>!i.accepted_at).length;
         if(waiting){v.outgoing.open=true;v.body.append(e('p',`あと${waiting}名の許可待ちです。参加しない方の招待は取り消してください。`));}

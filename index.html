@@ -386,6 +386,12 @@ input::placeholder,textarea::placeholder{color:var(--color-text-muted)}
 .companion-box h3,.companion-box h4{font-family:var(--font-body);font-size:18px;font-weight:700;line-height:1.6}
 .companion-box p,.companion-box label{margin-block:12px}
 .companion-box .pill{margin:8px 8px 8px 0}
+.companion-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:16px;align-items:stretch}
+.companion-box .companion-actions .pill{margin:0;min-height:48px;padding:12px 24px;box-sizing:border-box}
+.onboarding-people h3{font-family:var(--font-body);font-size:18px;font-weight:700;line-height:1.6;margin:0}
+.onboarding-list .participant-choice{display:flex;align-items:center;gap:12px;min-height:44px;margin:0;font-size:16px;letter-spacing:normal;text-transform:none;cursor:pointer}
+.participant-choice input[type=checkbox]{width:20px;height:20px;flex:0 0 20px;margin:0}
+.participant-intake-status{font-size:14px;line-height:1.6;margin:4px 0 8px;color:var(--color-text)}
 .companion-row{padding-top:16px;border-top:1px solid var(--color-border)}
 .companion-box input[readonly]{font-size:14px}
 .onboarding-people{display:grid;gap:16px;padding-top:16px;border-top:1px solid var(--color-border)}
@@ -1219,8 +1225,8 @@ footer{position:relative;z-index:1;background:var(--color-fill-solid);color:var(
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <script src="assets/gsap-starter.js"></script>
-<script src="assets/booking-companions.js?v=20261005-companions"></script>
-<script src="assets/booking-onboarding.js?v=20261005-single-name"></script>
+<script src="assets/booking-companions.js?v=20261005-participant-clarity"></script>
+<script src="assets/booking-onboarding.js?v=20261005-participant-clarity"></script>
 <script src="assets/booking-receipts.js?v=20261005-entry-aligned"></script>
 <script>
 /*
