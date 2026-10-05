@@ -18,7 +18,7 @@
     const people = ids.map(id => status.participants?.find(person => person.id === id));
     if (people.some(person => !person)) return '参加者を選び直してください。';
     if (people.some(person => !submitted(person))) return '参加される全員の初回シートをご提出ください。';
-    if (normalizeName(name) !== normalizeName(people[0].name)) return 'お名前欄を、最初に選んだ参加者のお名前と合わせてください。';
+    if (normalizeName(name) !== normalizeName(people[0].name)) return '参加者を選び直してください。お名前は自動で反映されます。';
     return '';
   }
   function returnUrl(location, service, eventId) {
@@ -147,6 +147,9 @@
       unlockOnboardingGate(config);
       updateIntroductions(config);
       for(const form of forms){
+        // Keep the payload field, but collect the name only through participant registration.
+        const bookingName=form.elements.namedItem('name');
+        if(bookingName){bookingName.readOnly=true;bookingName.required=false;bookingName.type='hidden';const field=bookingName.closest?.('.field');if(field)field.hidden=true;}
         const region=element('section',null,'field full onboarding');region.setAttribute('aria-label','LINE連絡設定と初回シート');
         const note=element('p','LINEログイン後に、参加者と初回シートを確認します。','hint');note.setAttribute('role','status');
         const messageUrl='https://line.me/R/oaMessage/%40177onnkx/?'+encodeURIComponent('申込みの連絡設定');
