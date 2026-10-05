@@ -370,6 +370,25 @@ textarea{resize:vertical;min-height:96px}
 input[type=text]:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid var(--color-focus);outline-offset:4px;border-bottom-color:var(--color-accent-solid)}
 input::placeholder,textarea::placeholder{color:var(--color-text-muted)}
 .hint{font-size:var(--t-xs);color:var(--color-text-muted);display:block;max-width:var(--measure-wide)}
+.onboarding{display:grid;gap:16px}
+.onboarding-actions,.onboarding-contact{display:flex;flex-wrap:wrap;align-items:flex-start;gap:12px}
+.onboarding .pill{min-height:48px;height:auto;padding:12px 24px;line-height:1.5;justify-content:center;white-space:normal;text-align:center;font-weight:700;max-width:100%;width:auto;cursor:pointer}
+.onboarding .pill:focus-visible,.onboarding summary:focus-visible{outline:2px solid var(--color-focus);outline-offset:4px}
+.onboarding-phone{width:100%;padding:16px 20px;border:1px solid var(--color-border);border-radius:12px;background:var(--color-bg)}
+.onboarding-phone summary{font-weight:700;cursor:pointer}
+.onboarding-phone p{margin-top:12px;color:var(--color-text)}
+.onboarding-phone img{display:block;width:200px;max-width:100%;height:auto;margin-top:12px;background:white}
+.onboarding-result{font-size:var(--t-sm);line-height:1.7;color:var(--color-text);font-weight:600;overflow-wrap:anywhere}
+.onboarding-result:empty,.onboarding-list:empty{display:none}
+.onboarding-people{display:grid;gap:16px;padding-top:16px;border-top:1px solid var(--color-border)}
+.onboarding-list{display:grid;gap:20px}
+.onboarding-list .pill{margin-block:8px}
+.onboarding-add{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr);gap:16px;align-items:end}
+.onboarding-add label{margin:0;font-size:var(--t-xs);letter-spacing:normal;text-transform:none}
+.onboarding-add input,.onboarding-add select{margin-top:8px;padding:12px;border:1px solid var(--color-border-strong);border-radius:6px;font-weight:400}
+.onboarding-add input[aria-invalid=true]{border-color:var(--color-danger);outline-color:var(--color-danger)}
+.onboarding-add .pill{grid-column:1/-1;justify-self:start}
+@media(max-width:600px){.onboarding-add{grid-template-columns:minmax(0,1fr)}.onboarding-actions,.onboarding-contact{flex-direction:column;align-items:stretch}.onboarding .pill{width:100%}.onboarding-phone{padding:16px}}
 .slot-notice{font-size:var(--t-xs);color:var(--color-text-muted);border-left:2px solid var(--color-border-ink);padding-left:var(--s3);margin-bottom:var(--s4);max-width:var(--measure-wide)}
 .slot-notice strong{color:var(--color-text)}
 .slot-grid{display:grid;gap:var(--s4)}
@@ -1192,7 +1211,7 @@ footer{position:relative;z-index:1;background:var(--color-fill-solid);color:var(
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <script src="assets/gsap-starter.js"></script>
-<script src="assets/booking-onboarding.js?v=20261005-entry-aligned"></script>
+<script src="assets/booking-onboarding.js?v=20261005-entry-feedback"></script>
 <script src="assets/booking-receipts.js?v=20261005-entry-aligned"></script>
 <script>
 /*
