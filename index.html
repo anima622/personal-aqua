@@ -570,11 +570,10 @@ footer{position:relative;z-index:1;background:var(--color-fill-solid);color:var(
 @media(max-width:760px){.cancel-grid{gap:16px}.cancel-card{flex-basis:86%;padding:28px 24px}.cancel-card h4{font-size:24px}.policy-carousel-controls{font-size:12px}}
 .policy-venue{display:block;font-size:17px;white-space:nowrap;margin-top:4px}.line-official-actions{display:flex;align-items:center;flex-wrap:wrap;gap:24px;padding:16px 0;margin:8px 0}.line-official-login{display:inline-flex;align-items:center;padding:0;min-height:44px;background:#06c755;color:#fff;border:0;border-radius:4px;overflow:hidden;letter-spacing:0;position:relative;flex-shrink:0}.line-official-login img{width:44px;height:44px;flex-shrink:0;border-right:1px solid rgba(0,0,0,.08)}.line-official-login span{font:700 16px/1.4 var(--font-body);padding:0 32px;white-space:nowrap}.line-official-login::after{content:"";position:absolute;inset:0;pointer-events:none;background:#000;opacity:0}.line-official-login:active::after{opacity:.3}.line-official-login:disabled{cursor:wait}.line-official-friend{display:inline-flex;align-items:center;min-height:44px;flex-shrink:0}.line-official-friend img{width:auto;height:44px;max-width:none}@media(hover:hover){.line-official-login:hover::after{opacity:.1}.line-official-login:active::after{opacity:.3}}
 .line-booking-guide{font-size:16px;font-weight:500;line-height:1.8}.line-official-step{display:flex;flex-direction:column;align-items:flex-start;gap:12px}.line-official-step>p{font-size:14px;font-weight:700;margin:0}.line-official-actions{align-items:flex-start;gap:28px}
-/* Navigation follows the five customer-facing sections. */
-#site-header nav ul{gap:clamp(12px,1.6vw,28px)}
+/* Navigation follows each distinct page section. */
+#site-header nav ul{gap:clamp(10px,1vw,18px)}
 #site-header nav a{letter-spacing:.03em;font-weight:700;min-height:44px;align-items:center}
 #site-header .header-cta{padding-inline:22px}
-.usage-guide .sec-head h2,#terms-title,#events-title,#service>.wrap>.sec-head h2,#reserve>.wrap>.sec-head h2{font-family:var(--font-body);font-size:clamp(30px,4.5vw,58px);font-weight:700;line-height:1.4;letter-spacing:.03em;text-transform:none}
 .guide-route{padding:clamp(24px,4vw,48px);background:var(--color-surface);border:1px solid var(--color-border);border-radius:20px}
 .guide-route h3,.guide-returning h3,.guide-confirmation h3,.usage-details-title{font-size:clamp(20px,2vw,26px);font-weight:700;line-height:1.5}
 .guide-intro{margin-block:12px 28px;font-size:var(--t-base)}
@@ -655,14 +654,14 @@ footer{position:relative;z-index:1;background:var(--color-fill-solid);color:var(
     <img src="assets/movense-logo.png" alt="" width="34" height="34" decoding="async">
     <span class="wordmark">MOVENSE</span>
   </a>
-  <nav aria-label="メイン"><ul><li><a href="#service"><small>01</small>レッスン・料金</a></li><li><a href="#events"><small>02</small>開催イベント</a></li><li><a href="#lesson-terms"><small>03</small>キャンセルポリシー</a></li><li><a href="#flow"><small>04</small>ご利用案内</a></li><li><a href="#reserve"><small>05</small>予約・申込み</a></li></ul></nav>
+  <nav aria-label="メイン"><ul><li><a href="#about"><small>01</small>MOVENSEについて</a></li><li><a href="#service"><small>02</small>レッスン・料金</a></li><li><a href="#groups"><small>03</small>グループ</a></li><li><a href="#events"><small>04</small>特別イベント</a></li><li><a href="#lesson-terms"><small>05</small>キャンセルポリシー</a></li><li><a href="#flow"><small>06</small>ご利用案内</a></li><li><a href="#reserve"><small>07</small>予約・申込み</a></li></ul></nav>
   <a href="#reserve" class="pill solid header-cta">ご予約へ <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.75 5a.75.75 0 0 0 0 1.5h9.69L5.22 17.72a.75.75 0 1 0 1.06 1.06L17.5 7.56v9.69a.75.75 0 0 0 1.5 0V5.75a.75.75 0 0 0-.75-.75z"/></svg></a>
   <button class="nav-toggle" id="nav-toggle" aria-label="メニューを開く" aria-expanded="false" aria-controls="mobile-menu">
     <span></span><span></span><span></span>
   </button>
 </header>
 
-<div class="mobile-menu" id="mobile-menu"><a href="#service">レッスン・料金<small>01</small></a><a href="#events">開催イベント<small>02</small></a><a href="#lesson-terms">キャンセルポリシー<small>03</small></a><a href="#flow">ご利用案内<small>04</small></a><a href="#reserve">予約・申込み<small>05</small></a></div>
+<div class="mobile-menu" id="mobile-menu"><a href="#about">MOVENSEについて<small>01</small></a><a href="#service">レッスン・料金<small>02</small></a><a href="#groups">グループ<small>03</small></a><a href="#events">特別イベント<small>04</small></a><a href="#lesson-terms">キャンセルポリシー<small>05</small></a><a href="#flow">ご利用案内<small>06</small></a><a href="#reserve">予約・申込み<small>07</small></a></div>
 
 <main id="main">
 
@@ -707,7 +706,7 @@ footer{position:relative;z-index:1;background:var(--color-fill-solid);color:var(
   <div class="wrap">
     <div class="sec-head">
       <span class="head-guide" aria-hidden="true"></span>
-      <div class="no">MOVENSE</div>
+      <div class="no">01</div>
       <h2 class="display">About<br>MOVENSE</h2>
       <p class="jp">動き方が変わる。楽しみ方が広がる。</p>
     </div>
@@ -741,8 +740,8 @@ footer{position:relative;z-index:1;background:var(--color-fill-solid);color:var(
   <div class="wrap">
     <div class="sec-head">
       <span class="head-guide" aria-hidden="true"></span>
-      <div class="no">01</div>
-      <h2 class="display">レッスン・料金</h2>
+      <div class="no">02</div>
+      <h2 class="display">Personal<br>Lessons</h2>
       <p class="jp">あなたに合う、個別レッスンを。</p>
     </div>
     <div class="svc-list">
@@ -800,8 +799,13 @@ footer{position:relative;z-index:1;background:var(--color-fill-solid);color:var(
 
 <!-- ===== How it works: 03 FLOW (F4 steps + F6 policy) ===== -->
 
+<section class="sec-con program-section" id="groups" aria-labelledby="groups-title"><div class="wrap">
+  <div class="sec-head"><div class="no">03</div><h2 class="display" id="groups-title">Group Lessons</h2><p class="jp">仲間と学ぶ、グループレッスン。</p><p class="lede">テーマやレベルに合わせたレッスンを準備しています。開催ごとに対象・定員・料金をご案内します。</p></div>
+  <div class="program-list" data-program-kind="group"><p class="program-empty"><strong>開催案内を準備中です。</strong><br>日程・会場などが決まり次第、こちらに掲載します。お申込みはお一人ずつ受け付ける予定です。現在、お申込みの受付は行っていません。</p></div>
+  <a class="textlink" href="https://line.me/R/ti/p/%40177onnkx" target="_blank" rel="noopener">公式LINEで相談する ↗</a>
+</div></section>
 <section class="sec-con program-section" id="events" aria-labelledby="events-title"><div class="wrap">
-  <div class="sec-head"><div class="no">02</div><h2 class="display" id="events-title">開催イベント</h2><p class="jp">いつもの練習に、新しい視点を。</p><p class="lede">マスターズ向けスイムクリニックや、ゲストコーチを迎えるレッスンなどを企画しています。</p></div>
+  <div class="sec-head"><div class="no">04</div><h2 class="display" id="events-title">Special Events</h2><p class="jp">いつもの練習に、新しい視点を。</p><p class="lede">マスターズ向けスイムクリニックや、ゲストコーチを迎えるレッスンなどを企画しています。</p></div>
 
   <article class="event-feature" id="diving-20261018" aria-labelledby="diving-title">
     <figure class="event-art"><img src="assets/events/diving-20261018.png" width="1122" height="1402" loading="lazy" decoding="async" alt="MOVENSE マスターズ向け飛び込み練習会の告知。開催詳細は右側または下の文章をご覧ください。"></figure>
@@ -834,16 +838,12 @@ footer{position:relative;z-index:1;background:var(--color-fill-solid);color:var(
   </aside>
   <p class="note">個別レッスンとは受付条件が異なります。開催ごとの案内をご確認ください。</p>
   <a class="textlink" href="https://line.me/R/ti/p/%40177onnkx" target="_blank" rel="noopener">公式LINEで相談する ↗</a>
-<section class="group-announcement" id="groups" aria-labelledby="groups-title"><div>
-  <div class="group-heading"><h3 id="groups-title">グループレッスン</h3><p class="jp">仲間と学ぶ、グループレッスン。</p><p class="lede">テーマやレベルに合わせたレッスンを準備しています。開催ごとに対象・定員・料金をご案内します。</p></div>
-  <div class="program-list" data-program-kind="group"><p class="program-empty"><strong>開催案内を準備中です。</strong><br>日程・会場などが決まり次第、こちらに掲載します。お申込みはお一人ずつ受け付ける予定です。現在、お申込みの受付は行っていません。</p></div>
-  <a class="textlink" href="https://line.me/R/ti/p/%40177onnkx" target="_blank" rel="noopener">公式LINEで相談する ↗</a>
-</div></section></div></section>
+</div></section>
 
 
 <!-- ===== Close: 04 RESERVE (C1 inline gated form) ===== -->
 <section class="sec-con" id="lesson-terms" aria-labelledby="terms-title"><div class="wrap">
- <div class="sec-head"><div class="no">03</div><p class="rl">CANCELLATION</p><h2 class="display" id="terms-title">キャンセルポリシー</h2><p class="jp">変更・キャンセルの前にご確認ください。</p></div>
+ <div class="sec-head"><div class="no">05</div><p class="rl">BEFORE YOU BOOK</p><h2 class="display" id="terms-title">Lesson Guide</h2><p class="jp">変更・キャンセルの前にご確認ください。</p></div>
 <div class="cancellation-overview" id="cancellation">
 <h3>キャンセル・日時変更</h3><p class="note">ご希望の種目をご確認ください。変更・キャンセルは公式LINEへご連絡ください。</p>
 <div class="policy-carousel-controls"><span id="policy-swipe-hint">横にスクロールして各種目をご確認ください</span><div><button type="button" data-policy-step="-1" aria-label="前のキャンセル条件へ" aria-controls="policy-carousel">←</button><button type="button" data-policy-step="1" aria-label="次のキャンセル条件へ" aria-controls="policy-carousel">→</button></div></div><div class="cancel-grid" id="policy-carousel" role="region" aria-label="種目別のキャンセル条件" aria-describedby="policy-swipe-hint" tabindex="0">
@@ -908,7 +908,7 @@ footer{position:relative;z-index:1;background:var(--color-fill-solid);color:var(
 
 </div></section>
 <section class="sec-con usage-guide" id="flow" aria-labelledby="usage-title"><div class="wrap">
- <div class="sec-head"><div class="no">04</div><h2 class="display" id="usage-title">ご利用案内</h2><p class="jp">お申込みから、予約確定まで。</p></div>
+ <div class="sec-head"><div class="no">06</div><h2 class="display" id="usage-title">Flow</h2><p class="jp">お申込みから、予約確定まで。</p></div>
  <div class="guide-route"><h3>初めての方</h3><p class="guide-intro">連絡設定と初回問診票を済ませてから、お申込みへ進みます。</p>
  <ol class="guide-diagram" aria-label="初めての方のお申込み手順">
   <li><span class="guide-number" aria-hidden="true">1</span><h4>LINE連絡設定</h4><p>友だち追加・LINE連携を行い、メッセージかスタンプを1つ送ります。</p></li>
@@ -930,8 +930,8 @@ footer{position:relative;z-index:1;background:var(--color-fill-solid);color:var(
   <div class="wrap">
     <div class="sec-head">
       <span class="head-guide" aria-hidden="true"></span>
-      <div class="no">05</div>
-      <h2 class="display">予約・申込み</h2>
+      <div class="no">07</div>
+      <h2 class="display">Reserve</h2>
       <p class="jp">レッスン予約・イベントのご案内</p>
       <p class="lede">自分のペースで学ぶ個別レッスン。仲間と取り組むグループレッスン。テーマを深める特別イベント。ご希望の参加方法をお選びください。</p>
     </div>
@@ -1210,7 +1210,7 @@ footer{position:relative;z-index:1;background:var(--color-fill-solid);color:var(
         </svg>
         <div class="display">MOVENSE<small>水泳・トレーニング・ランニング・ウォーキング</small></div>
       </div>
-      <nav class="foot-links" aria-label="フッター"><a href="#service">01 レッスン・料金<span aria-hidden="true">↗</span></a><a href="#events">02 開催イベント<span aria-hidden="true">↗</span></a><a href="#lesson-terms">03 キャンセルポリシー<span aria-hidden="true">↗</span></a><a href="#flow">04 ご利用案内<span aria-hidden="true">↗</span></a><a href="#reserve">05 予約・申込み<span aria-hidden="true">↗</span></a><a href="#about">MOVENSEについて<span aria-hidden="true">↗</span></a><a href="swim-flow-lab.html">SWIM FLOW LAB 水泳のしくみを学ぶ ↗</a></nav>
+      <nav class="foot-links" aria-label="フッター"><a href="#about">01 MOVENSEについて<span aria-hidden="true">↗</span></a><a href="#service">02 レッスン・料金<span aria-hidden="true">↗</span></a><a href="#groups">03 グループ<span aria-hidden="true">↗</span></a><a href="#events">04 特別イベント<span aria-hidden="true">↗</span></a><a href="#lesson-terms">05 キャンセルポリシー<span aria-hidden="true">↗</span></a><a href="#flow">06 ご利用案内<span aria-hidden="true">↗</span></a><a href="#reserve">07 予約・申込み<span aria-hidden="true">↗</span></a><a href="swim-flow-lab.html">SWIM FLOW LAB 水泳のしくみを学ぶ ↗</a></nav>
     </div>
     <div class="foot-bottom">
       <div class="brand"><img src="assets/movense-logo.png" alt="" width="34" height="34" decoding="async"><span class="wordmark">MOVENSE</span></div>
@@ -1264,6 +1264,7 @@ mobileMenu.querySelectorAll('a').forEach((a) => {
   a.addEventListener('click', () => {
     mobileMenu.classList.remove('open');
     navToggle.setAttribute('aria-expanded', 'false');
+    navToggle.setAttribute('aria-label', 'メニューを開く');
     document.documentElement.style.overflow = '';
   });
 });
