@@ -73,6 +73,7 @@
       return data;
     }
     const element = (tag, text, className) => {const node=document.createElement(tag);if(text)node.textContent=text;if(className)node.className=className;return node;};
+    const receiptFeedback = current => current.friend!==true?'友だち追加をまだ確認できません。追加後にもう一度お試しください。':current.message_received!==true?'まだメッセージを確認できません。LINEで送信後、もう一度押してください。':'メッセージを確認しました ✓ '+(current.participants.length?'参加者と初回シートの状態を更新しました。':'下に参加者のお名前をご入力ください。');
     function selected(view) {return Array.from(view.list.querySelectorAll('input:checked')).map(input => input.value);}
     function count(form, ids) {return form.id === 'reserve-form' ? Number.parseInt(form.elements.namedItem('people')?.value,10) : ['running-form','walking-form'].includes(form.id) ? ids.length : 1;}
     function sync(form, view) {
@@ -93,6 +94,9 @@
         view.initialized=true;view.list.replaceChildren();
         const received=status?.enabled===true && status.friend===true && status.message_received===true;
         view.talk.hidden=received || !getToken();view.retry.hidden=!getToken();view.people.hidden=!received;
+        // A focus refresh may complete after an earlier "not received" result.
+        // Keep that result aligned with the latest response, not the last click.
+        if(view.checkResult.textContent && !view.retry.disabled)view.checkResult.textContent=receiptFeedback(status);
         view.note.textContent=status?.enabled!==true ? '初回受付の準備ができていません。時間をおいて再度お試しください。' : status.friend!==true ? '公式LINEを友だち追加して、もう一度確認してください。' : !received ? '① 公式LINEにメッセージかスタンプを1つ送り、このページに戻ってください。' : status.participants.length ? '② 参加者を選んでください。提出済みの初回シートは再入力不要です。' : '② 参加される方のお名前を登録し、初回シートへ進んでください。';
         for(const person of status?.participants || []){
           const row=element('div',null,'field');const label=element('label');const input=element('input');input.type='checkbox';input.value=person.id;input.checked=previous.includes(person.id);input.addEventListener('change',()=>{if(singleParticipant(form) && input.checked)for(const other of view.list.querySelectorAll('input'))if(other!==input)other.checked=false;sync(form,view);});
@@ -136,7 +140,7 @@
         const openLine=element('a','スマホで公式LINEを開く','pill solid');openLine.href=messageUrl;openLine.target='_blank';openLine.rel='noopener noreferrer';
         if(isMobile)talk.append(openLine,phoneHelp);else{phoneHelp.open=true;talk.append(phoneHelp);}
         const checkResult=element('p',null,'onboarding-result');checkResult.setAttribute('role','status');checkResult.setAttribute('aria-live','polite');
-        const retry=element('button','送信状況を確認','pill');retry.hidden=true;retry.type='button';retry.addEventListener('click',async()=>{retry.disabled=true;retry.textContent='確認中…';checkResult.textContent='LINEの送信状況を確認しています。';try{const current=await refresh();checkResult.textContent=current.friend!==true?'友だち追加をまだ確認できません。追加後にもう一度お試しください。':current.message_received!==true?'まだメッセージを確認できません。LINEで送信後、もう一度押してください。':'メッセージを確認しました ✓ '+(current.participants.length?'参加者と初回シートの状態を更新しました。':'下に参加者のお名前をご入力ください。');}catch(error){checkResult.textContent=error.message;}finally{retry.disabled=false;retry.textContent='送信状況を確認';}});
+        const retry=element('button','送信状況を確認','pill');retry.hidden=true;retry.type='button';retry.addEventListener('click',async()=>{retry.disabled=true;retry.textContent='確認中…';checkResult.textContent='LINEの送信状況を確認しています。';try{const current=await refresh();checkResult.textContent=receiptFeedback(current);}catch(error){checkResult.textContent=error.message;}finally{retry.disabled=false;retry.textContent='送信状況を確認';}});
         const actions=element('div',null,'onboarding-actions');actions.append(retry);
         const people=element('div',null,'onboarding-people');people.hidden=true;const list=element('div',null,'onboarding-list');
         const explanation=element('p',singleParticipant(form)?'参加される方を1名選んでください。お名前は自動で入ります。':'参加者全員を選択。お名前欄には最初に選んだ方が入ります。','hint');
@@ -149,7 +153,7 @@
         const nameLabel=element('label','参加される方のフルネーム');nameLabel.append(addName);
         const relationLabel=element('label','LINEご利用者との関係');relationLabel.append(relation);
         const addFields=element('div',null,'onboarding-add');addFields.append(nameLabel,relationLabel,add);
-        people.append(explanation,list,addFields,addResult);region.append(note,talk,actions,checkResult,people);const loginRegion=form.querySelector('[data-line-login-region]');if(loginRegion)loginRegion.after(region);else form.append(region);regions.set(form,{note,talk,retry,people,list});
+        people.append(explanation,list,addFields,addResult);region.append(note,talk,actions,checkResult,people);const loginRegion=form.querySelector('[data-line-login-region]');if(loginRegion)loginRegion.after(region);else form.append(region);regions.set(form,{note,talk,retry,people,list,checkResult});
       }
       if(!listenersMounted){
         const resume=()=>{if(document.visibilityState==='hidden' || !getToken() || refreshing || Date.now()-lastRefresh<1500)return;refresh().catch(error=>{for(const view of regions.values())view.note.textContent=error.message;});};
