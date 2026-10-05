@@ -92,6 +92,7 @@
       if(status?.friend && status?.message_received && people.length){
         view.note.textContent=companionUI?.hasIncoming()?'同行者としての連携を確認してください。申込みは代表者が行います。':!singleParticipant(form)&&(status.invitations||[]).some(i=>!i.accepted_at)?'同行者の許可待ちです。下の招待状況をご確認ください。':people.every(submitted)?'準備完了 ✓ この下で申込み内容をご入力ください。':'② 参加者全員の初回シートが必要です。未提出の方はご本人の画面からご提出ください。';
       }
+      else if(status?.friend && status?.message_received && status.participants.length)view.note.textContent='今回参加する方を選んでください。';
     }
     function render() {
       for(const [form,view] of regions){
