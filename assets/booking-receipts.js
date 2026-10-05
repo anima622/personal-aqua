@@ -128,7 +128,7 @@
       onboarding=window.MovenseOnboarding.create({config:onboardingConfig,endpoint:config.endpoint,getToken:()=>window.liff?.getAccessToken(),forms});onboarding.mount();
     }
     // Show the booking destination while authentication loads, without rewriting LIFF's URL.
-    if(currentParams().get('booking_entry')==='1' && !params.has('liff.state'))requestAnimationFrame(()=>document.getElementById('tog-lab')?.scrollIntoView({block:'start',behavior:'instant'}));
+    if(currentParams().get('booking_entry')==='1' && !params.has('liff.state'))returnToBooking(params.get('booking_service')||'aqua');
     initializationStage='sdk-load';await timed(loadSDK());
     initializationStage='sdk-init';await initializeSDK();
     initializationStage='restore';
@@ -142,7 +142,7 @@
     }
     const service=returnService();
     if(service)returnToBooking(service);
-    else if(params.get('booking_entry')==='1')requestAnimationFrame(()=>document.getElementById('tog-lab')?.scrollIntoView({block:'start',behavior:'instant'}));
+    else if(params.get('booking_entry')==='1')returnToBooking(params.get('booking_service')||'aqua');
     if(await connection() && service)finishReturn(service);
     initializationStage='ready';
   }
