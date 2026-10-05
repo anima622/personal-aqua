@@ -65,14 +65,14 @@
       const connect=document.createElement('button');connect.type='button';connect.className='line-official-login';connect.setAttribute('aria-label','LINEでログインして予約用に連携する');connect.innerHTML='<img src="assets/line/login-icon.png" width="44" height="44" alt=""><span>LINEでログイン</span>';
       connect.addEventListener('click',async()=>{connect.disabled=true;try{await ready;if(!window.liff.isLoggedIn()){draft(form.id==='event-form'?'#event-reserve':location.hash);const service={'reserve-form':'aqua','training-form':'training','running-form':'running','walking-form':'walking','event-form':'event'}[form.id];const redirect=new URL(location.origin+location.pathname);redirect.searchParams.set('booking_service',service);const eventId=form.elements.namedItem('event_id')?.value;if(service==='event' && /^[a-z0-9-]{1,80}$/.test(eventId||''))redirect.searchParams.set('booking_event',eventId);window.liff.login({redirectUri:redirect.href});return;}await connection();}catch{say('LINEとの接続を確認できません。ページを開き直してください。');}finally{connect.disabled=false;}});
       const friend=document.createElement('a');friend.href='https://line.me/R/ti/p/%40177onnkx';friend.target='_blank';friend.rel='noopener';friend.className='line-official-friend';friend.setAttribute('aria-label','MOVENSE公式LINEを友だち追加（新しいタブ）');friend.innerHTML='<img src="assets/line/add-friend-ja.png" alt="友だち追加" width="232" height="72">';
-      const purpose=document.createElement('p');purpose.className='hint';purpose.textContent='LINEの識別情報と申込み内容を、受付控えの送信・予約のご連絡に利用します。初回シートが未回答の方は、公式LINEに「問診票」とお送りください。初回は問診の確認後に予約確定をご連絡します。';
+      const purpose=document.createElement('p');purpose.className='hint';purpose.textContent='LINEの識別情報と申込み内容を、受付控えの送信・予約のご連絡に利用します。初回問診票が未回答の方は、公式LINEに「問診票」とお送りください。初回は問診の確認後に予約確定をご連絡します。';
       if(form.id==='event-form'){
         guide.textContent='参加申込の受付控えと参加可否は、公式LINEでお届けします。①友だち追加 → ②LINEでログインの順に進めてください。追加済みの方は②からお進みください。';
         purpose.textContent='LINEの識別情報と申込み内容を、受付控えの送信・参加可否やお支払いのご連絡に利用します。送信だけでは予約確定・席の確保にはなりません。';
       }
       if(onboardingConfig.enabled){
-        guide.textContent='① LINE連絡設定 → ② 初回シート → ③ 申込み';
-        purpose.textContent='初回シートは未提出の方だけ。参加確定は申込み後にLINEでご案内します。';
+        guide.textContent='① LINE連絡設定 → ② 初回問診票 → ③ 申込み';
+        purpose.textContent='初回問診票は未提出の方だけ。参加確定は申込み後にLINEでご案内します。';
       }
       const actions=document.createElement('div');actions.className='line-official-actions';const friendStep=document.createElement('div');friendStep.className='line-official-step';const friendLabel=document.createElement('p');friendLabel.textContent=onboardingConfig.enabled?'公式LINEを友だち追加':'① 公式LINEを友だち追加';friendStep.append(friendLabel,friend);const loginStep=document.createElement('div');loginStep.className='line-official-step';const loginLabel=document.createElement('p');loginLabel.textContent=onboardingConfig.enabled?'LINEでログインして連携':'② LINEでログインして連携';loginStep.append(loginLabel,connect);actions.append(friendStep,loginStep);region.append(guide,actions,note,purpose);form.prepend(region);
       loginActions.push(actions);

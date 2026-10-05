@@ -17,7 +17,7 @@
     if (!Number.isInteger(count) || count < 1 || ids.length !== count || new Set(ids).size !== ids.length) return '参加人数分の参加者を選んでください。';
     const people = ids.map(id => status.participants?.find(person => person.id === id));
     if (people.some(person => !person)) return '参加者を選び直してください。';
-    if (people.some(person => !submitted(person))) return '参加される全員の初回シートをご提出ください。';
+    if (people.some(person => !submitted(person))) return '参加される全員の初回問診票をご提出ください。';
     if (normalizeName(name) !== normalizeName(people[0].name)) return '参加者を選び直してください。お名前は自動で反映されます。';
     return '';
   }
@@ -30,11 +30,11 @@
   function updateIntroductions(config, root=document) {
     if(config.enabled!==true)return;
     const copy={
-      '#personal > p:not(.rl)':'LINE連絡設定 → 初回シート → 申込み。初回シートは未提出の方だけ必要です。',
-      '#flow .stepc:nth-child(2) h3':'連絡設定・初回シート・申込み',
-      '#flow .stepc:nth-child(2) p':'LINE連絡設定と初回シートの送信後、そのまま申込みへ。受付控えはLINEに届きます。',
+      '#personal > p:not(.rl)':'LINE連絡設定 → 初回問診票 → 申込み。初回問診票は未提出の方だけ必要です。',
+      '#flow .stepc:nth-child(2) h3':'連絡設定・初回問診票・申込み',
+      '#flow .stepc:nth-child(2) p':'LINE連絡設定と初回問診票の送信後、そのまま申込みへ。受付控えはLINEに届きます。',
       '.reserve-aside li:nth-child(1) span':'サービス・ご希望日時を選ぶ',
-      '.reserve-aside li:nth-child(2) span':'LINE連絡設定・初回シート（提出済みの方は不要）',
+      '.reserve-aside li:nth-child(2) span':'LINE連絡設定・初回問診票（提出済みの方は不要）',
       '.reserve-aside li:nth-child(3) span':'内容を確認して申し込む'
     };
     for(const [selector,text] of Object.entries(copy)){const node=root.querySelector(selector);if(node)node.textContent=text;}
@@ -68,14 +68,14 @@
       } catch {throw new Error('接続を確認できませんでした。入力を残したまま、もう一度お試しください。');}
       if (!response.ok) {
         const companionErrors={invite_unavailable:'この招待は使用できません。取り消し済み、または別の方が使用済みです。',invite_expired:'招待の期限が切れています。代表者に新しいリンクを作ってもらってください。',invite_self:'これはあなたが作った招待です。同行者へリンクを送ってください。',self_required:'ご本人のお名前を登録・選択してください。',consent_required:'代理申込みへの許可を確認してください。'};
-        const errors={line_login_required:'LINEでログインし直してからお進みください。',friend_required:'公式LINEを友だち追加して、もう一度確認してください。',message_required:'公式LINEにメッセージかスタンプを1つ送ってください。',intake_required:'参加される全員の初回シートをご提出ください。',invalid_participants:'参加人数と参加者の選択を確認してください。',participant_name_mismatch:'参加者のお名前を確認してください。',participant_not_found:'参加者を選び直してください。',participant_conflict:'参加者情報を確認できません。公式LINEへご相談ください。',too_many_requests:'少し時間をおいてから、もう一度お試しください。',not_ready:'初回受付の準備ができていません。時間をおいて再度お試しください。'};
+        const errors={line_login_required:'LINEでログインし直してからお進みください。',friend_required:'公式LINEを友だち追加して、もう一度確認してください。',message_required:'公式LINEにメッセージかスタンプを1つ送ってください。',intake_required:'参加される全員の初回問診票をご提出ください。',invalid_participants:'参加人数と参加者の選択を確認してください。',participant_name_mismatch:'参加者のお名前を確認してください。',participant_not_found:'参加者を選び直してください。',participant_conflict:'参加者情報を確認できません。公式LINEへご相談ください。',too_many_requests:'少し時間をおいてから、もう一度お試しください。',not_ready:'初回受付の準備ができていません。時間をおいて再度お試しください。'};
         throw new Error(companionErrors[data.error] || (data.error==='companion_pending'?'同行者の許可待ちです。参加しない方の招待は取り消してください。':errors[data.error]) || '確認できませんでした。少し待って、もう一度お試しください。');
       }
       return data;
     }
     const element = (tag, text, className) => {const node=document.createElement(tag);if(text)node.textContent=text;if(className)node.className=className;return node;};
     const companionUI=window.MovenseCompanions?.create({api,refresh});
-    const receiptFeedback = current => current.friend!==true?'友だち追加をまだ確認できません。追加後にもう一度お試しください。':current.message_received!==true?'まだメッセージを確認できません。LINEで送信後、もう一度押してください。':'メッセージを確認しました ✓ '+(current.participants.length?'参加者と初回シートの状態を更新しました。':'下に参加者のお名前をご入力ください。');
+    const receiptFeedback = current => current.friend!==true?'友だち追加をまだ確認できません。追加後にもう一度お試しください。':current.message_received!==true?'まだメッセージを確認できません。LINEで送信後、もう一度押してください。':'メッセージを確認しました ✓ '+(current.participants.length?'参加者と初回問診票の状態を更新しました。':'下に参加者のお名前をご入力ください。');
     function selected(view) {return Array.from(view.list.querySelectorAll('input:checked')).map(input => input.value);}
     function count(form, ids) {return form.id === 'reserve-form' ? Number.parseInt(form.elements.namedItem('people')?.value,10) : ['running-form','walking-form'].includes(form.id) ? ids.length : 1;}
     function sync(form, view) {
@@ -90,7 +90,7 @@
         else if(['running-form','walking-form'].includes(form.id))view.price.textContent=n?`${n}名・通常料金合計（税込）：${((form.id==='running-form'?7000:6000)+(n-1)*1000).toLocaleString()}円。体験は1名料金を掲載しています。複数名の体験料金は事前にご相談ください。`:'';
       }
       if(status?.friend && status?.message_received && people.length){
-        view.note.textContent=companionUI?.hasIncoming()?'同行者としての連携を確認してください。申込みは代表者が行います。':!singleParticipant(form)&&(status.invitations||[]).some(i=>!i.accepted_at)?'同行者の許可待ちです。下の招待状況をご確認ください。':people.every(submitted)?'準備完了 ✓ この下で申込み内容をご入力ください。':'② 参加者全員の初回シートが必要です。未提出の方はご本人の画面からご提出ください。';
+        view.note.textContent=companionUI?.hasIncoming()?'同行者としての連携を確認してください。申込みは代表者が行います。':!singleParticipant(form)&&(status.invitations||[]).some(i=>!i.accepted_at)?'同行者の許可待ちです。下の招待状況をご確認ください。':people.every(submitted)?'準備完了 ✓ この下で申込み内容をご入力ください。':'② 参加者全員の初回問診票が必要です。未提出の方はご本人の画面からご提出ください。';
       }
       else if(status?.friend && status?.message_received && status.participants.length)view.note.textContent='今回参加する方を選んでください。';
     }
@@ -106,7 +106,7 @@
         // A focus refresh may complete after an earlier "not received" result.
         // Keep that result aligned with the latest response, not the last click.
         if(view.checkResult.textContent && !view.retry.disabled)view.checkResult.textContent=receiptFeedback(status);
-        view.note.textContent=status?.enabled!==true ? '初回受付の準備ができていません。時間をおいて再度お試しください。' : status.friend!==true ? '公式LINEを友だち追加して、もう一度確認してください。' : !received ? '① 公式LINEにメッセージかスタンプを1つ送り、このページに戻ってください。' : status.participants.length ? '② 参加者を選んでください。提出済みの初回シートは再入力不要です。' : '② 参加される方のお名前を登録し、初回シートへ進んでください。';
+        view.note.textContent=status?.enabled!==true ? '初回受付の準備ができていません。時間をおいて再度お試しください。' : status.friend!==true ? '公式LINEを友だち追加して、もう一度確認してください。' : !received ? '① 公式LINEにメッセージかスタンプを1つ送り、このページに戻ってください。' : status.participants.length ? '② 参加者を選んでください。提出済みの初回問診票は再入力不要です。' : '② 参加される方のお名前を登録し、初回問診票へ進んでください。';
         for(const person of status?.participants || []){
           if(singleParticipant(form) && person.shared)continue;
           const row=element('div',null,'field');const label=element('label');const input=element('input');input.type='checkbox';input.value=person.id;input.checked=previous.includes(person.id);input.addEventListener('change',()=>{if(singleParticipant(form) && input.checked)for(const other of view.list.querySelectorAll('input'))if(other!==input)other.checked=false;sync(form,view);});
@@ -114,11 +114,11 @@
           label.className='participant-choice';
           label.append(input,document.createTextNode(' '+person.name));row.append(label);
           row.append(element('p',submitted(person)?'初回問診票：提出済み':'初回問診票：未提出','participant-intake-status'));
-          if(person.shared)row.append(element('p',submitted(person)?'本人が代理申込みを許可済みです。':'ご本人の初回シート提出をお待ちください。代表者による記入は不要です。','hint'));
-          if(person.relationship==='other')row.append(element('p','同行者ご本人のLINEとの連携が必要です。「同行者と一緒に申し込む」から招待してください。','hint'));
+          if(person.shared)row.append(element('p',submitted(person)?'本人が代理申込みを許可済みです。':'ご本人の初回問診票提出をお待ちください。代表者による記入は不要です。','hint'));
+          if(person.relationship==='other')row.append(element('p','同行者ご本人のLINEとの連携が必要です。「一緒に参加する方を追加する」から招待してください。','hint'));
           if(!submitted(person) && !person.shared && person.relationship!=='other'){
-            const start=element('button','初回シートを開く','pill');start.type='button';
-            start.addEventListener('click',async()=>{start.disabled=true;try{const session=await api('/intake-session',{participant_id:person.id});if(session.submitted===true && session.participant_id===person.id){await refresh();return;}if(!session.code || session.participant_id!==person.id || !(session.expires_at*1000>Date.now()))throw new Error('初回シートを開けませんでした。もう一度お試しください。');const url=new URL(config.intakeUrl);url.searchParams.set('usp','pp_url');url.searchParams.set(config.intakeCodeEntry,session.code);const link=element('a','初回シートへ（別タブ）','pill solid');link.href=url.href;link.target='_blank';link.rel='noopener noreferrer';link.referrerPolicy='no-referrer';start.replaceWith(link);view.note.textContent='シート送信後、このページへ戻り「送信状況を確認」を押してください。';}catch(error){view.note.textContent=error.message;start.disabled=false;}});row.append(start);
+            const start=element('button','初回問診票を開く','pill');start.type='button';
+            start.addEventListener('click',async()=>{start.disabled=true;try{const session=await api('/intake-session',{participant_id:person.id});if(session.submitted===true && session.participant_id===person.id){await refresh();return;}if(!session.code || session.participant_id!==person.id || !(session.expires_at*1000>Date.now()))throw new Error('初回問診票を開けませんでした。もう一度お試しください。');const url=new URL(config.intakeUrl);url.searchParams.set('usp','pp_url');url.searchParams.set(config.intakeCodeEntry,session.code);const link=element('a','初回問診票へ（別タブ）','pill solid');link.href=url.href;link.target='_blank';link.rel='noopener noreferrer';link.referrerPolicy='no-referrer';start.replaceWith(link);view.note.textContent='シート送信後、このページへ戻り「送信状況を確認」を押してください。';}catch(error){view.note.textContent=error.message;start.disabled=false;}});row.append(start);
             const existing=element('p','すでに回答済みの方は、再記入せずご連絡ください。','hint');
             const contact=element('a','回答済みをLINEで知らせる');contact.href='https://line.me/R/oaMessage/%40177onnkx/?'+encodeURIComponent('問診票回答済みです。参加者名：');contact.target='_blank';contact.rel='noopener noreferrer';existing.append(document.createTextNode(' '),contact);row.append(existing);
           }
@@ -136,7 +136,7 @@
     }
     async function refresh() {
       if(refreshing)return refreshing;
-      if(!configured(config))throw new Error('初回シートの接続を準備しています。時間をおいて再度お試しください。');
+      if(!configured(config))throw new Error('初回問診票の接続を準備しています。時間をおいて再度お試しください。');
       refreshing=(async()=>{
         lastRefresh=Date.now();
         const next=await api('/onboarding/status');
@@ -153,8 +153,8 @@
         // Keep the payload field, but collect the name only through participant registration.
         const bookingName=form.elements.namedItem('name');
         if(bookingName){bookingName.readOnly=true;bookingName.required=false;bookingName.type='hidden';const field=bookingName.closest?.('.field');if(field)field.hidden=true;}
-        const region=element('section',null,'field full onboarding');region.setAttribute('aria-label','LINE連絡設定と初回シート');
-        const note=element('p','LINEログイン後に、参加者と初回シートを確認します。','hint');note.setAttribute('role','status');
+        const region=element('section',null,'field full onboarding');region.setAttribute('aria-label','LINE連絡設定と初回問診票');
+        const note=element('p','LINEログイン後に、参加者と初回問診票を確認します。','hint');note.setAttribute('role','status');
         const messageUrl='https://line.me/R/oaMessage/%40177onnkx/?'+encodeURIComponent('申込みの連絡設定');
         const isMobile=mobileLine(typeof navigator==='undefined'?'':navigator.userAgent,typeof navigator==='undefined'?0:navigator.maxTouchPoints);
         const talk=element('div',null,'onboarding-contact');talk.hidden=true;
@@ -175,7 +175,7 @@
         const add=element('button','参加者を追加','pill');add.type='button';let pending=null;
         const addResult=element('p',null,'onboarding-result');addResult.id=form.id+'-participant-result';addResult.setAttribute('role','status');addResult.setAttribute('aria-live','polite');addName.setAttribute('aria-describedby',addResult.id);
         addName.addEventListener('input',()=>addName.removeAttribute('aria-invalid'));
-        add.addEventListener('click',async()=>{const name=addName.value.trim();if(!name){addResult.textContent='参加される方のフルネームを入力してください。';addName.setAttribute('aria-invalid','true');addName.focus();return;}addName.removeAttribute('aria-invalid');add.disabled=true;add.textContent='追加中…';addResult.textContent='参加者を登録しています。';try{if(!pending || pending.name!==name || pending.relationship!==relation.value)pending={id:crypto.randomUUID(),name,relationship:relation.value};const created=await api('/participants',pending);const newId=created.participant?.id;if(!newId)throw new Error('参加者を確認できませんでした。もう一度お試しください。');await refresh();pending=null;addName.value='';for(const input of list.querySelectorAll('input')){if(singleParticipant(form))input.checked=input.value===newId;else if(input.value===newId)input.checked=true;}sync(form,regions.get(form));addResult.textContent='参加者を追加しました ✓ 上の参加者欄から初回シートへお進みください。';}catch(error){addResult.textContent=error.message;}finally{add.disabled=false;add.textContent='参加者を追加';}});
+        add.addEventListener('click',async()=>{const name=addName.value.trim();if(!name){addResult.textContent='参加される方のフルネームを入力してください。';addName.setAttribute('aria-invalid','true');addName.focus();return;}addName.removeAttribute('aria-invalid');add.disabled=true;add.textContent='追加中…';addResult.textContent='参加者を登録しています。';try{if(!pending || pending.name!==name || pending.relationship!==relation.value)pending={id:crypto.randomUUID(),name,relationship:relation.value};const created=await api('/participants',pending);const newId=created.participant?.id;if(!newId)throw new Error('参加者を確認できませんでした。もう一度お試しください。');await refresh();pending=null;addName.value='';for(const input of list.querySelectorAll('input')){if(singleParticipant(form))input.checked=input.value===newId;else if(input.value===newId)input.checked=true;}sync(form,regions.get(form));addResult.textContent='参加者を追加しました ✓ 上の参加者欄から初回問診票へお進みください。';}catch(error){addResult.textContent=error.message;}finally{add.disabled=false;add.textContent='参加者を追加';}});
         const nameLabel=element('label','参加される方のフルネーム');nameLabel.append(addName);
         const relationLabel=element('label','LINEご利用者との関係');relationLabel.append(relation);
         const addFields=element('div',null,'onboarding-add');addFields.append(nameLabel,relationLabel,add);

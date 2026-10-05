@@ -394,6 +394,7 @@ input::placeholder,textarea::placeholder{color:var(--color-text-muted)}
 .participant-intake-status{font-size:14px;line-height:1.6;margin:4px 0 8px;color:var(--color-text)}
 .companion-row{padding-top:16px;border-top:1px solid var(--color-border)}
 .companion-box input[readonly]{font-size:14px}
+.companion-box textarea[readonly]{width:100%;box-sizing:border-box;font-size:16px;line-height:1.8;padding:16px;border:1px solid var(--color-border);border-radius:8px;resize:vertical}
 .onboarding-people{display:grid;gap:16px;padding-top:16px;border-top:1px solid var(--color-border)}
 .onboarding-list{display:grid;gap:20px}
 .onboarding-list .pill{margin-block:8px}
@@ -830,8 +831,8 @@ footer{position:relative;z-index:1;background:var(--color-fill-solid);color:var(
       </div>
       <div class="stepc">
         <div class="n">02</div>
-        <h3>連絡設定・初回シート・申込み</h3>
-        <p>LINE連絡設定と初回シートの送信後、そのまま申込みへ。受付控えはLINEに届きます。</p>
+        <h3>連絡設定・初回問診票・申込み</h3>
+        <p>LINE連絡設定と初回問診票の送信後、そのまま申込みへ。受付控えはLINEに届きます。</p>
       </div>
       <div class="stepc">
         <div class="n">03</div>
@@ -914,7 +915,7 @@ footer{position:relative;z-index:1;background:var(--color-fill-solid);color:var(
  <details><summary>お支払い・体験・回数券</summary><p>掲載料金は税込・会場費込みです。水泳以外は初回体験をご用意しています。トレーニング回数券の有効期限は3か月。起算日や利用条件は購入前にご案内します。</p><p>新規のご予約は、確定から3日以内（72時間）、またはレッスン前日18時の早い方をお支払期限とします。前日18時以降に確定した場合は開始前までです。具体的な期限と支払方法は確定時にご案内します。既に個別にお約束している条件は、その内容を優先します。</p></details>
 
  <details><summary>グループ・特別イベント</summary><p>日時・会場・担当コーチ・対象・定員・参加費は開催ごとに指定します。申込期限、支払期限、参加者のキャンセル条件、主催者中止時の対応も開催案内に掲載します。個別レッスンの規定をそのまま適用するものではありません。</p><p>飛び込み練習会は開催案内から参加申込フォームへお進みください。フォーム送信だけでは予約確定・席の確保にはなりません。飛び込み練習会のお支払いは現金・銀行振込・PayPayに対応。キャンセルは前日まで受け付け、当日キャンセルは返金できません。参加可否とお支払いの詳細・予約確定は公式LINEでご案内します。</p></details>
- <details><summary>問診・個人情報とご相談</summary><p>初回シートとお申込み内容は、本人確認、レッスンの準備、予約・連絡のために利用します。回答済みの方は、変更した内容がある場合にお知らせください。体調など個別のご相談は公式LINEからご連絡ください。</p></details>
+ <details><summary>問診・個人情報とご相談</summary><p>初回問診票とお申込み内容は、本人確認、レッスンの準備、予約・連絡のために利用します。回答済みの方は、変更した内容がある場合にお知らせください。体調など個別のご相談は公式LINEからご連絡ください。</p></details>
  </div>
 </div></section>
 <section class="sec-piv" id="reserve">
@@ -937,7 +938,7 @@ footer{position:relative;z-index:1;background:var(--color-fill-solid);color:var(
 
     <div class="personal-intro" id="personal">
       <p class="rl">PERSONAL LESSONS</p><h3>あなたに合わせた、個別レッスン。</h3>
-      <p>LINE連絡設定 → 初回シート → 申込み。初回シートは未提出の方だけ必要です。</p>
+      <p>LINE連絡設定 → 初回問診票 → 申込み。初回問診票は未提出の方だけ必要です。</p>
       <a class="textlink" href="#tog-lab">申込みに進む ↓</a>
     </div>
     <div class="reserve-grid">
@@ -959,7 +960,7 @@ footer{position:relative;z-index:1;background:var(--color-fill-solid);color:var(
           <button type="button" class="pill solid" id="gate-submit">進む</button>
         </div>
         <p class="gate-error" id="gate-error" role="alert">合言葉が違います。もう一度お試しください。</p>
-        <p class="gate-hint" id="gate-hint">現在の受付は、LINE連絡設定と初回シートの提出確認で進めます。</p>
+        <p class="gate-hint" id="gate-hint">現在の受付は、LINE連絡設定と初回問診票の提出確認で進めます。</p>
         </div>
       </div>
 
@@ -1225,9 +1226,9 @@ footer{position:relative;z-index:1;background:var(--color-fill-solid);color:var(
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <script src="assets/gsap-starter.js"></script>
-<script src="assets/booking-companions.js?v=20261005-invite-instructions"></script>
-<script src="assets/booking-onboarding.js?v=20261005-participant-clarity2"></script>
-<script src="assets/booking-receipts.js?v=20261005-entry-aligned"></script>
+<script src="assets/booking-companions.js?v=20261005-referral"></script>
+<script src="assets/booking-onboarding.js?v=20261005-referral"></script>
+<script src="assets/booking-receipts.js?v=20261005-referral"></script>
 <script>
 /*
   CONTENTS

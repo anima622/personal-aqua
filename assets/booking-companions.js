@@ -18,6 +18,7 @@
   const e=(tag,text,cls)=>{const n=document.createElement(tag);if(text)n.textContent=text;if(cls)n.className=cls;return n;};
   const done=p=>['submitted','legacy_verified'].includes(p.intake_status);
   const multi=form=>['reserve-form','running-form','walking-form'].includes(form.id);
+  const invitationText=url=>`一緒にMOVENSEのレッスンへ参加するためのご案内です。\n\n初めての方は、公式LINEを友だち追加してください。\nhttps://line.me/R/ti/p/%40177onnkx\n\n追加できたら、このメッセージに戻って下の「参加の手続き」を開いてください。登録済みの方は、そのまま手続きへ進めます。\n\n参加の手続き\n${url}\n\n予約は私がまとめて申し込みます。問診票は未提出の場合だけご記入ください。`;
   function create({api,refresh}){
     let code=captureInvite(),preview=null,loading=false,previewError='',current=null;
     const views=new Map(),links=new Map();
@@ -25,7 +26,7 @@
     async function action(button,result,fn){button.disabled=true;result.textContent='処理中…';try{await fn();}catch(error){result.textContent=error.message;}finally{button.disabled=false;}}
     function mount(form,region,people){
       const incoming=e('div',null,'companion-box');incoming.hidden=true;
-      const outgoing=e('details',null,'companion-box');outgoing.append(e('summary','同行者と一緒に申し込む'));outgoing.hidden=!multi(form);
+      const outgoing=e('details',null,'companion-box');outgoing.append(e('summary','一緒に参加する方を追加する'));outgoing.hidden=!multi(form);
       const body=e('div',null,'companion-body');outgoing.append(body);
       const management=e('details',null,'companion-box');management.append(e('summary','登録・許可の管理'));management.hidden=true;
       const manageBody=e('div',null,'companion-body');management.append(manageBody);
@@ -51,7 +52,7 @@
         else if(preview.accepted){
           v.incoming.append(e('p',`${preview.issuer_name}さんへの許可は登録済みです。`));
           const p=owned.find(p=>p.id===preview.participant_id);
-          v.incoming.append(e('p',p && done(p)?'準備完了です。申込みは代表者が行います。ご自身で同じ予約を送る必要はありません。':'下のご本人の欄から初回シートを提出してください。申込みは代表者が行います。','hint'));
+          v.incoming.append(e('p',p && done(p)?'準備完了です。申込みは代表者が行います。ご自身で同じ予約を送る必要はありません。':'下のご本人の欄から初回問診票を提出してください。申込みは代表者が行います。','hint'));
         }else{
           v.incoming.append(e('h4',`${preview.issuer_name}さんによる代理申込みを許可しますか？`));
           v.incoming.append(e('p','共有するのは氏名と初回準備の完了状況です。問診の回答内容は共有しません。許可は次回以降にも使われ、いつでも解除できます。','hint'));
@@ -71,9 +72,9 @@
       }
       v.outgoing.hidden=!ready || !multi(form) || !!code;v.body.replaceChildren();
       if(!v.outgoing.hidden){
-        v.body.append(e('p','一緒に参加する方へ、次の手順でご案内を送ってください。','hint'));
+        v.body.append(e('p','すでに上にお名前がある方は、問診票の提出状況を確認して選んでください。お名前がない方には、次の手順でご案内を送ります。','hint'));
         const steps=e('ol');steps.style.paddingLeft='1.5em';
-        for(const text of ['下の「同行者用リンクを作る」を押します。','「リンクをコピー」を押します。','一緒に参加する方とのLINEのトークを開き、コピーしたものを貼り付けて送ります。'])steps.append(e('li',text));
+        for(const text of ['下の「同行者用リンクを作る」を押します。','「案内文をコピー」を押します。','一緒に参加する方とのLINEのトークを開き、コピーした案内文を貼り付けて送ります。'])steps.append(e('li',text));
         v.body.append(steps,e('p','受け取った方には、届いた案内を押して、ご自身のスマートフォンで手続きしていただきます。2人以上に送る場合は、1人ずつ同じ手順を繰り返してください。','hint'));
         const result=e('p',null,'onboarding-result');result.setAttribute('role','status');
         if(selves.length){
@@ -95,9 +96,9 @@
             row.append(e('p','リンクを同行者へ送り、ご本人に「この代表者に許可する」を押してもらってください。','hint'));
             row.append(e('p',`リンクの有効期限：${new Date(invite.expires_at*1000).toLocaleDateString('ja-JP')}。予約はまだ完了していません。`,'hint'));
             if(links.has(invite.id)){
-              const link=e('input');link.type='text';link.readOnly=true;link.value=links.get(invite.id);link.setAttribute('aria-label','同行者に送る招待リンク');row.append(link);
+              const link=e('textarea');link.readOnly=true;link.rows=7;link.value=invitationText(links.get(invite.id));link.setAttribute('aria-label','同行者に送る案内文');row.append(link);
               const copied=e('p',null,'onboarding-result');copied.setAttribute('role','status');
-              const copy=e('button','リンクをコピー','pill');copy.type='button';copy.addEventListener('click',async()=>{try{await navigator.clipboard.writeText(link.value);copied.textContent='コピーしました。同行者へ送ってください。';}catch{link.focus();link.select();copied.textContent='リンクを選択しました。コピーして送ってください。';}});actions.append(copy);feedback.append(copied);
+              const copy=e('button','案内文をコピー','pill');copy.type='button';copy.addEventListener('click',async()=>{try{await navigator.clipboard.writeText(link.value);copied.textContent='案内文をコピーしました。一緒に参加する方とのLINEに貼り付けて送ってください。';}catch{link.focus();link.select();copied.textContent='案内文を選択しました。コピーして送ってください。';}});actions.append(copy);feedback.append(copied);
             }else row.append(e('p','リンクは作成直後だけ表示します。紛失した場合は取り消して作り直してください。','hint'));
           }
           const result=e('p',null,'onboarding-result');result.setAttribute('role','status');
