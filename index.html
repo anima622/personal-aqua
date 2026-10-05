@@ -380,6 +380,14 @@ input::placeholder,textarea::placeholder{color:var(--color-text-muted)}
 .onboarding-phone img{display:block;width:200px;max-width:100%;height:auto;margin-top:12px;background:white}
 .onboarding-result{font-size:var(--t-sm);line-height:1.7;color:var(--color-text);font-weight:600;overflow-wrap:anywhere}
 .onboarding-result:empty,.onboarding-list:empty{display:none}
+.companion-box{border:1px solid var(--color-border);border-radius:12px;padding:16px;overflow-wrap:anywhere}
+.companion-box summary{font-weight:700;cursor:pointer;line-height:1.6}
+.companion-body,.companion-row,.companion-box[open]>.onboarding-add{margin-top:16px}
+.companion-box h3,.companion-box h4{font-family:var(--font-body);font-size:18px;font-weight:700;line-height:1.6}
+.companion-box p,.companion-box label{margin-block:12px}
+.companion-box .pill{margin:8px 8px 8px 0}
+.companion-row{padding-top:16px;border-top:1px solid var(--color-border)}
+.companion-box input[readonly]{font-size:14px}
 .onboarding-people{display:grid;gap:16px;padding-top:16px;border-top:1px solid var(--color-border)}
 .onboarding-list{display:grid;gap:20px}
 .onboarding-list .pill{margin-block:8px}
@@ -761,7 +769,7 @@ footer{position:relative;z-index:1;background:var(--color-fill-solid);color:var(
 <!-- ===== How it works: 03 FLOW (F4 steps + F6 policy) ===== -->
 <section class="sec-con program-section" id="groups" aria-labelledby="groups-title"><div class="wrap">
   <div class="sec-head"><div class="no">03</div><h2 class="display" id="groups-title">Group Lessons</h2><p class="jp">仲間と学ぶ、グループレッスン。</p><p class="lede">テーマやレベルに合わせたレッスンを準備しています。開催ごとに対象・定員・料金をご案内します。</p></div>
-  <div class="program-list" data-program-kind="group"><p class="program-empty"><strong>開催案内を準備中です。</strong><br>日程・会場などが決まり次第、こちらに掲載します。現在、お申込みの受付は行っていません。</p></div>
+  <div class="program-list" data-program-kind="group"><p class="program-empty"><strong>開催案内を準備中です。</strong><br>日程・会場などが決まり次第、こちらに掲載します。お申込みはお一人ずつ受け付ける予定です。現在、お申込みの受付は行っていません。</p></div>
   <a class="textlink" href="https://line.me/R/ti/p/%40177onnkx" target="_blank" rel="noopener">公式LINEで相談する ↗</a>
 </div></section>
 <section class="sec-con program-section" id="events" aria-labelledby="events-title"><div class="wrap">
@@ -1084,7 +1092,7 @@ footer{position:relative;z-index:1;background:var(--color-fill-solid);color:var(
           <form id="running-form">
             <input type="hidden" name="service" value="ランニング">
             <input type="hidden" name="_subject" value="【ランニング】新規申し込み">
-            <div class="form-grid"><div class="field"><label for="running-participants">参加人数・同行者（2名の場合）</label><input id="running-participants" type="text" name="participants" maxlength="200" placeholder="例：1名／2名（山田 花子・山田 太郎）" required></div><input type="hidden" name="form_version" value="movense-20261003">
+            <div class="form-grid"><div class="field"><label for="running-participants">参加人数・参加者（選択内容を自動入力）</label><input id="running-participants" type="text" name="participants" maxlength="200" placeholder="例：1名／2名（山田 花子・山田 太郎）" required></div><input type="hidden" name="form_version" value="movense-20261003">
  <div class="field"><label for="running-venue1">場所の第一候補・希望エリア</label><input id="running-venue1" name="venue1" type="text" maxlength="200" placeholder="例：目黒駅周辺／場所は相談したい" required><span class="hint">会場が未定なら、駅名・エリアや「相談したい」で構いません。</span></div>
  <div class="field"><label for="running-venue2">場所の第二候補（任意）</label><input id="running-venue2" name="venue2" type="text" maxlength="200" placeholder="例：別の候補エリア・公園・施設名"></div>
  <div class="field"><label for="running-lesson-type">ご希望のプラン</label><select id="running-lesson-type" name="lesson_type" required><option value="">選択してください</option><option>初回体験</option><option>通常レッスン</option></select></div>
@@ -1122,7 +1130,7 @@ footer{position:relative;z-index:1;background:var(--color-fill-solid);color:var(
           <form id="walking-form">
             <input type="hidden" name="service" value="ウォーキング">
             <input type="hidden" name="_subject" value="【ウォーキング】新規申し込み">
-            <div class="form-grid"><div class="field"><label for="walking-participants">参加人数・同行者（2名の場合）</label><input id="walking-participants" type="text" name="participants" maxlength="200" placeholder="例：1名／2名（山田 花子・山田 太郎）" required></div><input type="hidden" name="form_version" value="movense-20261003">
+            <div class="form-grid"><div class="field"><label for="walking-participants">参加人数・参加者（選択内容を自動入力）</label><input id="walking-participants" type="text" name="participants" maxlength="200" placeholder="例：1名／2名（山田 花子・山田 太郎）" required></div><input type="hidden" name="form_version" value="movense-20261003">
  <div class="field"><label for="walking-venue1">場所の第一候補・希望エリア</label><input id="walking-venue1" name="venue1" type="text" maxlength="200" placeholder="例：目黒駅周辺／場所は相談したい" required><span class="hint">会場が未定なら、駅名・エリアや「相談したい」で構いません。</span></div>
  <div class="field"><label for="walking-venue2">場所の第二候補（任意）</label><input id="walking-venue2" name="venue2" type="text" maxlength="200" placeholder="例：別の候補エリア・公園・施設名"></div>
  <div class="field"><label for="walking-lesson-type">ご希望のプラン</label><select id="walking-lesson-type" name="lesson_type" required><option value="">選択してください</option><option>初回体験</option><option>通常レッスン</option></select></div>
@@ -1211,7 +1219,8 @@ footer{position:relative;z-index:1;background:var(--color-fill-solid);color:var(
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <script src="assets/gsap-starter.js"></script>
-<script src="assets/booking-onboarding.js?v=20261005-entry-status-sync"></script>
+<script src="assets/booking-companions.js?v=20261005-companions"></script>
+<script src="assets/booking-onboarding.js?v=20261005-companions"></script>
 <script src="assets/booking-receipts.js?v=20261005-entry-aligned"></script>
 <script>
 /*
