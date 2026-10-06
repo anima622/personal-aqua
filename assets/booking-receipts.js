@@ -40,12 +40,25 @@
     write('watari-booking-draft',{expires:Date.now()+30*60*1000,values,anchor,slots:Array.from(document.querySelectorAll('.slot.selected')).map(el=>el.dataset.id),active:document.querySelector('.service-toggle [aria-selected="true"]')?.id.replace('toggle-','') || 'aqua'});
   }
   const serviceForms={aqua:'reserve-form',training:'training-form',running:'running-form',walking:'walking-form',event:'event-form'};
+  // LIFF can clean routing parameters during initialization. Keep only the
+  // allowlisted destination in memory; it never represents authentication.
+  let entryDestination=(()=>{
+    let incoming=new URLSearchParams(location.search);
+    if(incoming.has('liff.state')){
+      try {
+        const nested=new URL(incoming.get('liff.state'),location.origin+location.pathname);
+        incoming=nested.searchParams;
+      } catch { return null; }
+    }
+    const service=incoming.get('booking_service')||'aqua';
+    return (incoming.get('booking_return')==='1'||incoming.get('booking_entry')==='1') && serviceForms[service]?service:null;
+  })();
   function returnService() {
     currentParams();
     const pending=read('watari-line-return');
     if(pending?.expires>Date.now() && serviceForms[pending.service])return pending.service;
     const service=params.get('booking_service');
-    return params.get('booking_return')==='1' && serviceForms[service]?service:null;
+    return params.get('booking_return')==='1' && serviceForms[service]?service:entryDestination;
   }
   function returnToBooking(service) {
     if(!serviceForms[service])return;
@@ -63,6 +76,7 @@
   }
   function finishReturn(service) {
     returnToBooking(service);
+    entryDestination=null;
     clear('watari-line-return');
     params.delete('booking_return');
     const url=new URL(location.href);url.searchParams.delete('booking_return');
