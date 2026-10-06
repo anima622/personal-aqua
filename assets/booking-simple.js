@@ -69,7 +69,7 @@
     }
     v.after.append(e('p',`${followup.count}名の申込み／参加者登録 ${followup.registered}名／問診提出 ${followup.submitted}名`,'hint'));
    }
-   const again=e('button','別の日・種目を申し込む','pill');again.type='button';again.onclick=()=>{followupId=null;followup=null;const u=new URL(location.href);u.searchParams.delete('booking_followup');history.replaceState(null,'',u.href);for(const [f,v]of views){f.reset();if(f.id==='reserve-form')v.count.value='1名';}refresh().catch(err=>v.note.textContent=err.message);};v.after.append(again);
+   const again=e('button','別の日・種目を申し込む','pill');again.type='button';again.onclick=()=>{const u=new URL(location.href);u.searchParams.delete('booking_followup');location.assign(u.href);};v.after.append(again);
   }
   function render(){
    for(const [form,v] of views){
