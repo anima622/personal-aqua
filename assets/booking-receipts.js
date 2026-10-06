@@ -142,7 +142,10 @@
       onboarding=window.MovenseOnboarding.create({config:onboardingConfig,endpoint:config.endpoint,getToken:()=>window.liff?.getAccessToken(),forms});onboarding.mount();
     }
     // Show the booking destination while authentication loads, without rewriting LIFF's URL.
-    if(currentParams().get('booking_entry')==='1' && !params.has('liff.state'))returnToBooking(params.get('booking_service')||'aqua');
+    // Scrolling is safe even on the intermediate LIFF URL: do not rewrite
+    // authentication parameters, but keep loading/error feedback in view.
+    const initialDestination=returnService();
+    if(initialDestination)returnToBooking(initialDestination);
     initializationStage='sdk-load';await timed(loadSDK());
     initializationStage='sdk-init';await initializeSDK();
     initializationStage='restore';
@@ -166,14 +169,18 @@
   // Refresh the SDK and verified server status, never infer authentication from the URL.
   let reconnecting=null,lastReconnect=0;
   async function resumeConnection() {
-    if(currentParams().has('liff.state') || document.visibilityState==='hidden' || reconnecting || Date.now()-lastReconnect<1500)return reconnecting;
+    if(document.visibilityState==='hidden' || reconnecting || Date.now()-lastReconnect<1500)return reconnecting;
     lastReconnect=Date.now();
     reconnecting=(async()=>{
       await ready;
+      // A failed SDK load can leave liff.state in place. It must not disable
+      // retry forever. A successful intermediate init still owns its redirect.
+      if(currentParams().has('liff.state') && !setupError)return;
       if(!window.liff){try{await timed(loadSDK());}catch{recoverable('LINEを読み込めませんでした。通信状態を確認して、再確認してください。');return;}}
       const service=returnService();
       try {
         if(service || setupError || !window.liff.isLoggedIn())await initializeSDK();
+        if(currentParams().has('liff.state'))return;
         if(service)restore();
         if(await connection()){
           setupError=null;
@@ -214,3 +221,4 @@
     }
   };
 })();
+
