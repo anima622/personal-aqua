@@ -27,7 +27,7 @@
     async function action(button,result,fn){button.disabled=true;result.textContent='処理中…';try{await fn();}catch(error){result.textContent=error.message;}finally{button.disabled=false;}}
     function mount(form,region,people){
       const incoming=e('div',null,'companion-box');incoming.hidden=true;
-      const outgoing=e('details',null,'companion-box');outgoing.append(e('summary','一緒に参加する方を追加する'));outgoing.hidden=!multi(form);
+      const outgoing=e('details',null,'companion-box');outgoing.append(e('summary','一緒に参加する方を追加する'));outgoing.hidden=deferred||!multi(form);
       const body=e('div',null,'companion-body');outgoing.append(body);
       const management=e('details',null,'companion-box');management.append(e('summary','登録・許可の管理'));management.hidden=true;
       const manageBody=e('div',null,'companion-body');management.append(manageBody);
