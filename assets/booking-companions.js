@@ -3,10 +3,11 @@
   const key='movense-companion-invite';
   function captureInvite(){
     try{
-      const code=new URLSearchParams(location.hash.slice(1)).get('companion');
+      const query=new URLSearchParams(location.search);
+      let code=new URLSearchParams(location.hash.slice(1)).get('companion')||query.get('booking_companion');
+      if(!code&&query.has('liff.state')){try{const nested=new URL(query.get('liff.state'),location.origin+location.pathname);code=nested.searchParams.get('booking_companion')||new URLSearchParams(nested.hash.slice(1)).get('companion');}catch{}}
       if(/^[a-f0-9]{64}$/.test(code||'')){
-        sessionStorage.setItem(key,JSON.stringify({code,until:Date.now()+7*86400000}));
-        history.replaceState(null,'',location.pathname+location.search+'#tog-lab');
+        try{sessionStorage.setItem(key,JSON.stringify({code,until:Date.now()+7*86400000}));}catch{}
         return code;
       }
       const saved=JSON.parse(sessionStorage.getItem(key)||'null');
@@ -19,10 +20,10 @@
   const done=p=>['submitted','legacy_verified'].includes(p.intake_status);
   const multi=form=>['reserve-form','running-form','walking-form'].includes(form.id);
   const invitationText=url=>`一緒にMOVENSEのレッスンへ参加するためのご案内です。\n\n初めての方は、公式LINEを友だち追加してください。\nhttps://line.me/R/ti/p/%40177onnkx\n\n追加できたら、このメッセージに戻って下の「参加の手続き」を開いてください。登録済みの方は、そのまま手続きへ進めます。\n\n参加の手続き\n${url}\n\n予約は私がまとめて申し込みます。問診票は未提出の場合だけご記入ください。`;
-  function create({api,refresh}){
+  function create({api,refresh,deferred=false,onUpdate}){
     let code=captureInvite(),preview=null,loading=false,previewError='',current=null;
     const views=new Map(),links=new Map();
-    const clearInvite=()=>{code=null;preview=null;previewError='';try{sessionStorage.removeItem(key);}catch{}};
+    const clearInvite=()=>{code=null;preview=null;previewError='';try{sessionStorage.removeItem(key);const u=new URL(location.href);u.searchParams.delete('booking_companion');if(u.hash.startsWith('#companion='))u.hash='reserve-form';history.replaceState(null,'',u.href);}catch{}};
     async function action(button,result,fn){button.disabled=true;result.textContent='処理中…';try{await fn();}catch(error){result.textContent=error.message;}finally{button.disabled=false;}}
     function mount(form,region,people){
       const incoming=e('div',null,'companion-box');incoming.hidden=true;
@@ -38,7 +39,7 @@
       if(!code || preview || loading || previewError)return;
       loading=true;
       try{preview=await api('/companions/preview',{code});}catch(error){previewError=error.message;}
-      finally{loading=false;redraw();}
+      finally{loading=false;redraw();onUpdate?.();}
     }
     function render(form,status){
       current=status;const v=views.get(form);if(!v)return;
@@ -52,12 +53,12 @@
         else if(preview.accepted){
           v.incoming.append(e('p',`${preview.issuer_name}さんへの許可は登録済みです。`));
           const p=owned.find(p=>p.id===preview.participant_id);
-          v.incoming.append(e('p',p && done(p)?'準備完了です。申込みは代表者が行います。ご自身で同じ予約を送る必要はありません。':'下のご本人の欄から初回問診票を提出してください。申込みは代表者が行います。','hint'));
+          v.incoming.append(e('p',p && done(p)?'参加の準備ができました。同じ予約を送る必要はありません。':'参加確認ができました。下から初回問診票をご回答ください。同じ予約を送る必要はありません。','hint'));
         }else{
-          v.incoming.append(e('h4',`${preview.issuer_name}さんによる代理申込みを許可しますか？`));
+          v.incoming.append(e('h4',`${preview.issuer_name}さんと一緒に参加しますか？`));
           v.incoming.append(e('p','共有するのは氏名と初回準備の完了状況です。問診の回答内容は共有しません。許可は次回以降にも使われ、いつでも解除できます。','hint'));
           if(!ready)v.incoming.append(e('p','まず公式LINEへメッセージかスタンプを送ってください。'));
-          else if(!selves.length)v.incoming.append(e('p','下で「ご本人」のお名前を登録してください。登録後、ここで許可できます。'));
+          else if(!selves.length)v.incoming.append(e('p','下にご本人のお名前を入力して登録すると、ここで参加を確認できます。'));
           else{
             const label=e('label','ご本人の登録名');const select=e('select');select.setAttribute('aria-label','代理申込みを許可するご本人');
             for(const p of selves){const option=e('option',p.name);option.value=p.id;select.append(option);}label.append(select);
@@ -68,9 +69,9 @@
             }));v.incoming.append(label,accept,result);
           }
         }
-        const close=e('button',preview?.accepted?'連携確認を閉じる':'今回は許可せず閉じる','pill');close.type='button';close.addEventListener('click',()=>{clearInvite();redraw();});v.incoming.append(close);
+        const close=e('button',preview?.accepted?'連携確認を閉じる':'今回は許可せず閉じる','pill');close.type='button';close.addEventListener('click',()=>{clearInvite();refresh().catch(()=>redraw());});v.incoming.append(close);
       }
-      v.outgoing.hidden=!ready || !multi(form) || !!code;v.body.replaceChildren();
+      v.outgoing.hidden=deferred || !ready || !multi(form) || !!code;v.body.replaceChildren();
       if(!v.outgoing.hidden){
         v.body.append(e('p','すでに上にお名前がある方は、問診票の提出状況を確認して選んでください。お名前がない方には、次の手順でご案内を送ります。','hint'));
         const steps=e('ol');steps.style.paddingLeft='1.5em';
@@ -116,7 +117,8 @@
         const button=e('button','この許可を解除する','pill');button.type='button';const result=e('p',null,'onboarding-result');result.setAttribute('role','status');button.addEventListener('click',()=>action(button,result,async()=>{await api('/companions/revoke',{id:grant.id});if(preview?.participant_id){clearInvite();}await refresh();}));row.append(button,result);v.manageBody.append(row);
       }
     }
-    return {mount,render,hasIncoming:()=>!!code};
+    return {mount,render,hasIncoming:()=>!!code,currentCode:()=>code,acceptedParticipant:()=>preview?.accepted?preview.participant_id:null};
   }
   window.MovenseCompanions={create};
 })();
+

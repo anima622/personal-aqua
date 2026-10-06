@@ -118,7 +118,7 @@
       const guide=document.createElement('p');guide.className='line-booking-guide';guide.textContent='ご予約の受付控え・日程調整は、公式LINEでお届けします😊 ①友だち追加 → ②LINEでログインの順に進めてください。追加済みの方は②からで大丈夫です。';
       const note=document.createElement('p');note.className='hint';note.setAttribute('role','status');note.textContent='ご予約には公式LINEの友だち追加とLINE連携が必要です。';notices.push(note);
       const connect=document.createElement('button');connect.type='button';connect.className='line-official-login';connect.setAttribute('aria-label','LINEでログインして予約用に連携する');connect.innerHTML='<img src="assets/line/login-icon.png" width="44" height="44" alt=""><span>LINEでログイン</span>';
-      connect.addEventListener('click',async()=>{connect.disabled=true;try{await ready;if(!window.liff.isLoggedIn()){draft();const service={'reserve-form':'aqua','training-form':'training','running-form':'running','walking-form':'walking','event-form':'event'}[form.id];const redirect=new URL(location.origin+location.pathname);redirect.searchParams.set('booking_service',service);redirect.searchParams.set('booking_return','1');redirect.searchParams.set('booking_entry','1');redirect.hash=serviceForms[service];write('watari-line-return',{service,expires:Date.now()+30*60*1000});const eventId=form.elements.namedItem('event_id')?.value;if(service==='event' && /^[a-z0-9-]{1,80}$/.test(eventId||''))redirect.searchParams.set('booking_event',eventId);window.liff.login({redirectUri:redirect.href});return;}await initializeSDK();if(await connection())setupError=null;}catch{say('LINEの確認ができませんでした。通信状態を確認して、もう一度押してください。');}finally{connect.disabled=false;}});
+      connect.addEventListener('click',async()=>{connect.disabled=true;try{await ready;if(!window.liff.isLoggedIn()){draft();const service={'reserve-form':'aqua','training-form':'training','running-form':'running','walking-form':'walking','event-form':'event'}[form.id];const redirect=new URL(location.origin+location.pathname);redirect.searchParams.set('booking_service',service);redirect.searchParams.set('booking_return','1');redirect.searchParams.set('booking_entry','1');redirect.hash=serviceForms[service];const context=onboarding?.redirectContext?.();if(context?.followupId)redirect.searchParams.set('booking_followup',context.followupId);if(context?.companionCode)redirect.searchParams.set('booking_companion',context.companionCode);write('watari-line-return',{service,expires:Date.now()+30*60*1000});const eventId=form.elements.namedItem('event_id')?.value;if(service==='event' && /^[a-z0-9-]{1,80}$/.test(eventId||''))redirect.searchParams.set('booking_event',eventId);window.liff.login({redirectUri:redirect.href});return;}await initializeSDK();if(await connection())setupError=null;}catch{say('LINEの確認ができませんでした。通信状態を確認して、もう一度押してください。');}finally{connect.disabled=false;}});
       const recovery=document.createElement('button');recovery.type='button';recovery.className='pill';recovery.textContent='LINE連携を再確認';recovery.hidden=true;
       recovery.addEventListener('click',async()=>{recovery.disabled=true;lastReconnect=0;try{await resumeConnection();}finally{recovery.disabled=false;}});recoveryActions.push(recovery);
       const friend=document.createElement('a');friend.href='https://line.me/R/ti/p/%40177onnkx';friend.target='_blank';friend.rel='noopener';friend.className='line-official-friend';friend.setAttribute('aria-label','MOVENSE公式LINEを友だち追加（新しいタブ）');friend.innerHTML='<img src="assets/line/add-friend-ja.png" alt="友だち追加" width="232" height="72">';
@@ -128,8 +128,8 @@
         purpose.textContent='LINEの識別情報と申込み内容を、受付控えの送信・参加可否やお支払いのご連絡に利用します。送信だけでは予約確定・席の確保にはなりません。';
       }
       if(onboardingConfig.enabled){
-        guide.textContent='① LINE連絡設定 → ② 初回問診票 → ③ 申込み';
-        purpose.textContent='初回問診票は未提出の方だけ。参加確定は申込み後にLINEでご案内します。';
+        guide.textContent='① LINEをつなぐ → ② 人数・日時 → ③ 申込み';
+        purpose.textContent='問診票は申込み後に、未提出の方だけご案内します。予約確定はLINEでお知らせします。';
       }
       const actions=document.createElement('div');actions.className='line-official-actions';const friendStep=document.createElement('div');friendStep.className='line-official-step';const friendLabel=document.createElement('p');friendLabel.textContent=onboardingConfig.enabled?'公式LINEを友だち追加':'① 公式LINEを友だち追加';friendStep.append(friendLabel,friend);const loginStep=document.createElement('div');loginStep.className='line-official-step';const loginLabel=document.createElement('p');loginLabel.textContent=onboardingConfig.enabled?'LINEでログインして連携':'② LINEでログインして連携';loginStep.append(loginLabel,connect);actions.append(friendStep,loginStep);region.append(guide,actions,note,recovery,purpose);form.prepend(region);
       loginActions.push(actions);
@@ -207,7 +207,7 @@
       let saved=states.get(key)||read(key);
       if(!saved || saved.fingerprint!==fingerprint || saved.expires<Date.now()) saved={id:crypto.randomUUID(),fingerprint,expires:Date.now()+24*60*60*1000};
       states.set(key,saved);write(key,saved);
-      if(saved.accepted)return {ok:true,message:saved.message};
+      if(saved.accepted){onboarding?.afterSubmit?.(form,saved.response);return {ok:true,message:saved.message};}
       let response,data;
       try{
         response=await fetch(config.endpoint+'/reservations',{method:'POST',headers:{'Content-Type':'application/json',Authorization:'Bearer '+window.liff.getAccessToken()},body:JSON.stringify({id:saved.id,booking,...participantData}),signal:AbortSignal.timeout(20000)});
@@ -216,7 +216,7 @@
       if(!response.ok || !data.accepted)return {ok:false,message:messages[data.error]||messages.temporary_failure};
       const next=booking.service==='特別イベント'?'定員・お申込み内容を確認し、参加可否とお支払いのご案内を公式LINEでお送りします。':'施設・日程を確認してご連絡します。';
       const message=`お申込みを受け付けました😊 受付番号：${data.receipt_number||data.id}。公式LINEへ内容の控えをお送りします。予約はまだ確定していません。${next}控えが届かない場合も再申込みせず、この受付番号を公式LINEへお知らせください。`;
-      states.set(key,{...saved,accepted:true,message});write(key,{...saved,accepted:true,message});clear('watari-booking-draft');
+      states.set(key,{...saved,accepted:true,message,response:data});write(key,{...saved,accepted:true,message,response:data});clear('watari-booking-draft');setTimeout(()=>onboarding?.afterSubmit?.(form,data),0);
       return {ok:true,message};
     }
   };
