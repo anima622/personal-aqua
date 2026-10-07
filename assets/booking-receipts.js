@@ -88,7 +88,7 @@
     for(const value of saved.values||[]) {const el=document.getElementById(value.id);if(el && el.tagName!=='TEXTAREA' && el.name!=='note'){el.value=value.value;if(el.type==='checkbox')el.checked=value.checked;}}
     for(const id of saved.slots||[]) for(const el of document.querySelectorAll('.slot')) if(el.dataset.id===id && !el.classList.contains('selected'))el.click();
     if(['aqua','training','running','walking','event'].includes(saved.active))document.querySelector('[aria-controls="panel-'+saved.active+'"]')?.click();
-
+    window.dispatchEvent(new Event('watari-booking-draft-restored'));
   }
   async function loadSDK() {
     if(window.liff)return;

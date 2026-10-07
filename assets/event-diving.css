@@ -1,7 +1,9 @@
 /* Scoped extension of the existing MOVENSE editorial system. */
 .brand-meaning span:not([lang="ja"]){font-family:var(--font-display);font-weight:400;letter-spacing:var(--ls-head)}
 .hero h1 .l2,.brand-meaning span[lang="ja"]{font-family:"Noto Serif JP","Yu Mincho",serif;font-weight:500;letter-spacing:.18em;line-height:1.6;font-feature-settings:"palt" 1}
+.event-dates{display:flex;flex-wrap:wrap;gap:var(--s4) var(--s8);margin-bottom:var(--s8)}.event-dates a{color:var(--color-accent-text);text-decoration:underline;text-underline-offset:.2em}
 .event-feature{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1fr);gap:var(--s16);align-items:start;border-top:1px solid var(--color-border-strong);padding-top:var(--s8)}
+.event-feature+.event-feature{margin-top:var(--s16)}.event-closed{opacity:.6;cursor:default}
 .event-art{margin:0;max-width:560px}.event-art img{display:block;width:100%;height:auto}
 .event-copy{max-width:var(--measure)}.event-copy h3{font-size:var(--t-2xl);font-weight:500;line-height:1.5}
 .event-intro{margin-top:var(--s4);text-wrap:pretty}
@@ -21,6 +23,6 @@
 .event-reserve .field .event-consent{display:flex;align-items:flex-start;gap:var(--s3);font-size:var(--t-sm);font-weight:400;letter-spacing:var(--ls-body);cursor:pointer}
 .event-consent input[type="checkbox"]{flex:0 0 20px;width:20px;height:20px;margin-top:5px;accent-color:var(--color-accent-solid)}
 .event-result{padding:var(--s6);margin-top:var(--s4);background:var(--color-accent-wash)}.event-result.error{background:var(--color-surface);color:var(--color-danger);border:1px solid currentColor}
-#event-reserve,#diving-20261018{scroll-margin-top:112px}
+#event-reserve,#diving-20261018,#diving-20261025{scroll-margin-top:112px}
 @media(max-width:60rem){.event-feature,.event-reserve{grid-template-columns:1fr;gap:var(--s8)}.event-art{max-width:480px}.event-access-grid{grid-template-columns:1fr;gap:var(--s8)}}
-@media(max-width:30rem){.event-details{grid-template-columns:4.5em minmax(0,1fr);column-gap:var(--s3)}.event-copy h3{font-size:var(--t-xl)}.event-reserve .pill{white-space:normal}}
+@media(max-width:30rem){.event-details{grid-template-columns:4.5em minmax(0,1fr);column-gap:var(--s3)}.event-copy h3{font-size:var(--t-xl)}.event-reserve .pill,.event-copy>.pill{white-space:normal}}
