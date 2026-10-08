@@ -97,11 +97,11 @@
   async function connection() {
     initializationStage='login-state';
     for(const actions of loginActions) actions.hidden=false;
-    if(!window.liff.isLoggedIn()) {say(messages.line_login_required);return false;}
+    if(!window.liff.isLoggedIn()) {onboarding?.disconnect?.();say(messages.line_login_required);return false;}
     initializationStage='friendship';
     say('LINE連携を確認しています…');
     const friend=await timed(window.liff.getFriendship());
-    if(!friend.friendFlag){say(messages.friend_required);return false;}
+    if(!friend.friendFlag){onboarding?.disconnect?.();say(messages.friend_required);return false;}
     for(const actions of loginActions) actions.hidden=true;
     say('LINE連携済み ✓ 申込み後、このLINEアカウントに受付控えをお送りします。');
     if(onboardingConfig.enabled){initializationStage='onboarding-status';say('LINE連携済み ✓ 参加者・問診票の確認中です…');await onboarding.refresh();}

@@ -9,15 +9,23 @@
  if(!followupId && captured.has('liff.state'))try{followupId=new URL(captured.get('liff.state'),location.origin+location.pathname).searchParams.get('booking_followup');}catch{}
  if(followupId && !/^[a-f0-9-]{36}$/.test(followupId))followupId=null;
  function create({config,endpoint,getToken,forms}){
-  let status=null,inflight=null,poll=null,followup=null,followupLoading=false;
+  let status=null,inflight=null,inflightToken=null,verifiedToken=null,privateGeneration=0,poll=null,followup=null,followupLoading=false;
   const views=new Map();
   async function api(path,body){
-   if(!getToken())throw Error('LINEでログインしてください。');
-   let r,d;try{r=await fetch(endpoint+path,{method:body?'POST':'GET',headers:{Authorization:'Bearer '+getToken(),...(body?{'Content-Type':'application/json'}:{})},...(body?{body:JSON.stringify(body)}:{}),signal:AbortSignal.timeout(15000)});d=await r.json();}catch{throw Error('通信を確認できませんでした。入力はそのままで、もう一度お試しください。');}
+   const token=getToken();
+   if(!token){disconnect();throw Error('LINEでログインしてください。');}
+   if(verifiedToken && verifiedToken!==token)disconnect();
+   let r,d;try{r=await fetch(endpoint+path,{method:body?'POST':'GET',headers:{Authorization:'Bearer '+token,...(body?{'Content-Type':'application/json'}:{})},...(body?{body:JSON.stringify(body)}:{}),signal:AbortSignal.timeout(15000)});d=await r.json();}catch{throw Error('通信を確認できませんでした。入力はそのままで、もう一度お試しください。');}
+   if(token!==getToken())throw Error('LINE連携が変わりました。再確認してください。');
    if(!r.ok)throw Error(({line_login_required:'LINEでログインし直してください。',friend_required:'公式LINEを友だち追加してください。',message_required:'公式LINEにスタンプを1つ送ってください。',booking_not_found:'この申込みをしたLINEアカウントでログインしてください。',duplicate_guest:'この方は同じ申込みに登録済みです。',invite_unavailable:'この招待は取り消し済みか、利用できません。公式LINEへご連絡ください。',self_required:'同行者ご本人のお名前で登録してください。',participant_name_mismatch:'登録名と入力したお名前が一致しません。',too_many_requests:'少し時間をおいてお試しください。'})[d.error]||'処理できませんでした。公式LINEへご連絡ください。');return d;
   }
   const companion=window.MovenseCompanions?.create({api,refresh,deferred:true,onUpdate:render});
   const ready=()=>status?.friend&&status?.message_received;
+  function clearPrivate(){
+   privateGeneration++;
+   for(const v of views.values()){v.admin.hidden=true;v.admin.open=false;v.adminList.replaceChildren();}
+  }
+  function disconnect(){status=null;verifiedToken=null;followup=null;clearPrivate();render();}
   function total(form){return ['training-form','event-form'].includes(form.id)?1:Number((form.elements.namedItem('people')?.value||views.get(form).count?.value||'').replace(/名$/,''));}
   function own(){return (status?.participants||[]).filter(p=>!p.shared&&['self','child'].includes(p.relationship));}
   function sync(form,v){
@@ -72,6 +80,8 @@
    const again=e('button','別の日・種目を申し込む','pill');again.type='button';again.onclick=()=>{const u=new URL(location.href);u.searchParams.delete('booking_followup');location.assign(u.href);};v.after.append(again);
   }
   function render(){
+   const operator=status?.is_operator===true && !!verifiedToken && verifiedToken===getToken();
+   if(!operator)clearPrivate();
    for(const [form,v] of views){
     const ps=own(),old=v.select.value,key=ps.map(p=>p.id+p.name).join('|');
     if(v.key!==key){v.key=key;v.select.replaceChildren();for(const p of ps){const o=e('option',p.name);o.value=p.id;v.select.append(o);}const add=e('option','新しい方・お子さまのお名前を入力');add.value='new';v.select.append(add);v.select.value=ps.some(p=>p.id===old)?old:ps.length===1?ps[0].id:'new';}
@@ -79,18 +89,21 @@
     v.register.hidden=!companion?.hasIncoming()||v.select.value!=='new';
     const incoming=companion?.hasIncoming();v.identity.hidden=!ready()||!!followupId||(incoming&&ps.some(p=>p.relationship==='self'));if(v.count){const field=v.count.closest('.field')||v.count.closest('label');if(field)field.hidden=!!incoming;}v.price.hidden=!!incoming;v.partyHint.hidden=!!incoming;v.title.textContent=incoming?'参加するご本人のお名前':['event-form','training-form'].includes(form.id)?'参加する方':'参加する方（複数名は代表の方）';if(incoming){v.relation.value='self';v.relationLabel.hidden=true;}v.talk.hidden=!getToken()||status?.message_received===true;v.retry.hidden=!getToken()||ready();
     v.note.textContent=!getToken()?'LINE連携後に、お名前・人数・日時を選んでお申し込みください。':!ready()?'公式LINEへスタンプを1つ送って、この画面へ戻ってください。送信状況は自動で確認します。':followupId?'申込み済みです。下で受講までの準備をご確認ください。':companion?.hasIncoming()?'LINEの連絡設定ができました。下で参加の確認をしてください。':'LINEの連絡設定ができました。人数・日時を選んでお申し込みください。';
-    v.admin.hidden=!status?.is_operator;
+    v.admin.hidden=!operator;
     v.manage.hidden=!ps.length||!!followupId||!!incoming;v.manageBody.replaceChildren();for(const person of ps){const button=e('button',person.name+'を名前の一覧から外す','pill');button.type='button';const result=e('p');result.setAttribute('role','status');button.onclick=async()=>{button.disabled=true;try{await api('/participants/archive',{participant_id:person.id});await refresh();}catch(err){result.textContent=err.message;button.disabled=false;}};v.manageBody.append(button,result);}
     const special=!!followupId||companion?.hasIncoming();v.details.hidden=special||!ready();
     if(status)companion?.render(form,status);showFollowup(form,v);sync(form,v);
    }
   }
   async function refresh(){
-   if(inflight)return inflight;
-   inflight=(async()=>{status=await api('/onboarding/status');if(!status.deferred_intake)throw Error('予約受付を更新中です。少し待ってから開き直してください。');render();
+   const token=getToken();
+   if(!token){disconnect();throw Error('LINEでログインしてください。');}
+   if(verifiedToken && verifiedToken!==token)disconnect();
+   if(inflight && inflightToken===token)return inflight;
+   const request=(async()=>{const next=await api('/onboarding/status');if(!next.deferred_intake)throw Error('予約受付を更新中です。少し待ってから開き直してください。');if(token!==getToken())throw Error('LINE連携が変わりました。再確認してください。');status=next;verifiedToken=token;render();
     if(followupId&&!followupLoading){followupLoading=true;try{followup=await api('/bookings/followup',{booking_id:followupId});for(const [f,v]of views)showFollowup(f,v);}catch(err){for(const v of views.values()){v.after.hidden=false;v.after.replaceChildren(e('p',err.message));}}finally{followupLoading=false;}}
     if(ready()&&poll){clearInterval(poll);poll=null;}return status;
-   })();try{return await inflight;}finally{inflight=null;}
+   })();inflight=request;inflightToken=token;try{return await request;}catch(err){if(token===getToken())disconnect();throw err;}finally{if(inflight===request){inflight=null;inflightToken=null;}}
   }
   function mount(){
    legacy.unlockOnboardingGate(config);
@@ -114,15 +127,15 @@
     const after=e('section',null,'field full simple-followup');after.hidden=true;after.tabIndex=-1;
     const register=e('button','この名前で登録する','pill');register.type='button';register.hidden=true;identity.append(register);
     region.append(note,talk,retry,identity,after);const login=form.querySelector('[data-line-login-region]');if(login)login.after(region);else form.prepend(region);
-    const admin=e('details');admin.hidden=true;admin.append(e('summary','受講前の準備状況（管理者）'));const list=e('div'),load=e('button','最新100件の準備状況を確認','pill');load.type='button';load.onclick=async()=>{load.disabled=true;try{const data=await api('/bookings/preparations',{});list.replaceChildren();for(const item of data.items){const row=e('div',null,'companion-box');row.append(e('strong',item.receipt_number+'／'+(item.primary?.name||'登録確認中')),e('p',item.service+'・'+item.dates),e('p',`${item.count}名／登録 ${item.registered}名／問診提出 ${item.submitted}名`));for(const p of [item.primary,...item.guests.filter(g=>g.name&&!g.revoked_at)])if(p&&!submitted(p))row.append(e('p',p.name+'：問診未提出'));list.append(row);}if(!data.items.length)list.append(e('p','新しい受付方式の申込みはまだありません。'));}catch(err){list.textContent=err.message;}finally{load.disabled=false;}};admin.append(e('p','日程を確認し、受講3日前までに未提出の方へLINEでご案内ください。自動催促・自動キャンセルは行いません。','hint'),load,list);region.append(admin);
+    const admin=e('details');admin.hidden=true;admin.append(e('summary','受講前の準備状況（管理者）'));const list=e('div'),load=e('button','最新100件の準備状況を確認','pill');load.type='button';load.onclick=async()=>{const token=getToken(),generation=privateGeneration;list.replaceChildren();if(!token || token!==verifiedToken || status?.is_operator!==true){clearPrivate();return;}load.disabled=true;try{const data=await api('/bookings/preparations',{});if(token!==getToken() || token!==verifiedToken || status?.is_operator!==true || generation!==privateGeneration)return;for(const item of data.items){const row=e('div',null,'companion-box');row.append(e('strong',item.receipt_number+'／'+(item.primary?.name||'登録確認中')),e('p',item.service+'・'+item.dates),e('p',`${item.count}名／登録 ${item.registered}名／問診提出 ${item.submitted}名`));for(const p of [item.primary,...item.guests.filter(g=>g.name&&!g.revoked_at)])if(p&&!submitted(p))row.append(e('p',p.name+'：問診未提出'));list.append(row);}if(!data.items.length)list.append(e('p','新しい受付方式の申込みはまだありません。'));}catch(err){if(token===getToken() && token===verifiedToken && status?.is_operator===true)list.textContent=err.message;else clearPrivate();}finally{load.disabled=false;}};admin.append(e('p','管理者として登録したLINEアカウントでログインした場合だけ表示されます。一般利用者のアカウントには表示されません。','hint'),e('p','日程を確認し、受講3日前までに未提出の方へLINEでご案内ください。自動催促・自動キャンセルは行いません。','hint'),load,list);region.append(admin);
     const manage=e('details'),manageBody=e('div');manage.append(e('summary','間違えた名前を一覧から外す'),e('p','予約・問診の記録は残ります。「登録・許可の管理」から一覧に戻せます。','hint'),manageBody);identity.append(manage);
-    const v={region,note,talk,retry,identity,select,nameBox,relationLabel,relation,count,price,details,after,register,admin,title,partyHint,manage,manageBody};views.set(form,v);
+    const v={region,note,talk,retry,identity,select,nameBox,relationLabel,relation,count,price,details,after,register,admin,adminList:list,title,partyHint,manage,manageBody};views.set(form,v);
     register.onclick=async()=>{register.disabled=true;try{if(!ready())throw Error('LINE連絡設定を先に済ませてください。');const n=name.value.trim();if(!n)throw Error('フルネームを入力してください。');if(!v.pending||v.pending.name!==n||v.pending.relationship!==relation.value)v.pending={id:crypto.randomUUID(),name:n,relationship:relation.value};const p=(await api('/participants',v.pending)).participant;await refresh();select.value=p.id;render();}catch(err){note.textContent=err.message;}finally{register.disabled=false;}};
     select.onchange=()=>{if(select.value==='new')name.value='';render();};count?.addEventListener('change',()=>sync(form,v));form.elements.namedItem('lesson_type')?.addEventListener('change',()=>sync(form,v));
     companion?.mount(form,region,identity);
     form.addEventListener('reset',()=>setTimeout(()=>sync(form,v),0));
    }
-   const resume=()=>{if(document.visibilityState!=='hidden'&&getToken())refresh().catch(err=>{for(const v of views.values())v.note.textContent=err.message;});};
+   const resume=()=>{if(document.visibilityState==='hidden')return;if(!getToken()){disconnect();return;}refresh().catch(err=>{for(const v of views.values())v.note.textContent=err.message;});};
    window.addEventListener('focus',resume);document.addEventListener('visibilitychange',resume);window.addEventListener('pageshow',resume);
    render();poll=setInterval(()=>{if(!ready())resume();},7000);
   }
@@ -139,7 +152,7 @@
    const u=new URL(location.href);u.searchParams.set('booking_followup',followupId);history.replaceState(null,'',u.href);
    refresh().finally(()=>{const v=views.get(form);if(v){v.after.focus({preventScroll:true});window.scrollTo({top:v.after.getBoundingClientRect().top+scrollY-100,behavior:'instant'});}}).catch(()=>{});
   }
-  return {mount,refresh,beforeSubmit,afterSubmit,redirectContext:()=>({followupId,companionCode:companion?.currentCode?.()})};
+  return {mount,refresh,beforeSubmit,afterSubmit,disconnect,redirectContext:()=>({followupId,companionCode:companion?.currentCode?.()})};
  }
  window.MovenseOnboarding={...legacy,create};
 })();
