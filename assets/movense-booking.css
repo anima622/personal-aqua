@@ -27,3 +27,25 @@
 #lesson-terms{scroll-margin-top:96px}
 @media(max-width:60rem){.booking-paths{grid-template-columns:1fr}.booking-path{gap:var(--s3)}.booking-path .path-action{padding-top:var(--s2)}}
 @media(max-width:30rem){.service-toggle{grid-template-columns:1fr}.wordmark{font-size:var(--t-md)}}
+
+/* Public first-visit form: available before LINE login, using the existing palette. */
+.intake-access,.intake-reminder{display:flex;align-items:center;justify-content:space-between;gap:var(--s6);padding:var(--s8);border:1px solid var(--color-border-strong);background:var(--color-surface);margin-bottom:var(--s12)}
+.intake-access{scroll-margin-top:110px}
+.intake-access-copy,.intake-reminder>div{min-width:0;max-width:var(--measure)}
+.intake-access h3{font-size:var(--t-xl);font-weight:500;margin:var(--s3) 0}
+.intake-access-copy>p:last-child,.intake-reminder p{font-size:var(--t-sm);line-height:1.8}
+.intake-access .pill,.intake-reminder .pill{flex-shrink:0;white-space:normal;text-align:center;justify-content:center;padding-block:var(--s3)}
+.intake-reminder{margin-bottom:var(--s8)}
+.intake-reminder strong{display:block;font-size:var(--t-lg);font-weight:500;margin-bottom:var(--s3)}
+@media(max-width:48rem){.intake-access,.intake-reminder{align-items:stretch;flex-direction:column;padding:var(--s6)}.intake-access .pill,.intake-reminder .pill{width:100%;padding-inline:var(--s4)}}
+
+/* LINE text entry help remains readable without the accompanying screen example. */
+.line-chat-guide{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,26rem);align-items:start;gap:var(--s12);padding-block:var(--s8);margin-block:var(--s8) var(--s12);border-top:1px solid var(--color-border-strong);scroll-margin-top:110px}
+.line-chat-guide-copy{max-width:var(--measure)}
+.line-chat-guide h3{font-size:var(--t-xl);font-weight:500}
+.line-chat-guide-copy p{margin-top:var(--s4)}
+.line-chat-guide-copy .pill{margin-top:var(--s6);white-space:normal;min-height:52px;padding-block:var(--s3)}
+.line-chat-guide figure{margin:0;min-width:0}
+.line-chat-guide img{width:100%;height:auto}
+.line-chat-guide figcaption{font-size:var(--t-xs);color:var(--color-text-muted);line-height:1.8;margin-top:var(--s3)}
+@media(max-width:60rem){.line-chat-guide{grid-template-columns:minmax(0,1fr);gap:var(--s8)}.line-chat-guide figure{width:min(100%,26rem);margin-inline:auto}}

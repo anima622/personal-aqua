@@ -7,7 +7,7 @@
 <title>MOVENSE（ムーヴェンス） | 水泳・トレーニング・ランニング・ウォーキング</title>
 <meta name="description" content="MOVENSEの個別レッスン予約と、グループレッスン・特別イベントのご案内。水泳・パーソナルトレーニング・ランニング・ウォーキングから、目的に合うレッスンをお選びください。">
 <link rel="icon" href="assets/movense-logo.png">
-<link rel="stylesheet" href="assets/movense-booking.css">
+<link rel="stylesheet" href="assets/movense-booking.css?v=20261009-public-intake">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant:wght@300;400&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
@@ -661,7 +661,7 @@ footer{position:relative;z-index:1;background:var(--color-fill-solid);color:var(
   </button>
 </header>
 
-<div class="mobile-menu" id="mobile-menu"><a href="#about">MOVENSEについて<small>01</small></a><a href="#service">レッスン・料金<small>02</small></a><a href="#groups">グループ<small>03</small></a><a href="#events">特別イベント<small>04</small></a><a href="#lesson-terms">キャンセルポリシー<small>05</small></a><a href="#flow">ご利用案内<small>06</small></a><a href="#reserve">予約・申込み<small>07</small></a></div>
+<div class="mobile-menu" id="mobile-menu"><a href="#about">MOVENSEについて<small>01</small></a><a href="#service">レッスン・料金<small>02</small></a><a href="#groups">グループ<small>03</small></a><a href="#events">特別イベント<small>04</small></a><a href="#lesson-terms">キャンセルポリシー<small>05</small></a><a href="#flow">ご利用案内<small>06</small></a><a href="https://docs.google.com/forms/d/e/1FAIpQLSe-IXjpAZPVBa8f1LVDQy-pEXFxd-gkNz_fRn4wQoSY22cpZQ/viewform" target="_blank" rel="noopener noreferrer">初回問診票<small>いつでも開けます<span class="sr">（新しいタブ）</span></small></a><a href="#reserve">予約・申込み<small>07</small></a></div>
 
 <main id="main">
 
@@ -932,11 +932,15 @@ footer{position:relative;z-index:1;background:var(--color-fill-solid);color:var(
 </div></section>
 <section class="sec-con usage-guide" id="flow" aria-labelledby="usage-title"><div class="wrap">
  <div class="sec-head"><div class="no">06</div><h2 class="display" id="usage-title">Flow</h2><p class="jp">お申込みから、予約確定まで。</p></div>
+ <section class="intake-access" id="intake" aria-labelledby="intake-title">
+  <div class="intake-access-copy"><p class="rl">初回のご準備</p><h3 id="intake-title">初回問診票</h3><p>いつでも回答できます。<br>回答済みの方は再提出不要です。</p></div>
+  <a class="pill solid" href="https://docs.google.com/forms/d/e/1FAIpQLSe-IXjpAZPVBa8f1LVDQy-pEXFxd-gkNz_fRn4wQoSY22cpZQ/viewform" target="_blank" rel="noopener noreferrer">初回問診票を開く <span aria-hidden="true">↗</span><span class="sr">（新しいタブ）</span></a>
+ </section>
  <div class="guide-route"><h3>初めての方</h3><p class="guide-intro">LINEをつないだら、人数・日時を選んでお申し込みください。</p>
  <ol class="guide-diagram" aria-label="初めての方のお申込み手順">
   <li><span class="guide-number" aria-hidden="true">1</span><h4>LINE連絡設定</h4><p>友だち追加・LINE連携を行い、メッセージかスタンプを1つ送ります。</p></li>
   <li><span class="guide-number" aria-hidden="true">2</span><h4>予約を申し込む</h4><p>お名前・人数・希望日時を入力し、内容を確認して送信します。</p></li>
-  <li><span class="guide-number" aria-hidden="true">3</span><h4>受講までの準備</h4><p>LINEに届く案内から、未提出の問診票と同行者の手続きを済ませます。問診票は受講3日前まで。</p></li>
+  <li><span class="guide-number" aria-hidden="true">3</span><h4>受講までの準備</h4><p>未提出の問診票は、このページのボタンやLINEの案内から回答できます。同行者の手続きは申込み後にご案内します。問診票は受講3日前まで。</p></li>
  </ol></div>
  <div class="guide-returning"><h3>登録済みの方</h3><p><strong>参加する方を選ぶ <span aria-hidden="true">→</span> お申込み</strong><br>同じLINEでログインしてください。連絡設定・問診票の確認が済んでいる方は、再入力不要です。</p></div>
  <div class="guide-confirmation"><span aria-hidden="true">↓</span><div><h3>公式LINEで予約確定をご案内</h3><p>日程・会場・料金などを確認してご連絡します。<strong>受付控えの到着だけでは、予約は確定しません。</strong></p></div></div>
@@ -947,6 +951,19 @@ footer{position:relative;z-index:1;background:var(--color-fill-solid);color:var(
  <details><summary>グループ・特別イベント</summary><p>日時・会場・担当コーチ・対象・定員・参加費は開催ごとに指定します。申込期限、支払期限、参加者のキャンセル条件、主催者中止時の対応も開催案内に掲載します。個別レッスンの規定をそのまま適用するものではありません。</p><p>飛び込み練習会は開催案内から参加申込フォームへお進みください。フォーム送信だけでは予約確定・席の確保にはなりません。飛び込み練習会のお支払いは現金・銀行振込・PayPayに対応。キャンセルは前日まで受け付け、当日キャンセルは返金できません。参加可否とお支払いの詳細・予約確定は公式LINEでご案内します。</p></details>
  <details><summary>問診・個人情報とご相談</summary><p>初回問診票とお申込み内容は、本人確認、レッスンの準備、予約・連絡のために利用します。回答済みの方は、変更した内容がある場合にお知らせください。体調など個別のご相談は公式LINEからご連絡ください。</p></details>
  </div></div>
+ <section class="line-chat-guide" id="line-chat-help" aria-labelledby="line-chat-help-title">
+  <div class="line-chat-guide-copy">
+   <h3 id="line-chat-help-title">LINEで相談を送るには</h3>
+   <p>左下のキーボードマーク（横線が並んだボタン）をタップすると、文字入力欄を開けます。</p>
+   <p>相談内容を書き、送信してください。</p>
+   <p>メニューを押すだけでは、ご相談・予約変更は完了しません。</p>
+   <a class="pill solid" href="https://line.me/R/oaMessage/%40177onnkx/" target="_blank" rel="noopener noreferrer">公式LINEを開く <span aria-hidden="true">↗</span><span class="sr">（新しいタブ）</span></a>
+  </div>
+  <figure>
+   <img src="assets/line/chat-input-guide.jpg" width="1080" height="1280" loading="lazy" decoding="async" alt="LINEの左下にあるキーボードマークをタップして文字入力欄を開き、相談の文章を入力して送信します。">
+   <figcaption>LINE管理画面のプレビューを使用した画面例です。端末により表示が異なる場合があります。</figcaption>
+  </figure>
+ </section>
  <a class="pill solid" href="#reserve">予約・申込みへ進む <span aria-hidden="true">→</span></a>
 </div></section>
 <section class="sec-piv" id="reserve">
@@ -960,6 +977,11 @@ footer{position:relative;z-index:1;background:var(--color-fill-solid);color:var(
     </div>
 
 
+    <div class="intake-reminder" aria-label="初回問診票のご案内">
+      <div><strong>初回問診票</strong><p>いつでも回答できます。回答済みの方は再提出不要です。</p></div>
+      <a class="pill solid" href="https://docs.google.com/forms/d/e/1FAIpQLSe-IXjpAZPVBa8f1LVDQy-pEXFxd-gkNz_fRn4wQoSY22cpZQ/viewform" target="_blank" rel="noopener noreferrer">初回問診票を開く <span aria-hidden="true">↗</span><span class="sr">（新しいタブ）</span></a>
+    </div>
+
     <nav class="booking-paths" aria-label="レッスンの参加方法">
       <a class="booking-path" href="#tog-lab"><span class="path-no">01 / PERSONAL</span><strong>個別レッスン</strong><span>水泳・トレーニング・ランニング・ウォーキング</span><span class="path-action">個別レッスンを予約する ↗</span></a>
       <a class="booking-path" href="#groups"><span class="path-no">02 / GROUP</span><strong>グループレッスン</strong><span>テーマやレベルに合わせて、一緒に学ぶ</span><span class="path-action">開催のご案内を見る ↗</span></a>
@@ -969,7 +991,7 @@ footer{position:relative;z-index:1;background:var(--color-fill-solid);color:var(
 
     <div class="personal-intro" id="personal">
       <p class="rl">PERSONAL LESSONS</p><h3>あなたに合わせた、個別レッスン。</h3>
-      <p>LINEをつなぐ → 人数・日時を選ぶ → 申込み。問診票は申込み後にご案内します。</p>
+      <p>LINEをつなぐ → 人数・日時を選ぶ → 申込み。初回問診票はこのページからいつでも開けます。回答済みの方は再提出不要です。</p>
       <a class="textlink" href="#tog-lab">申込みに進む ↓</a>
     </div>
     <div class="reserve-grid">
@@ -1233,7 +1255,7 @@ footer{position:relative;z-index:1;background:var(--color-fill-solid);color:var(
         </svg>
         <div class="display">MOVENSE<small>水泳・トレーニング・ランニング・ウォーキング</small></div>
       </div>
-      <nav class="foot-links" aria-label="フッター"><a href="#about">01 MOVENSEについて<span aria-hidden="true">↗</span></a><a href="#service">02 レッスン・料金<span aria-hidden="true">↗</span></a><a href="#groups">03 グループ<span aria-hidden="true">↗</span></a><a href="#events">04 特別イベント<span aria-hidden="true">↗</span></a><a href="#lesson-terms">05 キャンセルポリシー<span aria-hidden="true">↗</span></a><a href="#flow">06 ご利用案内<span aria-hidden="true">↗</span></a><a href="#reserve">07 予約・申込み<span aria-hidden="true">↗</span></a><a href="swim-flow-lab.html">SWIM FLOW LAB 水泳のしくみを学ぶ ↗</a></nav>
+      <nav class="foot-links" aria-label="フッター"><a href="#about">01 MOVENSEについて<span aria-hidden="true">↗</span></a><a href="#service">02 レッスン・料金<span aria-hidden="true">↗</span></a><a href="#groups">03 グループ<span aria-hidden="true">↗</span></a><a href="#events">04 特別イベント<span aria-hidden="true">↗</span></a><a href="#lesson-terms">05 キャンセルポリシー<span aria-hidden="true">↗</span></a><a href="#flow">06 ご利用案内<span aria-hidden="true">↗</span></a><a href="https://docs.google.com/forms/d/e/1FAIpQLSe-IXjpAZPVBa8f1LVDQy-pEXFxd-gkNz_fRn4wQoSY22cpZQ/viewform" target="_blank" rel="noopener noreferrer">初回問診票<span aria-hidden="true">↗</span><span class="sr">（新しいタブ）</span></a><a href="#reserve">07 予約・申込み<span aria-hidden="true">↗</span></a><a href="swim-flow-lab.html">SWIM FLOW LAB 水泳のしくみを学ぶ ↗</a></nav>
     </div>
     <div class="foot-bottom">
       <div class="brand"><img src="assets/movense-logo.png" alt="" width="34" height="34" decoding="async"><span class="wordmark">MOVENSE</span></div>
@@ -1259,7 +1281,7 @@ footer{position:relative;z-index:1;background:var(--color-fill-solid);color:var(
 <script src="assets/gsap-starter.js?v=20261005-form-visibility"></script>
 <script src="assets/booking-companions.js?v=20261006-booking-first-2"></script>
 <script src="assets/booking-onboarding.js?v=20261005-form-visibility"></script>
-<script src="assets/booking-simple.js?v=20261008-private-state" defer></script>
+<script src="assets/booking-simple.js?v=20261009-public-intake" defer></script>
 <script src="assets/booking-receipts.js?v=20261008-private-state"></script>
 <script>
 /*

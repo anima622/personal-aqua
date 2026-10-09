@@ -107,7 +107,7 @@
   }
   function mount(){
    legacy.unlockOnboardingGate(config);
-   const intro=document.querySelector('#personal > p:not(.rl)');if(intro)intro.textContent='LINEをつなぐ → 人数・日時を選ぶ → 申込み。問診票は申込み後に、未提出の方だけご案内します。';
+   const intro=document.querySelector('#personal > p:not(.rl)');if(intro)intro.textContent='LINEをつなぐ → 人数・日時を選ぶ → 申込み。初回問診票はこのページからいつでも開けます。回答済みの方は再提出不要です。';
    for(const form of forms){
     const region=e('section',null,'field full onboarding');region.setAttribute('aria-label','LINE連絡設定と予約');
     const note=e('p','LINE連携を確認しています…','hint');note.setAttribute('role','status');
