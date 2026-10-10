@@ -40,6 +40,18 @@
     }).catch(() => { active.delete(animation); explanation.delete(animation); });
   }
   function play(figure, explicit=false) {
+    const infographic=figure.querySelector('[data-infographic-pattern]');
+    if (infographic) {
+      if (!allowed(explicit)) return;
+      infographic.querySelectorAll('[data-infographic-part]').forEach(part => {
+        const from={opacity:0,transform:'translateY(18px)'};
+        if(part.dataset.reveal==='right'){from.transform='none';from.clipPath='inset(0 100% 0 0)';}
+        if(part.dataset.reveal==='up'){from.transform='none';from.clipPath='inset(100% 0 0 0)';}
+        run(part,[from,{opacity:1,transform:'none',clipPath:'inset(0 0 0 0)'}],
+          {duration,delay:Number(part.dataset.phase||0)*550,easing,fill:'backwards'});
+      });
+      return;
+    }
     if (!allowed(explicit)) {
       figure.querySelectorAll('[data-motion-focus]').forEach(focus => { focus.style.opacity='1'; });
       return;
@@ -107,7 +119,8 @@
   addEventListener('pointerdown', () => { keyboard=false; });
   if (window.location?.hash) jump();
   const figures = [...document.querySelectorAll('[data-article-visual],.finger-cover,.finger-chapter>figure')];
-  const candidates = [...document.querySelectorAll(textSelector)];
+  const candidates = [...document.querySelectorAll(textSelector)].filter(element=>!element.closest('[data-infographic-pattern]'));
+  document.querySelectorAll('[data-infographic-part]').forEach(part=>{part.dataset.articleMotion='text';});
   // Keep inline links and emphasis intact; do not animate nested blocks twice.
   const text = candidates.filter(element => !candidates.some(parent => parent !== element && parent.contains(element)));
   const figureSet = new Set(figures);

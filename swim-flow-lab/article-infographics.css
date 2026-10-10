@@ -1,0 +1,46 @@
+/* Reference-inspired explanation patterns; no ratios or measured forces implied. */
+.article-infographic{--info-ink:#13333e;--info-teal:#257b7d;--info-coral:#9a5137;background:#fbfaf6;color:var(--info-ink);padding:clamp(22px,5vw,42px);border-radius:8px;box-shadow:0 14px 30px #13333e0b;font-family:inherit;overflow:clip}
+.article-infographic .infographic-kicker{font-size:11px;letter-spacing:.16em;color:#526458;margin:0 0 10px}
+.article-infographic .infographic-title{font-size:clamp(23px,3vw,30px);line-height:1.55;letter-spacing:-.025em;font-weight:600;margin:0 0 28px;text-align:center}
+.infographic-direction svg{width:100%;height:auto;display:block;overflow:visible}
+.infographic-direction svg text{font-family:inherit;fill:#13333e;font-size:26px}
+.infographic-direction svg .force-name{font-weight:600;font-size:30px}
+.infographic-direction svg .force-small{font-size:23px;fill:#526458}
+.infographic-flow-label,.infographic-force-legend{display:none}
+.article-infographic [data-infographic-part]{transform-box:fill-box;transform-origin:center}
+.article-infographic .infographic-summary{font-size:17px;line-height:1.7;text-align:center;margin:28px 0 0;font-weight:600}
+.infographic-steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:28px;position:relative;padding:0;margin:0;list-style:none}
+.infographic-steps:before{content:'';position:absolute;left:12%;right:12%;top:134px;height:2px;background:#c8d8d4}
+.infographic-steps .infographic-step{list-style:none;margin:0;padding:0;min-width:0;text-align:center;position:relative}
+.infographic-symbol{width:128px;height:138px;border-radius:68px 68px 12px 12px;background:linear-gradient(145deg,#74c5d5,#257b7d);margin:0 auto 38px;display:grid;place-items:center;position:relative;box-shadow:0 6px 12px #13333e12}
+.infographic-step:nth-child(2) .infographic-symbol{background:linear-gradient(145deg,#769db3,#244d65)}
+.infographic-step:nth-child(3) .infographic-symbol{background:linear-gradient(145deg,#e6b292,#a96148)}
+.infographic-symbol svg{width:62px;height:62px;fill:none;stroke:#fff;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.infographic-number{position:absolute;bottom:-21px;left:50%;transform:translateX(-50%);background:#fff;border:1px solid #e0e8e4;border-radius:50%;width:46px;height:46px;display:grid;place-items:center;font-size:16px;font-weight:600;box-shadow:0 5px 8px #13333e0d}
+.infographic-step strong{display:block;font-size:23px;line-height:1.5;margin-bottom:8px;font-weight:600}
+.infographic-step .infographic-detail{display:block;font-size:16px;line-height:1.8;color:#526458}
+.infographic-part-static{opacity:1;transform:none}
+@media(max-width:700px){
+ .article-infographic{padding:24px 18px}
+ .article-infographic .infographic-title{font-size:23px;margin-bottom:24px;text-align:left}
+ .infographic-steps{grid-template-columns:1fr;gap:26px}
+ .infographic-steps:before{top:30px;bottom:35px;left:43px;right:auto;width:2px;height:auto}
+ .infographic-steps .infographic-step{display:grid;grid-template-columns:88px 1fr;gap:18px;align-items:center;text-align:left}
+ .infographic-symbol{width:84px;height:92px;border-radius:44px 44px 9px 9px;margin:0 0 12px}
+ .infographic-symbol svg{width:44px;height:44px}
+ .infographic-number{width:34px;height:34px;bottom:-16px;font-size:13px}
+ .infographic-step strong{font-size:21px;margin-bottom:5px}
+ .infographic-step .infographic-detail{font-size:15px;line-height:1.75}
+ .infographic-direction{padding:24px 14px}
+ .infographic-direction svg text{font-size:30px}
+ .infographic-direction svg .force-name{font-size:34px}
+ .infographic-direction svg .force-small{font-size:26px}
+ .infographic-direction svg text{display:none}
+ .article-infographic .infographic-flow-label{display:block;font-size:14px;margin:0 0 2px;color:#526458}
+ .infographic-force-legend{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:10px}
+ .infographic-force-legend strong{display:block;font-size:19px;line-height:1.6;color:#257b7d}
+ .infographic-force-legend>div+div strong{color:#9a5137}
+ .infographic-force-legend span{display:block;font-size:15px;line-height:1.8}
+ .article-infographic .infographic-summary{font-size:16px;margin-top:25px}
+}
+@media(prefers-reduced-motion:reduce){.article-infographic [data-infographic-part]{animation:none!important;transform:none!important;opacity:1!important;clip-path:none!important}}
