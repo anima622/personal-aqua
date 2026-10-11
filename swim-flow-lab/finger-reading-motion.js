@@ -1,7 +1,9 @@
 /* Article-wide reading motion. Native content stays visible without JavaScript. */
 (() => {
   const page = document.querySelector('[data-evidence-article],.finger-page');
-  if (!page || !('IntersectionObserver' in window)) return;
+  if (!page || !('IntersectionObserver' in window) || window.__articleMotionExpired) {
+    document.documentElement.classList.remove('article-motion-boot','article-motion-ready');clearTimeout(window.__articleMotionFallback);return;
+  }
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
   const active = new Set();
   const explanation = new Map();
@@ -9,9 +11,11 @@
   const button = document.querySelector('[data-finger-motion-toggle]');
   const style = getComputedStyle(page);
   const easing = style.getPropertyValue('--ease-out').trim() || 'cubic-bezier(0.23,1,0.32,1)';
-  const duration = parseFloat(style.getPropertyValue('--finger-reading-duration')) || 900;
+  const duration = parseFloat(style.getPropertyValue('--finger-reading-duration')) || 1600;
   const textSelector = 'main h1,main h2,main h3,main p,main li,main a,main figcaption,main blockquote,main dt,main dd,main th,main td,footer';
-  function finish() {
+  function finish(revealPending=true) {
+    if(revealPending) document.querySelectorAll('[data-motion-focus]').forEach(el=>{el.style.opacity='1';});
+    if(revealPending) document.querySelectorAll('[data-motion-pending]').forEach(el=>{delete el.dataset.motionPending;el.dataset.motionSeen='true';});
     for (const animation of active) {
       const focus = explanation.get(animation);
       if (focus) focus.style.opacity='1';
@@ -44,11 +48,11 @@
     if (infographic) {
       if (!allowed(explicit)) return;
       infographic.querySelectorAll('[data-infographic-part]').forEach(part => {
-        const from={opacity:0,transform:'translateY(18px)'};
-        if(part.dataset.reveal==='right'){from.transform='none';from.clipPath='inset(0 100% 0 0)';}
-        if(part.dataset.reveal==='up'){from.transform='none';from.clipPath='inset(100% 0 0 0)';}
-        run(part,[from,{opacity:1,transform:'none',clipPath:'inset(0 0 0 0)'}],
-          {duration,delay:Number(part.dataset.phase||0)*550,easing,fill:'backwards'});
+        const from={opacity:0,transform:'translateY(12px)'};
+        if(part.dataset.reveal==='right')from.transform='translateX(-12px)';
+        if(part.dataset.reveal==='up')from.transform='translateY(12px)';
+        run(part,[from,{opacity:1,transform:'none'}],
+          {duration,delay:Number(part.dataset.phase||0)*300,easing,fill:'backwards'});
       });
       return;
     }
@@ -58,7 +62,7 @@
     }
     const image = figure.querySelector('img');
     if (image) run(image, [
-      { opacity: .35, transform: 'translateY(6%) scale(.97)' },
+      { opacity: 0, transform: 'translateY(14px)' },
       { opacity: 1, transform: 'none' }
     ], { duration, easing });
     figure.querySelectorAll('[data-motion-focus]').forEach((focus, index) => {
@@ -85,16 +89,16 @@
       }
       element.querySelectorAll('.read-letter').forEach((letter,index)=>run(letter,
         [{transform:'translateY(105%)'},{transform:'translateY(0)'}],
-        {duration:1100,delay:Math.min(index*45,850),easing,fill:'backwards'}));
+        {duration,delay:Math.min(index*32,500),easing,fill:'backwards'}));
       return;
     }
     const heading = element.matches('h1,h2,h3');
     const caption = element.matches('figcaption');
     run(element, heading ? [
-      {opacity:.35,clipPath:'inset(0 0 100% 0)',transform:'translateY(8px)'},
-      {opacity:1,clipPath:'inset(0 0 0 0)',transform:'none'}
+      {opacity:0,transform:'translateY(12px)'},
+      {opacity:1,transform:'none'}
     ] : [
-      {opacity:.35,transform:caption?'translateX(12px)':'translateY(12px)'},
+      {opacity:0,transform:caption?'translateX(12px)':'translateY(12px)'},
       {opacity:1,transform:'none'}
     ], {duration,easing});
   }
@@ -104,16 +108,17 @@
     if (paused) finish(); updateButton();
   });
   document.querySelectorAll('[data-motion-replay]').forEach(control => {
-    control.addEventListener('click', () => { finish(); play(control.closest('figure'),true); });
+    control.addEventListener('click', () => { finish(false); play(control.closest('figure'),true); });
   });
   reduced.addEventListener('change', () => { if (reduced.matches) finish(); updateButton(); });
   document.addEventListener('keydown', event => {
+    if((event.ctrlKey||event.metaKey)&&event.key.toLowerCase()==='f'){keyboard=true;finish();return;}
     if (['Enter',' '].includes(event.key) && event.target.closest?.('[data-finger-motion-toggle],[data-motion-replay]')) return;
     if (['Tab','Enter',' ','PageDown','PageUp','ArrowDown','ArrowUp','Home','End'].includes(event.key)) {
       keyboard = true; finish(); updateButton();
     }
   });
-  function jump() { finish(); suppressUntil = performance.now() + duration; }
+  function jump() { finish(false); suppressUntil = performance.now() + duration; }
   document.addEventListener('click', event => { if (event.target.closest?.('a[href^="#"]')) jump(); });
   addEventListener('hashchange', jump);
   addEventListener('pointerdown', () => { keyboard=false; });
@@ -125,16 +130,22 @@
   const text = candidates.filter(element => !candidates.some(parent => parent !== element && parent.contains(element)));
   const figureSet = new Set(figures);
   const observer = new IntersectionObserver(entries => {
+    if(window.__articleMotionExpired){finish();observer.disconnect();return;}
     for (const entry of entries) {
       if (!entry.isIntersecting) continue;
       observer.unobserve(entry.target);
+      if(entry.target.dataset.motionSeen==='true') continue;
       entry.target.dataset.motionSeen = 'true';
       if (figureSet.has(entry.target)) play(entry.target); else playText(entry.target);
+      delete entry.target.dataset.motionPending;
     }
-  }, { threshold: 0, rootMargin: '0px 0px -5% 0px' });
+  }, { threshold: 0, rootMargin: '0px 0px 60px 0px' });
+  document.documentElement.classList.add('article-motion-ready');
   for (const element of [...figures,...text]) {
     element.dataset.articleMotion = figureSet.has(element) ? 'image' : 'text';
-    // No hidden pending state: delayed observers must never hide the content.
+    if(!paused && !reduced.matches) element.dataset.motionPending='true';
     observer.observe(element);
   }
+  document.documentElement.classList.remove('article-motion-boot');
+  clearTimeout(window.__articleMotionFallback);
 })();
