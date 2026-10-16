@@ -826,7 +826,7 @@ footer{position:relative;z-index:1;background:var(--color-fill-solid);color:var(
         <dt>支払方法</dt><dd>現金・銀行振込・PayPay<br><span class="note">お支払いの詳細は公式LINEでご案内します。</span></dd>
         <dt>キャンセル</dt><dd>前日まで受け付けます。<br>当日キャンセルは返金できません。<br>変更・キャンセルは公式LINEへご連絡ください。</dd>
       </dl>
-      <a class="pill solid" href="?booking_service=event&amp;booking_entry=1&amp;booking_event=diving-20261018#event-reserve" data-event-id="diving-20261018">10/18の飛び込み練習会に申し込む ↗</a>
+      <p class="pill event-closed" role="status">10/18の受付は終了しました</p>
       <p class="note">送信は参加申込の受付です。定員とお申込み内容を確認し、参加可否・お支払いの詳細を公式LINEでご案内します。予約確定はLINEでお知らせします。</p>
     </div>
   </article>
@@ -1038,7 +1038,7 @@ footer{position:relative;z-index:1;background:var(--color-fill-solid);color:var(
       <form id="event-form">
         <input type="hidden" name="service" value="特別イベント">
         <div class="form-grid">
-          <div class="field full"><label for="event-date">ご希望の開催日 <span class="req">必須</span></label><select id="event-date" name="event_id" required aria-describedby="event-date-status"><option value="">開催日をお選びください</option><option value="diving-20261018">10/18（日）11:00〜13:00</option><option value="diving-20261025">10/25（日）10:00〜12:00</option></select><p class="hint" id="event-date-status" role="status" aria-live="polite">各開催10名・3,000円／名。参加したい開催日をお選びください。</p></div>
+          <div class="field full"><label for="event-date">ご希望の開催日 <span class="req">必須</span></label><select id="event-date" name="event_id" required aria-describedby="event-date-status"><option value="">開催日をお選びください</option><option value="diving-20261018" disabled>10/18（日）11:00〜13:00［受付終了］</option><option value="diving-20261025">10/25（日）10:00〜12:00</option></select><p class="hint" id="event-date-status" role="status" aria-live="polite">各開催10名・3,000円／名。参加したい開催日をお選びください。</p></div>
           <div class="field full"><label for="event-name">参加される方のお名前 <span class="req">必須</span></label><input type="text" id="event-name" name="name" autocomplete="name" maxlength="100" required placeholder="フルネームでご入力ください"><p class="hint">お一人ずつお申し込みください。登録済みのお名前は再入力不要です。</p></div>
           <div class="field full"><label for="event-payment">支払方法 <span class="req">必須</span></label><select id="event-payment" name="payment_method" required><option value="">お選びください</option><option>現金</option><option>銀行振込</option><option>PayPay</option></select><p class="hint">支払先・お支払いの詳細は公式LINEでご案内します。</p></div>
           <div class="field full"><label for="event-note">ご相談・連絡事項 <span class="hint">任意</span></label><textarea id="event-note" name="note" rows="3" maxlength="1500" placeholder="練習したいことなどがあればご記入ください"></textarea></div>
@@ -1719,11 +1719,6 @@ const SLOTS = [
   { id: 's1023', date: '10/12(月)', time: '16:00〜17:00' },
   { id: 's1024', date: '10/12(月)', time: '17:00〜18:00' },
   { id: 's1025', date: '10/12(月)', time: '18:00〜19:00' },
-  { id: 's1037', date: '10/18(日)', time: '16:00〜17:00' },
-  { id: 's1038', date: '10/18(日)', time: '17:00〜18:00' },
-  { id: 's1039', date: '10/18(日)', time: '18:00〜19:00' },
-  { id: 's1040', date: '10/18(日)', time: '19:00〜20:00' },
-  { id: 's1041', date: '10/18(日)', time: '20:00〜21:00' },
   { id: 's1047', date: '10/22(木)', time: '18:00〜19:00' },
   { id: 's1048', date: '10/22(木)', time: '19:00〜20:00' },
   { id: 's1049', date: '10/22(木)', time: '20:00〜21:00' },

@@ -1,7 +1,7 @@
 /* Event requests use the existing authenticated, durable LINE receipt path. */
 (() => {
   const events = {
-    'diving-20261018': {label:'10.18',date:'2026年10月18日（日）',time:'11:00〜13:00',meeting:'10:45',start:'2026-10-18T11:00:00+09:00'},
+    'diving-20261018': {closed:true,label:'10.18',date:'2026年10月18日（日）',time:'11:00〜13:00',meeting:'10:45',start:'2026-10-18T11:00:00+09:00'},
     'diving-20261025': {label:'10.25',date:'2026年10月25日（日）',time:'10:00〜12:00',meeting:'9:45',start:'2026-10-25T10:00:00+09:00'}
   };
   const form=document.getElementById('event-form');
@@ -15,7 +15,7 @@
   const status=document.getElementById('event-date-status');
   const eventLinks=Array.from(document.querySelectorAll('[data-event-id]'));
   let sending=false, sendingEventId=null, sentEventId=null, manualEventId=null;
-  const closed=id=>events[id] && Date.now()>=Date.parse(events[id].start);
+  const closed=id=>events[id] && (events[id].closed || Date.now()>=Date.parse(events[id].start));
   const requestedEvent=(()=>{
     let incoming=new URLSearchParams(location.search);
     if(incoming.has('liff.state')){
@@ -71,7 +71,7 @@
   }
   function openEvent(){
     if(['#event-reserve','#event-form'].includes(location.hash)){
-      if(!select.value && location.hash==='#event-reserve')choose(requestedEvent||'diving-20261018');
+      if(!select.value && location.hash==='#event-reserve')choose(requestedEvent||'diving-20261025');
       setService('event');
     }
   }
@@ -91,7 +91,7 @@
     choose(link.dataset.eventId,{manual:true});setService('event');scrollToEvent();
   });
   document.querySelectorAll('a[href="#event-reserve"]').forEach(link=>link.addEventListener('click',()=>{
-    if(!select.value)choose('diving-20261018');
+    if(!select.value)choose('diving-20261025');
     setService('event');
   }));
   select.addEventListener('change',()=>choose(select.value,{manual:true}));
