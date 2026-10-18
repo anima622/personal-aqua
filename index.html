@@ -1808,6 +1808,30 @@ Object.entries(slotsByDate).forEach(([date, daySlots]) => {
   slotGrid.appendChild(dayEl);
 });
 
+/* Public, read-only schedule stays visible even if LINE verification fails. */
+const publicSchedule = document.createElement('section');
+publicSchedule.className = 'field full public-schedule';
+publicSchedule.setAttribute('aria-label', 'パーソナルアクアの受付日程');
+const scheduleTitle = document.createElement('h3');
+scheduleTitle.textContent = 'パーソナルアクアの受付日程';
+const scheduleHelp = document.createElement('p');
+scheduleHelp.className = 'hint';
+scheduleHelp.textContent = '日程はLINE連携前でも確認できます。お申込みは、この下でLINEをつないでから日時を選んでください。予約確定はLINEでお知らせします。';
+const publicGrid = document.createElement('div');
+publicGrid.className = slotGrid.className;
+for (const day of slotGrid.children) {
+  const copy = day.cloneNode(true);
+  copy.querySelectorAll('button').forEach(button => {
+    const time = document.createElement('span');
+    time.className = 'slot';
+    time.textContent = button.textContent;
+    time.style.cursor = 'default';
+    button.replaceWith(time);
+  });
+  publicGrid.append(copy);
+}
+publicSchedule.append(scheduleTitle, scheduleHelp, publicGrid);
+document.getElementById('reserve-form').before(publicSchedule);
 /* --- LINE連携済みの受付経路のみ使用。依存の読込失敗時は送信しない。 --- */
 async function submitToFormspree(form) {
   if (window.WatariBooking?.enabled) {
