@@ -406,13 +406,17 @@ input::placeholder,textarea::placeholder{color:var(--color-text-muted)}
 @media(max-width:600px){.onboarding-add{grid-template-columns:minmax(0,1fr)}.onboarding-actions,.onboarding-contact{flex-direction:column;align-items:stretch}.onboarding .pill{width:100%}.onboarding-phone{padding:16px}}
 .slot-notice{font-size:var(--t-xs);color:var(--color-text-muted);border-left:2px solid var(--color-border-ink);padding-left:var(--s3);margin-bottom:var(--s4);max-width:var(--measure-wide)}
 .slot-notice strong{color:var(--color-text)}
-.slot-grid{display:grid;gap:var(--s4)}
+.slot-grid{display:grid;gap:var(--s8)}
+.slot-month{min-width:0}
+.slot-month-heading{margin:0 0 var(--s4);padding-bottom:var(--s3);border-bottom:1px solid var(--color-border-strong);font-family:var(--font-body);font-size:var(--t-md);font-weight:700;line-height:1.5;letter-spacing:var(--ls-head)}
+.slot-month-days{display:grid;gap:var(--s4)}
+.slot-month-days>.slot-day:first-child{border-top:0;padding-top:0}
 .slot-day{display:grid;grid-template-columns:var(--s32) minmax(0,1fr);gap:var(--s4);align-items:start;border-top:1px solid var(--color-border);padding-top:var(--s3)}
-.slot-day-label{font-weight:700;letter-spacing:var(--ls-head);font-variant-numeric:lining-nums tabular-nums}
+.slot-day-label{display:flex;align-items:center;min-height:44px;line-height:1.4;font-weight:700;letter-spacing:var(--ls-head);font-variant-numeric:lining-nums tabular-nums}
 .slot-day-label.is-sat{color:var(--color-sat)}
 .slot-day-label.is-sun,.slot-day-label.is-holiday{color:var(--color-sun)}
 .slot-day-times{display:flex;flex-wrap:wrap;gap:var(--s3)}
-.slot{min-height:44px;padding:0 var(--s4);border:1px solid var(--color-border-strong);font-size:var(--t-sm);font-variant-numeric:lining-nums tabular-nums;background:var(--color-surface);transition:background-color var(--d-press) var(--ease-out),color var(--d-press) var(--ease-out),border-color var(--d-press) var(--ease-out),transform var(--d-press) var(--ease-out)}
+.slot{display:inline-flex;align-items:center;justify-content:center;min-height:44px;line-height:1.4;white-space:nowrap;padding:0 var(--s4);border:1px solid var(--color-border-strong);font-size:var(--t-sm);font-variant-numeric:lining-nums tabular-nums;background:var(--color-surface);transition:background-color var(--d-press) var(--ease-out),color var(--d-press) var(--ease-out),border-color var(--d-press) var(--ease-out),transform var(--d-press) var(--ease-out)}
 .slot:active{transform:scale(.97)}
 @media (hover:hover) and (pointer:fine){.slot:hover{border-color:var(--color-border-ink)}}
 .slot.selected{background:var(--color-fill-solid);color:var(--color-text-on-fill);border-color:var(--color-border-ink)}
@@ -502,6 +506,10 @@ footer{position:relative;z-index:1;background:var(--color-fill-solid);color:var(
   .reserve-aside{grid-column:1;grid-row:1;position:static;border-inline-start:0;border-top:1px solid var(--color-border-ink);padding:var(--s6) 0 0}
   .reserve-card{grid-column:1;grid-row:2}
   .form-grid,.slot-day,.policy-tables{grid-template-columns:minmax(0,1fr)}
+  .slot-grid{gap:var(--s6)}
+  .slot-month-heading{margin-bottom:var(--s3)}
+  .slot-day{row-gap:var(--s2)}
+  .slot-day-label{min-height:0}
 }
 @media (max-width:520px){
   .hero h1 .l1,.hero h1 .l2{white-space:normal}
@@ -1796,7 +1804,7 @@ const selectedSlots = new Set();
 const slotGrid = document.getElementById('slot-grid');
 const slotError = document.getElementById('slot-error');
 
-/* 日付ごとにグルーピングして表示（SLOTSは既に日付順） */
+/* 月・日付ごとにグルーピングして表示（SLOTSは既に日付順） */
 const slotsByDate = VISIBLE_SLOTS.reduce((acc, slot) => {
   (acc[slot.date] ??= []).push(slot);
   return acc;
@@ -1814,7 +1822,25 @@ if (VISIBLE_SLOTS.length === 0) {
   slotGrid.appendChild(empty);
 }
 
+const slotMonths = new Map();
 Object.entries(slotsByDate).forEach(([date, daySlots]) => {
+  const monthLabel = `${Number(date.split('/')[0])}月`;
+  let monthDays = slotMonths.get(monthLabel);
+  if (!monthDays) {
+    const monthEl = document.createElement('div');
+    monthEl.className = 'slot-month';
+    monthEl.setAttribute('role', 'group');
+    monthEl.setAttribute('aria-label', monthLabel);
+    const monthHeading = document.createElement('h4');
+    monthHeading.className = 'slot-month-heading';
+    monthHeading.textContent = monthLabel;
+    monthDays = document.createElement('div');
+    monthDays.className = 'slot-month-days';
+    monthEl.append(monthHeading, monthDays);
+    slotGrid.appendChild(monthEl);
+    slotMonths.set(monthLabel, monthDays);
+  }
+
   const dayEl = document.createElement('div');
   dayEl.className = 'slot-day';
   const dayClass = HOLIDAYS.has(date) ? 'is-holiday'
@@ -1840,7 +1866,7 @@ Object.entries(slotsByDate).forEach(([date, daySlots]) => {
     timesEl.appendChild(btn);
   });
 
-  slotGrid.appendChild(dayEl);
+  monthDays.appendChild(dayEl);
 });
 
 /* Public, read-only schedule stays visible even if LINE verification fails. */
@@ -1854,8 +1880,8 @@ scheduleHelp.className = 'hint';
 scheduleHelp.textContent = '日程はLINE連携前でも確認できます。お申込みは、この下でLINEをつないでから日時を選んでください。予約確定はLINEでお知らせします。';
 const publicGrid = document.createElement('div');
 publicGrid.className = slotGrid.className;
-for (const day of slotGrid.children) {
-  const copy = day.cloneNode(true);
+for (const group of slotGrid.children) {
+  const copy = group.cloneNode(true);
   copy.querySelectorAll('button').forEach(button => {
     const time = document.createElement('span');
     time.className = 'slot';
