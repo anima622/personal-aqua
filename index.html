@@ -1290,7 +1290,7 @@ footer{position:relative;z-index:1;background:var(--color-fill-solid);color:var(
 <script src="assets/gsap-starter.js?v=20261005-form-visibility"></script>
 <script src="assets/booking-companions.js?v=20261006-booking-first-2"></script>
 <script src="assets/booking-onboarding.js?v=20261005-form-visibility"></script>
-<script src="assets/booking-simple.js?v=20261009-public-intake" defer></script>
+<script src="assets/booking-simple.js?v=20261021-schedule-visibility" defer></script>
 <script src="assets/booking-receipts.js?v=20261017-close"></script>
 <script>
 /*
@@ -1877,7 +1877,7 @@ const scheduleTitle = document.createElement('h3');
 scheduleTitle.textContent = 'パーソナルアクアの受付日程';
 const scheduleHelp = document.createElement('p');
 scheduleHelp.className = 'hint';
-scheduleHelp.textContent = '日程はLINE連携前でも確認できます。お申込みは、この下でLINEをつないでから日時を選んでください。予約確定はLINEでお知らせします。';
+scheduleHelp.textContent = '日程確認用です。予約はLINE連携後に下の予約欄から日時を選択してください。予約確定はLINEでお知らせします。';
 const publicGrid = document.createElement('div');
 publicGrid.className = slotGrid.className;
 for (const group of slotGrid.children) {

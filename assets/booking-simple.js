@@ -92,6 +92,7 @@
     v.admin.hidden=!operator;
     v.manage.hidden=!ps.length||!!followupId||!!incoming;v.manageBody.replaceChildren();for(const person of ps){const button=e('button',person.name+'を名前の一覧から外す','pill');button.type='button';const result=e('p');result.setAttribute('role','status');button.onclick=async()=>{button.disabled=true;try{await api('/participants/archive',{participant_id:person.id});await refresh();}catch(err){result.textContent=err.message;button.disabled=false;}};v.manageBody.append(button,result);}
     const special=!!followupId||companion?.hasIncoming();v.details.hidden=special||!ready();
+    if(form.id==='reserve-form'){const schedule=document.querySelector('.public-schedule');if(schedule)schedule.hidden=!v.details.hidden;}
     if(status)companion?.render(form,status);showFollowup(form,v);sync(form,v);
    }
   }
