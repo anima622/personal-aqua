@@ -21,7 +21,7 @@
   const multi=form=>['reserve-form','running-form','walking-form'].includes(form.id);
   const invitationText=url=>`一緒にMOVENSEのレッスンへ参加するためのご案内です。\n\n初めての方は、公式LINEを友だち追加してください。\nhttps://line.me/R/ti/p/%40177onnkx\n\n追加できたら、このメッセージに戻って下の「参加の手続き」を開いてください。登録済みの方は、そのまま手続きへ進めます。\n\n参加の手続き\n${url}\n\n予約は私がまとめて申し込みます。問診票は未提出の場合だけご記入ください。`;
   function create({api,refresh,deferred=false,onUpdate}){
-    let code=captureInvite(),preview=null,loading=false,previewError='',current=null;
+    let code=captureInvite(),preview=null,loading=false,previewError='',current=null,previewGeneration=0;
     const views=new Map(),links=new Map();
     const clearInvite=()=>{code=null;preview=null;previewError='';try{sessionStorage.removeItem(key);const u=new URL(location.href);u.searchParams.delete('booking_companion');if(u.hash.startsWith('#companion='))u.hash='reserve-form';history.replaceState(null,'',u.href);}catch{}};
     async function action(button,result,fn){button.disabled=true;result.textContent='処理中…';try{await fn();}catch(error){result.textContent=error.message;}finally{button.disabled=false;}}
@@ -37,9 +37,9 @@
     function redraw(){if(current)for(const form of views.keys())render(form,current);}
     async function loadPreview(){
       if(!code || preview || loading || previewError)return;
-      loading=true;
-      try{preview=await api('/companions/preview',{code});}catch(error){previewError=error.message;}
-      finally{loading=false;redraw();onUpdate?.();}
+      loading=true;const generation=previewGeneration;
+      try{const next=await api('/companions/preview',{code});if(generation===previewGeneration)preview=next;}catch(error){if(generation===previewGeneration)previewError=error.message;}
+      finally{if(generation===previewGeneration){loading=false;redraw();onUpdate?.();}}
     }
     function render(form,status){
       current=status;const v=views.get(form);if(!v)return;
@@ -117,7 +117,7 @@
         const button=e('button','この許可を解除する','pill');button.type='button';const result=e('p',null,'onboarding-result');result.setAttribute('role','status');button.addEventListener('click',()=>action(button,result,async()=>{await api('/companions/revoke',{id:grant.id});if(preview?.participant_id){clearInvite();}await refresh();}));row.append(button,result);v.manageBody.append(row);
       }
     }
-    return {mount,render,hasIncoming:()=>!!code,currentCode:()=>code,acceptedParticipant:()=>preview?.accepted?preview.participant_id:null};
+    return {mount,render,resetAccount:()=>{previewGeneration++;preview=null;previewError='';current=null;loading=false;links.clear();for(const v of views.values()){v.incoming.replaceChildren();v.incoming.hidden=true;v.body.replaceChildren();v.manageBody.replaceChildren();v.management.hidden=true;}},hasIncoming:()=>!!code,currentCode:()=>code,acceptedParticipant:()=>preview?.accepted?preview.participant_id:null};
   }
   window.MovenseCompanions={create};
 })();

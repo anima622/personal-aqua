@@ -17,6 +17,7 @@
     temporary_failure: '受付結果を確認できませんでした。入力内容を変えずに再度送信すると、同じ受付番号で確認します。'
   };
   const states = new Map();
+  document.addEventListener('movense-account-changed',()=>{states.clear();clear('watari-booking-draft');for(const form of forms)clear('watari-booking-request-'+form.id);});
   const notices = [];
   const loginActions = [];
   const recoveryActions = [];
@@ -96,12 +97,13 @@
     await new Promise((resolve,reject)=>{const script=document.createElement('script');script.src='https://static.line-scdn.net/liff/edge/2/sdk.js';script.onload=resolve;script.onerror=reject;document.head.append(script);});
   }
   async function connection() {
+    onboarding?.syncAccount?.();
     initializationStage='login-state';
     for(const actions of loginActions) actions.hidden=false;
     if(!window.liff.isLoggedIn()) {onboarding?.disconnect?.();say(messages.line_login_required);return false;}
     initializationStage='friendship';
     say('LINE連携を確認しています…');
-    const friend=await timed(window.liff.getFriendship());
+    let friend;try{friend=await timed(window.liff.getFriendship());}catch(error){onboarding?.connectionFailed?.();throw error;}
     if(!friend.friendFlag){onboarding?.disconnect?.();say(messages.friend_required);return false;}
     for(const actions of loginActions) actions.hidden=true;
     say('LINE連携済み ✓ 申込み後、このLINEアカウントに受付控えをお送りします。');
@@ -140,7 +142,7 @@
     if(onboardingConfig.enabled){
       initializationStage='onboarding-mount';
       if(!window.MovenseOnboarding || !window.MovenseOnboarding.configured(onboardingConfig))throw new Error('onboarding_not_ready');
-      onboarding=window.MovenseOnboarding.create({config:onboardingConfig,endpoint:config.endpoint,getToken:()=>window.liff?.getAccessToken(),forms});onboarding.mount();
+      onboarding=window.MovenseOnboarding.create({config:onboardingConfig,endpoint:config.endpoint,getToken:()=>window.liff?.getAccessToken(),getAccount:()=>window.liff?.getDecodedIDToken?.()?.sub||window.liff?.getContext?.()?.userId||window.liff?.getAccessToken(),forms});onboarding.mount();
     }
     // Show the booking destination while authentication loads, without rewriting LIFF's URL.
     // Scrolling is safe even on the intermediate LIFF URL: do not rewrite

@@ -1288,10 +1288,10 @@ footer{position:relative;z-index:1;background:var(--color-fill-solid);color:var(
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <script src="assets/gsap-starter.js?v=20261005-form-visibility"></script>
-<script src="assets/booking-companions.js?v=20261006-booking-first-2"></script>
+<script src="assets/booking-companions.js?v=20261021-account-switch"></script>
 <script src="assets/booking-onboarding.js?v=20261005-form-visibility"></script>
-<script src="assets/booking-simple.js?v=20261021-schedule-visibility" defer></script>
-<script src="assets/booking-receipts.js?v=20261017-close"></script>
+<script src="assets/booking-simple.js?v=20261021-account-switch" defer></script>
+<script src="assets/booking-receipts.js?v=20261021-account-switch"></script>
 <script>
 /*
   CONTENTS
@@ -1938,6 +1938,7 @@ confirmModalSend.addEventListener('click', async () => {
 
 const form = document.getElementById('reserve-form');
 const confirmMsg = document.getElementById('confirm-msg');
+document.addEventListener('movense-account-changed',()=>{selectedSlots.clear();slotGrid.querySelectorAll('.slot.selected').forEach(button=>{button.classList.remove('selected');button.setAttribute('aria-pressed','false');});document.getElementById('selected-slots-field').value='';closeConfirmModal();confirmMsg.textContent='';confirmMsg.style.display='none';});
 form.addEventListener('submit', async (e) => {
   e.preventDefault();
 
