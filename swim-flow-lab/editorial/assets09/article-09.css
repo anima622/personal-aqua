@@ -1,0 +1,12 @@
+/* Article09: crisp blue/yellow accents, inherited reading layout retained. */
+.finger-hero .eyebrow{color:#1848ad}.finger-toc{background:#f6f9ff;border:1px solid #b8caeb;border-left:5px solid #2455c8}.finger-prose a{color:#1648b5}.finger-chapter h2{border-color:#e3b922}.article09 .dk-common-band{background:#234fc1;color:#fff}.article09 .dk-number,.article09 .dk-letter{color:#1848ad}.article09 .dk-content strong{color:#173e88}.article09 .generated-explanation{max-width:760px;border-radius:8px}.article09 .dk-heading{margin-bottom:20px}.article09 figcaption{margin-top:22px}.article09 .dk-node{background:#f7f9ff}.article09 .dk-disc{display:none!important}.finger-banner img{display:block;width:100%;height:auto;object-fit:contain}
+
+/* Reference-led revision: flat illustration, calm unraised figure panels. */
+:is(.article09,.rest-kit){--neu-raised:none;--neu-inset:none;--neu-surface:#fff;background:#fff!important;box-shadow:none!important;border:1px solid #dce4e6!important;border-radius:12px}
+:is(.article09,.rest-kit) :is(.dk-node,.dk-pair-row,.dk-vertical li>div,.dk-number,.dk-letter){background:#fff!important;box-shadow:none!important}
+:is(.article09,.rest-kit) :is(.dk-node,.dk-pair-row){border:0;border-bottom:1px solid #dce4e6;border-radius:0}
+:is(.article09,.rest-kit) .generated-explanation{border-radius:0}
+:is(.article09,.rest-kit) .dk-common-band{background:#eef6f7!important;color:#173c48!important;box-shadow:none!important}
+
+@media(max-width:420px){.article09 .dk-vertical>li{grid-template-columns:24px minmax(0,1fr);gap:8px}.article09 .dk-vertical li>div{padding:10px 8px}.article09 .dk-vertical .dk-number{font-size:22px}}
+
