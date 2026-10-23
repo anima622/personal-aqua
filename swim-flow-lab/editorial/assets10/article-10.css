@@ -1,0 +1,35 @@
+:root{--rest-green:#176c60;--rest-pink:#f4b4c5;--rest-ink:#183d3a}
+.finger-page{background:#fff;color:var(--rest-ink)}
+.finger-hero .eyebrow,.finger-chapter h2{color:var(--rest-green)}
+.finger-toc{background:#f1faf6;border-color:#a4cec1}
+.rest-kit{background:#f0f8f4!important;border:1px solid #b8d7cb!important;box-shadow:none!important}
+.rest-kit .dk-node,.rest-kit .dk-pair,.rest-kit .dk-card{box-shadow:none!important;background:#fff!important}
+.rest-kit .dk-node strong,.rest-kit .dk-vertical strong{color:#176c60!important}
+.rest-kit .dk-vertical .dk-disc{display:none}
+.generated-explanation{width:100%;height:auto;display:block;max-width:760px;margin:0 auto 24px;border-radius:14px}
+.distance-example,.research-distance,.timeline-explainer{padding:20px;background:white;border-radius:14px;margin:20px 0;font-size:17px;line-height:1.7}
+.rest-kit .distance-example p,.rest-kit .research-distance p,.rest-kit .timeline-explainer p{font-size:inherit;line-height:inherit;margin:10px 0}
+.example-label{font-size:15px!important;font-weight:700;color:#42665c}
+.timeline-explainer section+section{margin-top:32px;padding-top:24px;border-top:1px solid #b8d7cb}
+.timeline-explainer h4{font-size:21px;line-height:1.5;margin:12px 0}
+.time-row{margin:20px 0 10px}
+.time-track{display:flex;width:100%;height:38px;border:1px solid #9abcb0;overflow:hidden;border-radius:5px}
+.time-track span{display:flex;align-items:center;justify-content:center;min-width:0;font-size:15px;white-space:nowrap}
+.swim-time{background:#176c60;color:white}.rest-time{background:#f4b4c5;color:#36252c}.unused-time{background:#fff}
+.time-axis{display:flex;justify-content:space-between;font-size:14px;padding-top:2px}
+.time-key{font-size:14px!important}
+.research-distance>div{padding:10px 0;border-bottom:1px solid #dceae3}
+.distance-track{width:100%;height:16px;background:#edf6f0}
+.distance-track span{display:block;height:100%;background:#176c60;border-radius:3px}
+@media(max-width:600px){.distance-example,.research-distance,.timeline-explainer{padding:14px;font-size:16px}.timeline-explainer h4{font-size:18px}.rest-kit{padding:20px 14px!important}.time-track span{font-size:13px}.rest-kit .dk-vertical{padding-left:0}.rest-kit .dk-vertical li{grid-template-columns:34px minmax(0,1fr);gap:10px}}
+
+/* Reference-led revision: flat illustration, calm unraised figure panels. */
+:is(.article09,.rest-kit){--neu-raised:none;--neu-inset:none;--neu-surface:#fff;background:#fff!important;box-shadow:none!important;border:1px solid #dce4e6!important;border-radius:12px}
+:is(.article09,.rest-kit) :is(.dk-node,.dk-pair-row,.dk-vertical li>div,.dk-number,.dk-letter){background:#fff!important;box-shadow:none!important}
+:is(.article09,.rest-kit) :is(.dk-node,.dk-pair-row){border:0;border-bottom:1px solid #dce4e6;border-radius:0}
+:is(.article09,.rest-kit) .generated-explanation{border-radius:0}
+:is(.article09,.rest-kit) .dk-common-band{background:#eef6f7!important;color:#173c48!important;box-shadow:none!important}
+
+/* The precise distance bands already contain the three conditions. */
+#fig-3.rest-kit .dk-columns{display:none}
+
