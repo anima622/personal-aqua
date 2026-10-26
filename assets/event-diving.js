@@ -53,7 +53,7 @@
       label.textContent=`SPECIAL EVENT / ${event.label}`;
       summary.replaceChildren(document.createTextNode(`${event.date} ${event.time}`),document.createElement('br'),document.createTextNode(`BumB東京スポーツ文化館｜集合 ${event.meeting}｜3,000円／名`));
       detailLink.href=`#${id}`;
-      status.textContent=closed(id)?'この開催日の受付は終了しました。受付中の開催日をお選びください。':`集合 ${event.meeting}・スポーツ文化センター入口ロビー。定員10名・3,000円／名。`;
+      status.textContent=closed(id)?'この開催日の受付は終了しました。':`集合 ${event.meeting}・スポーツ文化センター入口ロビー。定員10名・3,000円／名。`;
     }else{
       label.textContent='SPECIAL EVENT / 10.18 & 10.25';
       summary.replaceChildren(document.createTextNode('10/18（日）11:00〜13:00・集合10:45'),document.createElement('br'),document.createTextNode('10/25（日）10:00〜12:00・集合9:45'),document.createElement('br'),document.createTextNode('BumB東京スポーツ文化館｜各3,000円／名'));
