@@ -2,7 +2,7 @@
 (() => {
   const events = {
     'diving-20261018': {closed:true,label:'10.18',date:'2026年10月18日（日）',time:'11:00〜13:00',meeting:'10:45',start:'2026-10-18T11:00:00+09:00'},
-    'diving-20261025': {label:'10.25',date:'2026年10月25日（日）',time:'10:00〜12:00',meeting:'9:45',start:'2026-10-25T10:00:00+09:00'}
+    'diving-20261025': {closed:true,label:'10.25',date:'2026年10月25日（日）',time:'10:00〜12:00',meeting:'9:45',start:'2026-10-25T10:00:00+09:00'}
   };
   const form=document.getElementById('event-form');
   if(!form)return;
@@ -58,10 +58,11 @@
       label.textContent='SPECIAL EVENT / 10.18 & 10.25';
       summary.replaceChildren(document.createTextNode('10/18（日）11:00〜13:00・集合10:45'),document.createElement('br'),document.createTextNode('10/25（日）10:00〜12:00・集合9:45'),document.createElement('br'),document.createTextNode('BumB東京スポーツ文化館｜各3,000円／名'));
       detailLink.href='#events';
-      status.textContent='各開催10名・3,000円／名。参加したい開催日をお選びください。';
+      status.textContent='掲載中の開催日はすべて受付を終了しました。';
     }
-    button.disabled=sending || !!closed(id) || sentEventId===id && !!id;
-    button.textContent=sending?'送信中…':closed(id)?'この開催日の受付は終了しました':sentEventId===id && id?'参加申込を受け付けました':'申込内容を確認する';
+    const allClosed=Object.keys(events).every(closed);
+    button.disabled=allClosed || sending || !!closed(id) || sentEventId===id && !!id;
+    button.textContent=allClosed?'受付は終了しました':sending?'送信中…':closed(id)?'この開催日の受付は終了しました':sentEventId===id && id?'参加申込を受け付けました':'申込内容を確認する';
   }
   function choose(id,{manual=false}={}){
     if(sending){select.value=sendingEventId;return;}
