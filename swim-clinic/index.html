@@ -235,7 +235,16 @@ a:focus-visible{outline:2px solid var(--gold);outline-offset:3px;}
 
 /* ---------- book ---------- */
 .book{border:1px solid var(--line-strong);border-radius:10px;background:var(--paper);padding:clamp(20px,5vw,28px);display:flex;flex-direction:column;gap:16px;}
-.bookrow{display:grid;grid-template-columns:clamp(104px,28vw,140px) 1fr;gap:clamp(16px,4.4vw,24px);align-items:start;}
+.bookrow{display:grid;grid-template-columns:clamp(104px,28vw,140px) minmax(0,1fr);grid-template-rows:auto 1fr;gap:14px clamp(16px,4.4vw,24px);align-items:start;}
+.bookrow > img{grid-column:1;grid-row:1 / span 2;}
+.bookrow > .bt{grid-column:2;grid-row:1;}
+.bookrow > .bm{grid-column:2;grid-row:2;}
+@media(max-width:600px){
+  .bookrow{grid-template-columns:minmax(90px,30%) minmax(0,1fr);grid-template-rows:auto auto;}
+  .bookrow > .bt{grid-column:1 / -1;grid-row:1;}
+  .bookrow > img{grid-column:1;grid-row:2;}
+  .bookrow > .bm{grid-column:2;grid-row:2;}
+}
 .bookrow img{display:block;width:100%;height:auto;max-width:100%;border-radius:4px;box-shadow:0 5px 16px rgba(11,52,73,.16);}
 .bt{font-family:var(--mincho);font-size:clamp(20px,5.2vw,25px);font-weight:700;letter-spacing:-.01em;line-height:1.5;}
 .bm{color:var(--ink-dim);font-size:clamp(13.5px,3.7vw,15px);line-height:1.95;font-variant-numeric:tabular-nums;}
@@ -724,14 +733,12 @@ h1{font-size:clamp(25px,calc((100vw - 48px) / 12.4),43px);}
       <div class="book">
         <div class="bookrow">
           <img src="images/book.jpg" alt="水泳4泳法シリーズ② 平泳ぎ編（ベースボール・マガジン社）" width="420" height="609">
-          <div class="stack s">
             <p class="bt">水泳4泳法シリーズ②<br>平泳ぎ編</p>
             <p class="bm">
               練習するほど進化する基本泳法<br>
               堀之内 徹 著　／　ベースボール・マガジン社<br>
               2026年3月　A5判 160頁　1,980円（税込）
             </p>
-          </div>
         </div>
         <p class="note">北京オリンピックメダリスト・藤井拓郎氏らと並ぶ「水泳4泳法」シリーズの一冊。泳ぎが動画で確認できるQRコード付きです。</p>
         <a class="buy" href="https://www.amazon.co.jp/dp/4583117450" target="_blank" rel="noopener">Amazonで見る<span class="ar">↗</span></a>
@@ -948,5 +955,6 @@ h1{font-size:clamp(25px,calc((100vw - 48px) / 12.4),43px);}
     </div>
   </div>
 </footer>
+<script src="clinic-motion.js"></script>
 </body>
 </html>
