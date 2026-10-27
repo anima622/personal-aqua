@@ -361,16 +361,34 @@ footer .note{color:#8BA5B3;}
 }
 .datebox,.career,.tasclink,.ath > li,.book,.part,.target,.outline{
   background:
-    linear-gradient(var(--gold-soft),var(--gold-soft)) top left/var(--fc) var(--fc) no-repeat,
-    linear-gradient(var(--gold-soft),var(--gold-soft)) top right/var(--fc) var(--fc) no-repeat,
-    linear-gradient(var(--gold-soft),var(--gold-soft)) bottom left/var(--fc) var(--fc) no-repeat,
-    linear-gradient(var(--gold-soft),var(--gold-soft)) bottom right/var(--fc) var(--fc) no-repeat,
+    linear-gradient(var(--frame-edge-gold),var(--frame-edge-gold)) top left/var(--fc) var(--fc) no-repeat,
+    linear-gradient(var(--frame-edge-gold),var(--frame-edge-gold)) top right/var(--fc) var(--fc) no-repeat,
+    linear-gradient(var(--frame-edge-gold),var(--frame-edge-gold)) bottom left/var(--fc) var(--fc) no-repeat,
+    linear-gradient(var(--frame-edge-gold),var(--frame-edge-gold)) bottom right/var(--fc) var(--fc) no-repeat,
     var(--fbg,var(--paper));
 }
 .seat{--metal-width:1px;}
 .seat.prime{--metal-width:clamp(3px,1.1vw,6px);}
 .seat:not(.prime){--metal-frame:var(--frame-metal-silver);border-color:var(--frame-edge-silver);}
 @supports ((mask-composite:exclude) or (-webkit-mask-composite:xor)){
+  .datebox,.career,.tasclink,.ath > li,.book,.part,.target,.outline{
+    background:var(--fbg,var(--paper));
+  }
+  /* Corner blocks share the border's full-size gradient, so the metal joins seamlessly. */
+  :is(.datebox,.career,.tasclink,.ath > li,.book,.part,.target,.outline)::before{
+    content:"";
+    position:absolute;
+    inset:calc(-1 * var(--metal-width));
+    background:var(--metal-frame,var(--frame-metal-gold));
+    --corner-mask:
+      linear-gradient(#fff 0 0) left var(--metal-width) top var(--metal-width)/var(--fc) var(--fc) no-repeat,
+      linear-gradient(#fff 0 0) right var(--metal-width) top var(--metal-width)/var(--fc) var(--fc) no-repeat,
+      linear-gradient(#fff 0 0) left var(--metal-width) bottom var(--metal-width)/var(--fc) var(--fc) no-repeat,
+      linear-gradient(#fff 0 0) right var(--metal-width) bottom var(--metal-width)/var(--fc) var(--fc) no-repeat;
+    -webkit-mask:var(--corner-mask);
+    mask:var(--corner-mask);
+    pointer-events:none;
+  }
   :is(.datebox,.career,.tasclink,.ath > li,.book,.part,.target,.outline,.seat)::after{
     content:"";
     position:absolute;
