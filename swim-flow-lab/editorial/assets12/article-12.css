@@ -1,0 +1,9 @@
+:root{--rest-green:#ad491c;--rest-ink:#173a45}
+.finger-toc{background:#fff8f0;border-color:#e8c4a8}
+.article12 .dk-node strong,.article12 .dk-vertical strong{color:#9d421b!important}
+.article12 .dk-common-band{background:#eaf7f6!important;color:#173a45!important}
+.research-numbers{background:#fff;padding:20px;border:1px solid #ccdede;border-radius:10px;margin:24px 0}
+.research-numbers p{font-size:17px!important;line-height:1.8!important}
+.research-numbers dl{margin:10px 0}.research-numbers dl>div{display:flex;justify-content:space-between;gap:12px;padding:14px 0;border-bottom:1px solid #dce5e6}.research-numbers dd{font-weight:bold;margin:0}
+.research-numbers table{width:100%;border-collapse:collapse;font-size:16px;line-height:1.6}.research-numbers caption{text-align:left;font-weight:bold;margin:8px 0}.research-numbers th,.research-numbers td{text-align:left;padding:12px 6px;border-bottom:1px solid #dce5e6}
+@media(max-width:600px){.research-numbers{padding:12px}.research-numbers table{font-size:14px}.research-numbers th,.research-numbers td{padding:10px 4px}.research-numbers dl>div{font-size:16px}}
