@@ -332,7 +332,7 @@ footer .wrap{padding-block:40px;text-align:center;}
 footer .note{color:#8BA5B3;}
 
 /* ---------- 角ブロック付きの金枠（日付ボックスと共通） ---------- */
-.career,.tasclink,.ath > li,.book,.part,.target{
+.career,.tasclink,.ath > li,.book,.part,.target,.outline{
   --fl:4px;  /* 枠線の太さ */
   --fc:8px;  /* 四隅の角ブロック */
   --fbg:var(--paper);
@@ -346,6 +346,45 @@ footer .note{color:#8BA5B3;}
     var(--fbg);
 }
 .part{--fbg:rgba(255,252,244,.055);}
+
+/* Quiet metal edging: static, restrained highlights confined to the frame. */
+:root{
+  --frame-metal-gold:linear-gradient(115deg,#A18453 0%,#C1A16B 25%,#E3D2AC 43%,#B18D55 60%,#D1B987 79%,#A18453 100%);
+  --frame-metal-silver:linear-gradient(115deg,#929CA5 0%,#B5BEC5 25%,#E0E5E8 43%,#A0AAB2 60%,#C9D0D5 79%,#929CA5 100%);
+  --frame-edge-gold:#B18D55;
+  --frame-edge-silver:#AEB7BF;
+}
+.datebox,.career,.tasclink,.ath > li,.book,.part,.target,.outline,.seat{
+  position:relative;
+  border-color:var(--frame-edge-gold);
+  --metal-width:var(--fl,4px);
+}
+.datebox,.career,.tasclink,.ath > li,.book,.part,.target,.outline{
+  background:
+    linear-gradient(var(--gold-soft),var(--gold-soft)) top left/var(--fc) var(--fc) no-repeat,
+    linear-gradient(var(--gold-soft),var(--gold-soft)) top right/var(--fc) var(--fc) no-repeat,
+    linear-gradient(var(--gold-soft),var(--gold-soft)) bottom left/var(--fc) var(--fc) no-repeat,
+    linear-gradient(var(--gold-soft),var(--gold-soft)) bottom right/var(--fc) var(--fc) no-repeat,
+    var(--fbg,var(--paper));
+}
+.seat{--metal-width:1px;}
+.seat.prime{--metal-width:clamp(3px,1.1vw,6px);}
+.seat:not(.prime){--metal-frame:var(--frame-metal-silver);border-color:var(--frame-edge-silver);}
+@supports ((mask-composite:exclude) or (-webkit-mask-composite:xor)){
+  :is(.datebox,.career,.tasclink,.ath > li,.book,.part,.target,.outline,.seat)::after{
+    content:"";
+    position:absolute;
+    inset:calc(-1 * var(--metal-width));
+    padding:var(--metal-width);
+    border-radius:inherit;
+    background:var(--metal-frame,var(--frame-metal-gold));
+    -webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);
+    mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);
+    -webkit-mask-composite:xor;
+    mask-composite:exclude;
+    pointer-events:none;
+  }
+}
 
 /* ---------- 太さの強弱（研究を参考に）
    本文=500（やや太め）、小見出し・強調=700、大見出し・名前=900（極太） ---------- */
