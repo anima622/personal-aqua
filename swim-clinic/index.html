@@ -3,6 +3,24 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<style>
+/* Arm before the first body paint; without JS all content stays visible. */
+html[data-clinic-motion="pending"] :is(h1,h2,h3,p,.label,.kicker,.hw-special,.hw-sub,.hw-intro,.frame,.datebox,.datebox > span,.career,.career > li,.tasclink,.ath > li,.ev,.nm,.tbadge,.book,.buy,.part,.pno,.grp,.seat,.sname,.sdesc,.srow,.target,.target > li,.outline,.orow,.flogo):not(.note):not(.note *),
+[data-clinic-enter]{opacity:0;}
+</style>
+<script>
+(() => {
+  if (!('IntersectionObserver' in window) || !Element.prototype.animate) return;
+  const root = document.documentElement;
+  root.dataset.clinicMotion = 'pending';
+  window.clinicMotionFallback = () => {
+    delete root.dataset.clinicMotion;
+    document.querySelectorAll('[data-clinic-enter]').forEach(el => el.removeAttribute('data-clinic-enter'));
+  };
+  window.clinicMotionWatchdog = setTimeout(window.clinicMotionFallback, 1800);
+})();
+</script>
+<script defer src="clinic-motion.js?v=20261027-no-flash" onerror="window.clinicMotionFallback?.()"></script>
 <title>堀之内徹 スイムクリニック</title>
 <meta name="description" content="シドニーからパリ、そして現在も代表選手を育ててきた堀之内徹コーチのスイムクリニック。2027年2月14日（日）BumB東京スポーツ文化館。座学＋水泳レッスン、全30名限定。">
 <meta property="og:title" content="堀之内徹 スイムクリニック">
@@ -955,6 +973,5 @@ h1{font-size:clamp(25px,calc((100vw - 48px) / 12.4),43px);}
     </div>
   </div>
 </footer>
-<script src="clinic-motion.js?v=20261027-elegant"></script>
 </body>
 </html>
