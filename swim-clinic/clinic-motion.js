@@ -3,6 +3,8 @@
   'use strict';
   if (!('IntersectionObserver' in window) || !Element.prototype.animate) return;
   const reduce = matchMedia('(prefers-reduced-motion: reduce)');
+  // Gentle easeInOutSine: https://www.protopie.io/learn/docs/interactions-animation-curves
+  const entrance = {duration:1600,stagger:120,easing:'cubic-bezier(0.37, 0, 0.63, 1)'};
   const selector = [
     'h1','h2','h3','p','.label','.kicker','.hw-special','.hw-sub','.hw-intro',
     '.frame','.datebox','.datebox > span','.career','.career > li','.tasclink',
@@ -29,9 +31,9 @@
         ? [{opacity:0,transform:'translateY(12px)'},{opacity:1,transform:'translateY(0)'}]
         : [{opacity:0},{opacity:1}];
       const animation = el.animate(frames, {
-        duration:reduce.matches ? 150 : 500,
-        delay:reduce.matches ? 0 : (stagger++ % 4) * 60,
-        easing:'cubic-bezier(0.23, 1, 0.32, 1)',
+        duration:reduce.matches ? 150 : entrance.duration,
+        delay:reduce.matches ? 0 : (stagger++ % 4) * entrance.stagger,
+        easing:entrance.easing,
         fill:'backwards'
       });
       active.set(el, animation);
