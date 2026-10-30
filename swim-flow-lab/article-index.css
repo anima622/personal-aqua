@@ -15,3 +15,14 @@
 .article-index-grid.is-latest{display:flex;gap:22px;overflow-x:auto;scroll-snap-type:x mandatory;padding:3px 3px 20px}
 .article-index-grid.is-latest .latest-news-card{flex:0 0 clamp(250px,24vw,340px);scroll-snap-align:start}
 @media(max-width:600px){.article-index-grid.is-latest{gap:16px}.article-index-grid.is-latest .latest-news-card{flex-basis:82%}}
+
+.article-index-cta{display:flex;align-items:center;gap:24px;flex-wrap:wrap;margin-top:24px;padding-top:24px;border-top:1px solid #c9d8ea}
+.article-index-cta>a{display:inline-flex;align-items:center;justify-content:space-between;gap:48px;min-width:200px;min-height:52px;padding:12px 24px;background:#005bcd;color:#fff;border:1px solid #005bcd;border-radius:6px;text-decoration:none;font-size:16px;font-weight:700}
+.article-index-cta p{margin:0;font-size:14px;color:#456078}
+.article-archive-page{margin:0;background:#fff;color:#102c44;font:16px/1.7 "Noto Sans JP","Yu Gothic",sans-serif}
+.article-archive-page *{box-sizing:border-box}.article-archive-page a:focus-visible{outline:3px solid #005bcd;outline-offset:4px}
+.article-archive-header,.article-archive-footer{display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;padding:20px max(24px,4vw);background:#f3f4f5;border-block:1px solid #c9d8ea}
+.article-archive-header a,.article-archive-footer a{display:inline-flex;align-items:center;min-height:44px;color:#102c44;text-decoration:none}
+.article-archive-header>a:first-child{font-weight:700;letter-spacing:.08em;font-size:20px}
+.article-archive-main{max-width:1500px;padding:48px 24px 80px;margin:auto}.article-archive-main h1{font-size:clamp(32px,4vw,48px);margin:0 0 16px}.article-archive-main>p{margin:0 0 40px;color:#456078}
+.archive-skip{position:absolute;top:-100px;left:16px;padding:12px;background:#fff;z-index:10}.archive-skip:focus{top:8px}
