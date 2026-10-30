@@ -8,3 +8,8 @@
 .events-index-entry .pill{white-space:normal;gap:24px}
 .event-reserve-empty p{margin-block:16px 24px}
 @media(max-width:600px){.events-index-entry{align-items:flex-start;flex-direction:column}.events-index-entry .pill{min-width:200px}}
+
+/* Keep the booking entry compact and its heading readable before scrolling. */
+#flow{padding-bottom:48px}
+#reserve{padding-top:48px;--sec-pad:48px}
+#reserve>.wrap>.sec-head{margin-bottom:32px}

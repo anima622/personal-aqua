@@ -604,7 +604,7 @@ footer{position:relative;z-index:1;background:var(--color-fill-solid);color:var(
 </style>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/event-diving.css?v=20261008-two-dates">
-<style>.simple-booking-details{display:contents}.simple-booking-details[hidden]{display:none!important}.simple-followup{padding:24px;border:2px solid var(--ink,#17292f);scroll-margin-top:110px}.simple-followup textarea{width:100%;font-size:16px}.onboarding input,.onboarding select{font-size:16px;min-height:44px}.onboarding label{display:block}.onboarding .pill{white-space:normal;min-height:48px;margin:8px 8px 8px 0}.onboarding select{max-width:100%;width:100%}.onboarding-contact details{margin-top:16px}.simple-followup h3{margin:20px 0 12px}@media(max-width:700px){.simple-followup{padding:16px}.simple-followup .pill{width:100%;margin-right:0}}</style><link rel="stylesheet" href="assets/section-surfaces.css?v=20261031">
+<style>.simple-booking-details{display:contents}.simple-booking-details[hidden]{display:none!important}.simple-followup{padding:24px;border:2px solid var(--ink,#17292f);scroll-margin-top:110px}.simple-followup textarea{width:100%;font-size:16px}.onboarding input,.onboarding select{font-size:16px;min-height:44px}.onboarding label{display:block}.onboarding .pill{white-space:normal;min-height:48px;margin:8px 8px 8px 0}.onboarding select{max-width:100%;width:100%}.onboarding-contact details{margin-top:16px}.simple-followup h3{margin:20px 0 12px}@media(max-width:700px){.simple-followup{padding:16px}.simple-followup .pill{width:100%;margin-right:0}}</style><link rel="stylesheet" href="assets/section-surfaces.css?v=20261031-spacing">
 <script src="assets/event-history-links.js?v=20261031" defer></script>
 </head>
 <body>
@@ -1370,6 +1370,7 @@ if (typeof gsap !== 'undefined') {
     }
 
     q('.sec-head').forEach((head) => {
+      if (head.closest('#reserve')) return;
       const h2 = head.querySelector('h2');
       if (h2 && !h2.querySelector('.ln')) {
         h2.innerHTML = h2.innerHTML.split(/<br\s*\/?>/i)
