@@ -1,0 +1,10 @@
+/* MOVENSE existing neutral ramp; alternating section ground, static editorial archive. */
+:root{--color-section-light:var(--color-surface);--color-section-tint:var(--n-3)}
+#about,#groups,#lesson-terms,#reserve{background-color:var(--color-section-light)}
+#service,#events,#flow{background-color:var(--color-section-tint);--color-text-muted:var(--n-10);--color-accent-text:var(--a-10);--color-accent-solid:var(--a-10)}
+:is(#about,#service,#groups,#events,#lesson-terms,#flow,#reserve){border-top:1px solid var(--color-border)}
+.events-index-entry{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:24px;border-top:1px solid var(--color-border);padding-top:32px;margin-top:32px}
+.events-index-entry p{margin:0;max-width:38em}
+.events-index-entry .pill{white-space:normal;gap:24px}
+.event-reserve-empty p{margin-block:16px 24px}
+@media(max-width:600px){.events-index-entry{align-items:flex-start;flex-direction:column}.events-index-entry .pill{min-width:200px}}
