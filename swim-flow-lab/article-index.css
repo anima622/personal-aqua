@@ -8,3 +8,6 @@
 @media(max-width:1100px){.article-index-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media(max-width:760px){.article-index-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}}
 @media(max-width:480px){.article-index-grid{grid-template-columns:1fr}}
+
+.article-index-grid .latest-news-card[hidden]{display:none!important}
+.all-articles-link{border:1px solid #9fb9d9;border-radius:4px;padding:10px 16px;text-decoration:none}
