@@ -1,0 +1,10 @@
+/* Published article index: existing latest-news cards, five across without horizontal scrolling. */
+.article-index-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:24px}
+.article-index-grid .latest-news-card{min-width:0;scroll-snap-align:none}
+.article-index-grid .latest-news-copy{padding:20px}
+.article-index-grid h3{overflow-wrap:break-word}
+.article-published{display:block;margin-top:8px;color:#456078;font-size:13px;font-variant-numeric:tabular-nums}
+#articles,#latest-articles{scroll-margin-top:180px}
+@media(max-width:1100px){.article-index-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:760px){.article-index-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}}
+@media(max-width:480px){.article-index-grid{grid-template-columns:1fr}}

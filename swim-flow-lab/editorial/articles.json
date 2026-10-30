@@ -1,0 +1,96 @@
+{
+  "articles": [
+    {
+      "number": 1,
+      "publishedOn": "2026-10-10",
+      "title": "泳ぐときの指は、閉じる？ 少し開く？",
+      "href": "research-finger-spacing.html",
+      "image": "editorial/banners/article-01.jpg"
+    },
+    {
+      "number": 2,
+      "publishedOn": "2026-10-14",
+      "title": "大きく泳ぐ？ 速く回す？",
+      "href": "editorial/02-stroke-balance.html",
+      "image": "editorial/banners/article-02.jpg"
+    },
+    {
+      "number": 3,
+      "publishedOn": "2026-10-15",
+      "title": "平泳ぎのひと掻きひと蹴り速さを残すには？",
+      "href": "editorial/03-breaststroke-pullout.html",
+      "image": "editorial/banners/article-03.jpg"
+    },
+    {
+      "number": 4,
+      "publishedOn": "2026-10-16",
+      "title": "ターンは壁をすぐ蹴ったほうが速い？",
+      "href": "editorial/04-turn-wall-contact.html",
+      "image": "editorial/banners/article-04.jpg"
+    },
+    {
+      "number": 5,
+      "publishedOn": "2026-10-17",
+      "title": "クロールはS字よりI字でかくほうが速い？",
+      "href": "editorial/05-stroke-path.html",
+      "image": "editorial/banners/article-05.jpg"
+    },
+    {
+      "number": 6,
+      "publishedOn": "2026-10-18",
+      "title": "けのびで見るのは前？ 下？",
+      "href": "editorial/06-glide-head-position.html",
+      "image": "editorial/assets/06-glide-head-position-banner-v3.png"
+    },
+    {
+      "number": 7,
+      "publishedOn": "2026-10-19",
+      "title": "息をいっぱい吸えば、身体は浮く？",
+      "href": "editorial/07-breath-buoyancy.html",
+      "image": "editorial/assets/07-breath-buoyancy-v4.png"
+    },
+    {
+      "number": 8,
+      "publishedOn": "2026-10-20",
+      "title": "クロールのキックは、何のため？",
+      "href": "editorial/08-kick-effort.html",
+      "image": "editorial/assets08/08-kick-effort-banner.png"
+    },
+    {
+      "number": 9,
+      "publishedOn": "2026-10-22",
+      "title": "クロールの息継ぎ、顔を上げずにどう吸う？",
+      "href": "editorial/09-crawl-breathing.html",
+      "image": "editorial/assets09/09-banner-v2.png"
+    },
+    {
+      "number": 10,
+      "publishedOn": "2026-10-24",
+      "title": "泳ぐ練習、途中で休んでもいい？",
+      "href": "editorial/10-practice-rest.html",
+      "image": "editorial/assets10/10-banner-v2.png"
+    },
+    {
+      "number": 11,
+      "publishedOn": "2026-10-26",
+      "title": "泳ぎの動画、見るだけで上達する？",
+      "href": "editorial/11-video-feedback.html",
+      "image": "editorial/assets11/11-banner-v2.png"
+    },
+    {
+      "number": 12,
+      "publishedOn": "2026-10-27",
+      "title": "泳ぐ前の準備、長いほどいい？",
+      "href": "editorial/12-warm-up.html",
+      "image": "editorial/assets12/12-banner-simple.png"
+    },
+    {
+      "number": 13,
+      "publishedOn": "2026-10-30",
+      "title": "最初から飛ばす？ 泳ぐペースを考える",
+      "href": "editorial/13-swimming-pace.html",
+      "image": "editorial/assets13/13-banner-simple.png"
+    }
+  ],
+  "dateSources": "01〜12は既存公開記録、13は2026-10-30公開記録。未公開記事は登録しない。"
+}
