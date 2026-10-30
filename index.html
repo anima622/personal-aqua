@@ -534,6 +534,7 @@ footer{position:relative;z-index:1;background:var(--color-fill-solid);color:var(
 .svc .lesson-photo{grid-column:1;grid-row:1/3;align-self:start}.svc .lesson-photo img{aspect-ratio:4/3;object-fit:cover}
 .svc:has(.lesson-photo) .svc-body{grid-column:2}.svc:has(.lesson-photo) .svc-prices{grid-column:2;max-width:none;justify-self:stretch}.svc-note{margin-inline-start:0}
 @media(max-width:760px){.svc:has(.lesson-photo){grid-template-columns:minmax(0,1fr)}.svc .lesson-photo{grid-column:1;grid-row:auto}.svc:has(.lesson-photo) .svc-body,.svc:has(.lesson-photo) .svc-prices{grid-column:1}.brand img{width:48px;height:48px}}
+.composition .letter-motion{display:none}
 .composition .letter-hole{fill:var(--color-surface)}.composition .t-bar{clip-path:inset(0 0 76% 0)}
 /* Photo titles and ordered service journey */
 .lesson-photo{position:relative;isolation:isolate;container-type:inline-size}
@@ -725,13 +726,13 @@ footer{position:relative;z-index:1;background:var(--color-fill-solid);color:var(
      assert a lane count nobody has stated -->
       <div class="composition" aria-hidden="true">
         <span class="guide g0"></span><span class="guide g1"></span><span class="guide g2"></span><span class="guide g3"></span>
-        <svg class="cell c-tri" viewBox="0 0 100 100"><g class="b-top"><path d="M8 5H50C89 5 89 50 50 50H8Z"/></g><g class="b-bottom"><path d="M8 48H53C94 48 94 95 53 95H8Z"/></g><path class="b-spine" d="M8 5H33V95H8Z"/><path class="letter-hole b-hole" d="M33 24H49C61 24 61 42 49 42H33ZM33 59H52C66 59 66 77 52 77H33Z"/></svg>
+        <svg class="cell c-tri" viewBox="0 0 100 100"><g class="letter-motion"><g class="b-top"><circle cx="51" cy="27" r="23"/></g><g class="b-bottom"><circle cx="53" cy="73" r="25"/></g><path class="b-spine" d="M8 4H51V98H8Z"/><path class="letter-hole b-hole" d="M25 24H55V30H25ZM25 71H60V77H25Z"/></g><g class="letter-final"><g ><path d="M8 5H50C89 5 89 50 50 50H8Z"/></g><g ><path d="M8 48H53C94 48 94 95 53 95H8Z"/></g><path  d="M8 5H33V95H8Z"/><path class="letter-hole" d="M33 24H49C61 24 61 42 49 42H33ZM33 59H52C66 59 66 77 52 77H33Z"/></g></svg>
         <svg class="cell c-dot" viewBox="0 0 100 100"><rect class="t-bar" x="6" y="5" width="88" height="90"/><path class="t-stem" d="M36 25H64V95H36Z"/></svg>
         <figure class="cell c-photo">
           <img src="assets/photos/lane-427.jpg" width="427" height="427" alt="" loading="lazy" decoding="async">
         </figure>
         <svg class="cell c-lane" viewBox="0 0 100 100"><path class="r-body" d="M8 5H50C90 5 90 59 50 59H33V95H8Z"/><path class="r-leg" d="M44 48Q69 48 76 68L90 95H63L49 65Q45 61 33 61V48Z"/><path class="letter-hole r-hole" d="M33 25H50A9 9 0 0 1 50 43H33Z"/></svg>
-        <svg class="cell c-w" viewBox="0 0 100 100"><path d="M86 12V33C74 26 63 23 52 23C42 23 36 26 36 32C36 37 41 40 54 43L62 45C83 50 93 58 93 71C93 87 77 95 51 95C35 95 20 91 8 84V63C22 72 37 77 51 77C61 77 67 75 67 70C67 65 61 62 48 59L40 57C18 52 8 44 8 31C8 15 24 5 51 5C64 5 76 8 86 12Z"/></svg>
+        <svg class="cell c-w" viewBox="0 0 100 100"><g class="letter-motion"><use href="#g-s"/></g><g class="letter-final"><path d="M86 12V33C74 26 63 23 52 23C42 23 36 26 36 32C36 37 41 40 54 43L62 45C83 50 93 58 93 71C93 87 77 95 51 95C35 95 20 91 8 84V63C22 72 37 77 51 77C61 77 67 75 67 70C67 65 61 62 48 59L40 57C18 52 8 44 8 31C8 15 24 5 51 5C64 5 76 8 86 12Z"/></g></svg>
       </div>
       <div class="about-text measure" data-reveal>
         <p>MOVENSE（ムーヴェンス）は、泳ぐ・鍛える・走る・歩くを通じて、あなたの「こうなりたい」に向き合うレッスンブランドです。</p>
@@ -1452,6 +1453,8 @@ if (typeof gsap !== 'undefined') {
     if (comp && !reduce && ST) {
       const pick = s => comp.querySelector(s);
       const guides=comp.querySelectorAll('.guide');
+      gsap.set(comp.querySelectorAll('.letter-motion'),{display:'inline'});
+      gsap.set(comp.querySelectorAll('.letter-final'),{display:'none'});
       gsap.set(guides,{scaleY:0});
       gsap.set(pick('.b-top'),{scale:.13,svgOrigin:'51 27'});
       gsap.set(pick('.b-bottom'),{scale:.1,svgOrigin:'53 73',opacity:0});
@@ -1482,7 +1485,9 @@ if (typeof gsap !== 'undefined') {
         .to(pick('.r-leg'),{clipPath:'inset(0 0 0% 0)',duration:.55},3.15)
         .to(pick('.c-w'),{clipPath:'inset(0 0% 0 0)',duration:.6},1.3)
         .to(pick('.c-w'),{rotation:0,duration:.8},2.5)
-        .to(pick('.c-photo'),{clipPath:'inset(0 0% 0 0)',duration:.7},.7);
+        .to(pick('.c-photo'),{clipPath:'inset(0 0% 0 0)',duration:.7},.7)
+        .set(comp.querySelectorAll('.letter-motion'),{display:'none'},3.7)
+        .set(comp.querySelectorAll('.letter-final'),{display:'inline'},3.7);
     }
 
     /* ── FOOTER ── the two wave strokes wipe in, one after the other ── */
