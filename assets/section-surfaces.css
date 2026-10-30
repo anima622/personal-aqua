@@ -13,3 +13,5 @@
 #flow{padding-bottom:48px}
 #reserve{padding-top:48px;--sec-pad:48px}
 #reserve>.wrap>.sec-head{margin-bottom:32px}
+
+@media(max-width:1400px){#site-header nav,.header-cta{display:none}.nav-toggle{display:flex}}
