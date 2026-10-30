@@ -3,6 +3,21 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<style>html.motion-preparing #hero,html.motion-preparing #site-header{visibility:hidden}</style>
+<script>
+/* Establish the intro state before first paint; never wait indefinitely for the CDN. */
+(() => {
+  if (!matchMedia('(prefers-reduced-motion: no-preference)').matches) return;
+  const root = document.documentElement;
+  root.classList.add('motion-preparing');
+  window.movenseReleaseIntro = () => root.classList.remove('motion-preparing');
+  setTimeout(() => {
+    if (!root.classList.contains('motion-preparing')) return;
+    window.movenseIntroExpired = true;
+    window.movenseReleaseIntro();
+  }, 1800);
+})();
+</script>
 <meta name="theme-color" content="#f8fbfc">
 <title>MOVENSE（ムーヴェンス） | 水泳・トレーニング・ランニング・ウォーキング</title>
 <meta name="description" content="MOVENSEの個別レッスン予約と、グループレッスン・特別イベントのご案内。水泳・パーソナルトレーニング・ランニング・ウォーキングから、目的に合うレッスンをお選びください。">
@@ -1300,7 +1315,7 @@ if (typeof gsap !== 'undefined') {
     };
 
     /* ── HERO ── four beats, then the three marks each arrive differently ── */
-    if (reduce) {
+    if (reduce || window.movenseIntroExpired) {
       gsap.set(['#site-header', '#hero-h1', '#tagline', '#pickup', '.pu-in', '.hmark',
                 '.hero-marks .guide', '.hero-marks .hrule'],
                { opacity: 1, y: 0, scale: 1, scaleY: 1, scaleX: 1, clipPath: 'none' });
@@ -1538,6 +1553,8 @@ if (typeof gsap !== 'undefined') {
   /* no GSAP (offline / blocked CDN): show everything, no motion */
   document.querySelectorAll('[data-reveal]').forEach((el) => { el.style.opacity = 1; });
 }
+
+window.movenseReleaseIntro?.();
 
 /* Insurance, deliberately narrow. Content must never be permanently invisible
    because a trigger failed to fire — but a blanket timer would defeat every
