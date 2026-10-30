@@ -11,3 +11,7 @@
 
 .article-index-grid .latest-news-card[hidden]{display:none!important}
 .all-articles-link{border:1px solid #9fb9d9;border-radius:4px;padding:10px 16px;text-decoration:none}
+
+.article-index-grid.is-latest{display:flex;gap:22px;overflow-x:auto;scroll-snap-type:x mandatory;padding:3px 3px 20px}
+.article-index-grid.is-latest .latest-news-card{flex:0 0 clamp(250px,24vw,340px);scroll-snap-align:start}
+@media(max-width:600px){.article-index-grid.is-latest{gap:16px}.article-index-grid.is-latest .latest-news-card{flex-basis:82%}}
