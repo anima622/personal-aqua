@@ -90,6 +90,13 @@
       "title": "最初から飛ばす？ 泳ぐペースを考える",
       "href": "editorial/13-swimming-pace.html",
       "image": "editorial/assets13/13-banner-simple.png"
+    },
+    {
+      "number": 14,
+      "publishedOn": "2026-10-31",
+      "title": "泳ぐとき、どこに意識を向ける？",
+      "href": "editorial/14-attention-focus.html",
+      "image": "editorial/assets14/14-banner-simple.png"
     }
   ],
   "dateSources": "01〜12は既存公開記録、13は2026-10-30公開記録。未公開記事は登録しない。"
