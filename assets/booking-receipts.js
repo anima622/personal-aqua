@@ -19,6 +19,7 @@
   const states = new Map();
   document.addEventListener('movense-account-changed',()=>{states.clear();clear('watari-booking-draft');for(const form of forms)clear('watari-booking-request-'+form.id);});
   const notices = [];
+  const loginRegions = new Map();
   const loginActions = [];
   const recoveryActions = [];
   let sdkInitializing=null;
@@ -66,7 +67,7 @@
     if(!serviceForms[service])return;
     document.querySelector('[aria-controls="panel-'+service+'"]')?.click();
     const form=document.getElementById(serviceForms[service]);
-    const target=form?.querySelector('[data-line-login-region]')||form;
+    const target=loginRegions.get(form)||form?.querySelector('[data-line-login-region]')||form;
     if(!target)return;
     const scroll=()=>requestAnimationFrame(()=>{
       const top=target.getBoundingClientRect().top+window.scrollY-(document.querySelector('header')?.getBoundingClientRect().height||80)-20;
@@ -112,12 +113,38 @@
     for(const button of recoveryActions)button.hidden=false;
     return true;
   }
+  // Move the existing controls only after onboarding has mounted around them.
+  // Keep their listeners/status references, and expose only the active service.
+  function placeLoginRegions() {
+    const reminder=document.querySelector('#gated-content > .intake-reminder');
+    if(!reminder)return;
+    const host=document.createElement('div');host.id='booking-line-connection';
+    host.setAttribute('aria-label','LINE連携状況');
+    host.style.cssText='margin-bottom:32px;padding:24px;border:1px solid var(--color-border);scroll-margin-top:110px';
+    reminder.before(host);
+    for(const [form,region] of loginRegions){
+      region.dataset.bookingForm=form.id;
+      host.append(region);
+    }
+    const sync=()=>{
+      let visible=false;
+      for(const [form,region] of loginRegions){
+        const panel=form.closest('[role="tabpanel"]');
+        region.hidden=!!panel?.hidden;
+        if(!region.hidden)visible=true;
+      }
+      host.hidden=!visible;
+    };
+    const observer=new MutationObserver(sync);
+    for(const form of forms){const panel=form.closest('[role="tabpanel"]');if(panel)observer.observe(panel,{attributes:true,attributeFilter:['hidden']});}
+    sync();
+  }
   async function init() {
     initializationStage='form-ui';
     if(!config.enabled)return;
     if(!config.liffId || !/^(https:\/\/|http:\/\/127\.0\.0\.1:)/.test(config.endpoint))throw new Error('not_ready');
     for(const form of forms){
-      const region=document.createElement('div');region.className='field full';region.dataset.lineLoginRegion='true';
+      const region=document.createElement('div');region.className='field full';region.dataset.lineLoginRegion='true';loginRegions.set(form,region);
       const guide=document.createElement('p');guide.className='line-booking-guide';guide.textContent='ご予約の受付控え・日程調整は、公式LINEでお届けします😊 ①友だち追加 → ②LINEでログインの順に進めてください。追加済みの方は②からで大丈夫です。';
       const note=document.createElement('p');note.className='hint';note.setAttribute('role','status');note.textContent='ご予約には公式LINEの友だち追加とLINE連携が必要です。';notices.push(note);
       const connect=document.createElement('button');connect.type='button';connect.className='line-official-login';connect.setAttribute('aria-label','LINEでログインして予約用に連携する');connect.innerHTML='<img src="assets/line/login-icon.png" width="44" height="44" alt=""><span>LINEでログイン</span>';
@@ -144,6 +171,7 @@
       if(!window.MovenseOnboarding || !window.MovenseOnboarding.configured(onboardingConfig))throw new Error('onboarding_not_ready');
       onboarding=window.MovenseOnboarding.create({config:onboardingConfig,endpoint:config.endpoint,getToken:()=>window.liff?.getAccessToken(),getAccount:()=>window.liff?.getDecodedIDToken?.()?.sub||window.liff?.getContext?.()?.userId||window.liff?.getAccessToken(),forms});onboarding.mount();
     }
+    placeLoginRegions();
     // Show the booking destination while authentication loads, without rewriting LIFF's URL.
     // Scrolling is safe even on the intermediate LIFF URL: do not rewrite
     // authentication parameters, but keep loading/error feedback in view.
