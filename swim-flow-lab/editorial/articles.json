@@ -97,7 +97,14 @@
       "title": "泳ぐとき、どこに意識を向ける？",
       "href": "editorial/14-attention-focus.html",
       "image": "editorial/assets14/14-banner-simple.png"
+    },
+    {
+      "number": 15,
+      "publishedOn": "2026-11-01",
+      "title": "前の人の後ろだと、泳ぎやすい？",
+      "href": "editorial/15-drafting.html",
+      "image": "editorial/assets15/15-banner.png"
     }
   ],
-  "dateSources": "01〜12は既存公開記録、13は2026-10-30公開記録。未公開記事は登録しない。"
+  "dateSources": "01〜14は既存公開記録、15は2026-11-01公開作業。予定日と実公開日を区別。"
 }
