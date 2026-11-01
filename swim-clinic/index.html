@@ -34,7 +34,8 @@ html[data-clinic-motion="pending"] :is(h1,h2,h3,p,.label,.kicker,.hw-special,.hw
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Zen+Old+Mincho:wght@400;500;600;700;900&family=Cinzel:wght@500;600;700&family=Kaisei+Tokumin:wght@700;800&display=swap">
 <style>
 *,*::before,*::after{box-sizing:border-box;}
-html{scroll-behavior:smooth;}
+/* Keep responsive type stable in Android WebViews; browser zoom remains available. */
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;text-size-adjust:100%;}
 body{margin:0;}
 img{max-width:100%;}
 </style>
@@ -85,6 +86,7 @@ body{
   font-weight:400;
   -webkit-font-smoothing:antialiased;
   font-feature-settings:"palt"; /* 句読点・かなの詰め */
+  overflow-wrap:anywhere; /* Long words may reflow when the reader enlarges text. */
 }
 
 /* ---------- bands ---------- */
@@ -135,6 +137,7 @@ p{margin:0;}
 .stack{display:flex;flex-direction:column;gap:26px;}
 .stack.s{gap:14px;}
 .stack.l{gap:clamp(30px,7vw,46px);}
+.stack > *{min-width:0;max-width:100%;}
 
 hr.rule{height:3px;width:52px;background:var(--gold);border:0;margin:0;border-radius:999px;}
 
@@ -183,6 +186,7 @@ a:focus-visible{outline:2px solid var(--gold);outline-offset:3px;}
   display:flex;flex-direction:column;gap:8px;align-items:center;text-align:center;
 }
 .datebox .num{
+  max-width:100%;
   font-family:var(--latin);font-size:clamp(44px,13vw,64px);font-weight:600;
   letter-spacing:.01em;line-height:1;color:var(--pool);font-variant-numeric:tabular-nums;
 }
@@ -476,10 +480,10 @@ h1,h2,.pull em,.namebox .jpname,.ath .nm,.bt{font-weight:900;}
 }
 .tbadge img{width:22px;height:auto;display:block;}
 
-/* 1行見出し：画面幅いっぱいまで大きく（最大46px） */
-h2.oneline{white-space:nowrap;letter-spacing:-.04em;font-size:min(calc((100vw - 48px) / 15), 38px);}
+/* One line at the designed size; reflow instead of overflowing at larger text sizes. */
+h2.oneline{white-space:normal;letter-spacing:-.04em;font-size:min(calc((100vw - 48px) / 15), 38px);}
 /* ---------- 改行ルール：文節の途中で改行しない ---------- */
-.nb{display:inline-block;}
+.nb{display:inline-block;max-width:100%;}
 .psoon{font-family:"Cinzel",var(--latin);font-weight:600 !important;letter-spacing:.08em;color:var(--gold-pale) !important;}
 /* TOPのタイトル画像 */
 .hero-img{margin:0;line-height:0;}
