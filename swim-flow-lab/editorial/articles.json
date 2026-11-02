@@ -104,7 +104,14 @@
       "title": "前の人の後ろだと、泳ぎやすい？",
       "href": "editorial/15-drafting.html",
       "image": "editorial/assets15/15-banner.png"
+    },
+    {
+      "number": 16,
+      "publishedOn": "2026-11-02",
+      "title": "パドルで、進み方はどう変わる？",
+      "href": "editorial/16-paddles.html",
+      "image": "editorial/assets16/16-cover.png"
     }
   ],
-  "dateSources": "01〜14は既存公開記録、15は2026-11-01公開作業。予定日と実公開日を区別。"
+  "dateSources": "01〜15は既存公開記録、16は2026-11-02公開作業。予定日と実公開日を区別。"
 }

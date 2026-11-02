@@ -1,0 +1,8 @@
+/* Initial reveal is armed before first paint; no-JS and failures remain readable. */
+@media(prefers-reduced-motion:no-preference){
+ html.article-motion-boot main,html.article-motion-boot footer{opacity:0}
+ html.article-motion-ready [data-motion-pending]{opacity:0}
+}
+@media print{html.article-motion-boot main,html.article-motion-boot footer,html.article-motion-ready [data-motion-pending]{opacity:1!important}}
+
+.finger-page{--finger-reading-duration:1600}
