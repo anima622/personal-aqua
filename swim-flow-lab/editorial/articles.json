@@ -111,7 +111,14 @@
       "title": "パドルで、進み方はどう変わる？",
       "href": "editorial/16-paddles.html",
       "image": "editorial/assets16/16-cover.png"
+    },
+    {
+      "number": 17,
+      "publishedOn": "2026-11-03",
+      "title": "フィンで速いと、楽にもなる？",
+      "href": "editorial/17-fins.html",
+      "image": "editorial/assets17/17-cover.png"
     }
   ],
-  "dateSources": "01〜15は既存公開記録、16は2026-11-02公開作業。予定日と実公開日を区別。"
+  "dateSources": "01〜16は既存公開記録、17は2026-11-03公開作業。予定日と実公開日を区別。"
 }
