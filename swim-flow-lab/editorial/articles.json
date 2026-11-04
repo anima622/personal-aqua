@@ -118,7 +118,14 @@
       "title": "フィンで速いと、楽にもなる？",
       "href": "editorial/17-fins.html",
       "image": "editorial/assets17/17-cover.png"
+    },
+    {
+      "number": 18,
+      "publishedOn": "2026-11-04",
+      "title": "25mと50m。同じ100mなのに？",
+      "href": "editorial/18-pool-length.html",
+      "image": "editorial/assets18/18-cover.png"
     }
   ],
-  "dateSources": "01〜16は既存公開記録、17は2026-11-03公開作業。予定日と実公開日を区別。"
+  "dateSources": "01〜17は既存公開記録、18は2026-11-04公開作業。予定日と実公開日を区別。"
 }
