@@ -1,0 +1,24 @@
+/* Article adapter: original diagram-kit material, shape and colour are preserved. */
+.article-diagram{margin:32px 0;max-width:100%;}
+.article-diagram .dk-heading h3{font:800 25px/1.5 'Yu Gothic',Meiryo,sans-serif;margin:0;text-align:center;color:var(--ink)}
+.article-diagram .generated-explanation{display:block;width:100%;max-width:460px;height:auto;max-height:320px;object-fit:contain;margin:0 auto 28px;border-radius:14px;}
+.article-diagram p{font-size:17px!important;line-height:1.8!important;letter-spacing:normal!important;margin:8px 0 0!important;}
+.article-diagram strong{font-size:20px;line-height:1.5;letter-spacing:normal;}
+.article-diagram figcaption{font-size:14px!important;line-height:1.8!important;letter-spacing:normal;}
+.article-diagram .dk-vertical{margin:0;}
+.article-diagram .dk-vertical li{margin:0;}
+.article-diagram .dk-content> :is(.example13,.research-numbers){margin:24px 0!important;}
+.article-diagram .research-numbers,.article-diagram .example13{padding:20px;border-radius:16px;background:var(--neu-surface);box-shadow:var(--neu-inset);}
+.sum-example{display:grid;gap:18px;margin-top:16px;}
+.sum-example section{padding:16px;border-radius:14px;box-shadow:var(--neu-raised);}
+.sum-row{display:grid;grid-template-columns:1fr 24px 1fr;align-items:center;gap:4px;margin:12px 0;}
+.sum-row span{padding:14px 5px;border-radius:10px;text-align:center;background:#dbeafa;color:#123b62;font-size:18px;font-weight:700;}
+.sum-row span:nth-child(3){background:#d6f0e9;color:#154d47;}
+.sum-row small{display:block;font-size:14px;}
+.sum-result{text-align:center;padding:8px;color:var(--accent);font-weight:800;}
+.article-diagram .distance-four{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:18px 0;}
+.distance-four span{border-radius:12px;padding:16px 2px;text-align:center;background:var(--neu-surface);box-shadow:var(--neu-raised);font-size:17px;font-weight:700;}
+.distance-four span:first-child{background:#2057a2;color:white;}
+.distance-four small{display:block;font-size:12px;}
+.article-diagram .whole-label{text-align:center;font-weight:bold;margin-top:20px!important;}
+@media(max-width:600px){.article-diagram{padding:24px 18px!important;margin:28px 0;}.article-diagram .dk-heading h3{font-size:22px;}.article-diagram .generated-explanation{max-height:230px;}.article-diagram strong{font-size:19px;}.article-diagram .research-numbers,.article-diagram .example13{padding:16px 12px;}.distance-four span{font-size:15px}.article-diagram .dk-node{padding:20px 16px;}}
