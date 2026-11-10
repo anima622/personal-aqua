@@ -132,7 +132,14 @@
       "title": "昨日できた泳ぎ、今日はできない？",
       "href": "editorial/19-learning-retention.html",
       "image": "editorial/assets19/19-article-top.png"
+    },
+    {
+      "number": 20,
+      "publishedOn": "2026-11-10",
+      "title": "何メートル泳げた？ そのほかに何ができた？",
+      "href": "editorial/20-water-skills.html",
+      "image": "editorial/assets20/20-top-breathing.png"
     }
   ],
-  "dateSources": "01〜18は既存公開記録、19は2026-11-06公開作業。"
+  "dateSources": "01〜19は既存公開記録、20は2026-11-10公開作業。予定日と実公開日を区別。"
 }
