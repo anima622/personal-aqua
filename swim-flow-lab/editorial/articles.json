@@ -139,7 +139,14 @@
       "title": "何メートル泳げた？ そのほかに何ができた？",
       "href": "editorial/20-water-skills.html",
       "image": "editorial/assets20/20-top-breathing.png"
+    },
+    {
+      "number": 21,
+      "publishedOn": "2026-11-11",
+      "title": "背泳ぎは、クロールを裏返しただけ？",
+      "href": "editorial/21-backstroke.html",
+      "image": "editorial/assets21/21-top-breathing.png"
     }
   ],
-  "dateSources": "01〜19は既存公開記録、20は2026-11-10公開作業。予定日と実公開日を区別。"
+  "dateSources": "01〜20は既存公開記録、21は2026-11-11公開作業。予定日と実公開日を区別。"
 }
