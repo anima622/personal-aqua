@@ -146,7 +146,14 @@
       "title": "背泳ぎは、クロールを裏返しただけ？",
       "href": "editorial/21-backstroke.html",
       "image": "editorial/assets21/21-top-breathing.png"
+    },
+    {
+      "number": 22,
+      "publishedOn": "2026-11-12",
+      "title": "水泳の腕時計、記録を次の練習にどう生かす？",
+      "href": "editorial/22-swim-watch.html",
+      "image": "editorial/assets22/22-top-breathing.png"
     }
   ],
-  "dateSources": "01〜20は既存公開記録、21は2026-11-11公開作業。予定日と実公開日を区別。"
+  "dateSources": "01〜21は既存公開記録、22は2026-11-12公開作業。予定日と実公開日を区別。"
 }
