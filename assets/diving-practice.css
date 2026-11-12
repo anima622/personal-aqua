@@ -1,0 +1,44 @@
+.practice {
+  max-width: 800px;
+  color: #17292f;
+}
+.practice-heading {
+  padding: clamp(24px, 5vw, 48px);
+  background: #eef6f6;
+  border-top: 4px solid #087280;
+}
+.practice .eyebrow { color: #285c65; font-size: 14px; letter-spacing: .06em; }
+.practice h1 { margin-bottom: 16px; letter-spacing: 0; }
+.practice-date { font-size: clamp(18px, 3.4vw, 24px); font-weight: 700; margin: 0; }
+.practice-date span { display: inline-block; }
+.practice-venue { margin: 4px 0 0; }
+.practice-facts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(180px, 100%), 1fr));
+  gap: 16px;
+  margin: 24px 0 0;
+  padding-top: 20px;
+  border-top: 1px solid #b6cdcf;
+}
+.practice-facts dt { font-size: 14px; color: #285c65; }
+.practice-facts dd { margin: 0; font-weight: 700; }
+.practice-status { margin: 20px 0 0; }
+.practice section { margin-top: 40px; }
+.practice h2 { font-size: clamp(21px, 4vw, 26px); margin: 0 0 12px; }
+.practice section > p { margin: 0 0 16px; }
+.practice-action {
+  display: inline-flex;
+  align-items: center;
+  min-height: 48px;
+  padding: 10px 20px;
+  border-radius: 4px;
+  background: #07515d;
+  color: white;
+  font-weight: 700;
+  text-decoration: none;
+}
+.practice-action:hover { text-decoration: underline; }
+.practice section > .practice-terms { margin: 16px 0 0; }
+.practice-steps { margin: 0; padding-inline-start: 1.5em; }
+.practice-steps li { padding: 12px 0 12px 4px; border-top: 1px solid #cedddd; }
+.practice-steps p { margin: 4px 0 0; }
