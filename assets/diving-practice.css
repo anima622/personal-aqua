@@ -42,3 +42,14 @@
 .practice-steps { margin: 0; padding-inline-start: 1.5em; }
 .practice-steps li { padding: 12px 0 12px 4px; border-top: 1px solid #cedddd; }
 .practice-steps p { margin: 4px 0 0; }
+.practice-access-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: #07515d;
+  font-weight: 700;
+}
+#access { scroll-margin-top: 16px; }
+.practice section h3 { font-size: 17px; margin: 16px 0 4px; }
+.practice-routes { margin: 0 0 12px; padding-inline-start: 1.4em; }
+.practice-routes li + li { margin-top: 4px; }
