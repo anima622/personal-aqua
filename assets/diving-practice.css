@@ -23,6 +23,12 @@
 .practice-facts dt { font-size: 14px; color: #285c65; }
 .practice-facts dd { margin: 0; font-weight: 700; }
 .practice-status { margin: 20px 0 0; }
+.practice-illustration {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin-top: 24px;
+}
 .practice section { margin-top: 40px; }
 .practice h2 { font-size: clamp(21px, 4vw, 26px); margin: 0 0 12px; }
 .practice section > p { margin: 0 0 16px; }
