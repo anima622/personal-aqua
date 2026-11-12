@@ -44,7 +44,6 @@
   text-decoration: none;
 }
 .practice-action:hover { text-decoration: underline; }
-.practice section > .practice-terms { margin: 16px 0 0; }
 .practice-steps { margin: 0; padding-inline-start: 1.5em; }
 .practice-steps li { padding: 12px 0 12px 4px; border-top: 1px solid #cedddd; }
 .practice-steps p { margin: 4px 0 0; }
