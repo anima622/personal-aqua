@@ -160,7 +160,14 @@
       "title": "音に合わせると、泳ぎは変わる？",
       "href": "editorial/23-swimming-rhythm.html",
       "image": "editorial/assets23/23-article-top.png"
+    },
+    {
+      "number": 24,
+      "publishedOn": "2026-11-14",
+      "title": "バタフライの息継ぎ、腕と脚はいつ動く？",
+      "href": "editorial/24-butterfly-breathing.html",
+      "image": "editorial/assets24/24-article.png"
     }
   ],
-  "dateSources": "01〜22は既存公開記録、23は2026-11-13公開。"
+  "dateSources": "01〜23は既存公開記録、24は2026-11-14公開。"
 }
