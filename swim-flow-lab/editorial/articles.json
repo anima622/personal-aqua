@@ -153,7 +153,14 @@
       "title": "水泳の腕時計、記録を次の練習にどう生かす？",
       "href": "editorial/22-swim-watch.html",
       "image": "editorial/assets22/22-top-breathing.png"
+    },
+    {
+      "number": 23,
+      "publishedOn": "2026-11-13",
+      "title": "音に合わせると、泳ぎは変わる？",
+      "href": "editorial/23-swimming-rhythm.html",
+      "image": "editorial/assets23/23-article-top.png"
     }
   ],
-  "dateSources": "01〜21は既存公開記録、22は2026-11-12公開作業。予定日と実公開日を区別。"
+  "dateSources": "01〜22は既存公開記録、23は2026-11-13公開。"
 }
