@@ -174,7 +174,14 @@
       "title": "ウェットスーツを着ると、泳ぎは何が変わる？",
       "href": "editorial/25-wetsuit-swimming.html",
       "image": "editorial/assets25/25-article.png"
+    },
+    {
+      "number": 26,
+      "publishedOn": "2026-11-16",
+      "title": "飛び込んだ後までが、スタート？",
+      "href": "editorial/26-swimming-start.html",
+      "image": "editorial/assets26/26-article.png"
     }
   ],
-  "dateSources": "01〜24は既存公開記録、25は2026-11-15公開。"
+  "dateSources": "01〜25は既存公開記録、26は2026-11-16公開。"
 }
