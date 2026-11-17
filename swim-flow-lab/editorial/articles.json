@@ -181,7 +181,14 @@
       "title": "飛び込んだ後までが、スタート？",
       "href": "editorial/26-swimming-start.html",
       "image": "editorial/assets26/26-article.png"
+    },
+    {
+      "number": 27,
+      "publishedOn": "2026-11-17",
+      "title": "筋トレをすると、泳ぎも速くなる？",
+      "href": "editorial/27-strength-swimming.html",
+      "image": "editorial/assets27/27-article.png"
     }
   ],
-  "dateSources": "01〜25は既存公開記録、26は2026-11-16公開。"
+  "dateSources": "01〜26は既存公開記録、27は2026-11-17公開。"
 }
