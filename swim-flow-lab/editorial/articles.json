@@ -188,7 +188,15 @@
       "title": "筋トレをすると、泳ぎも速くなる？",
       "href": "editorial/27-strength-swimming.html",
       "image": "editorial/assets27/27-article.png"
+    },
+    {
+      "number": null,
+      "label": "姿勢と身体操作",
+      "publishedOn": "2026-11-18",
+      "title": "良い姿勢とは？ まっすぐ立つ形は、けのびでも正しい？",
+      "href": "editorial/good-posture.html",
+      "image": "editorial/assets-good-posture/good-posture-top-v9.png"
     }
   ],
-  "dateSources": "01〜26は既存公開記録、27は2026-11-17公開。"
+  "dateSources": "01〜26は既存公開記録、27は2026-11-17公開。 良い姿勢とは？は未採番記事として2026-11-18公開。"
 }
