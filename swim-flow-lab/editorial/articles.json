@@ -195,7 +195,14 @@
       "title": "同じ距離なのに、今日はきつい？",
       "href": "editorial/28-session-effort.html",
       "image": "editorial/assets28/28-article.png"
+    },
+    {
+      "number": 29,
+      "publishedOn": "2026-11-19",
+      "title": "肩が気になるとき、何を伝えればいい？",
+      "href": "editorial/29-shoulder-conversation.html",
+      "image": "editorial/assets29/29-article.png"
     }
   ],
-  "dateSources": "01〜26は既存公開記録、27は2026-11-17公開。 28は2026-11-18公開。"
+  "dateSources": "01〜26は既存公開記録、27は2026-11-17公開。 28は2026-11-18公開。 29は2026-11-19公開。"
 }
