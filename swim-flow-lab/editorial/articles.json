@@ -202,7 +202,14 @@
       "title": "肩が気になるとき、何を伝えればいい？",
       "href": "editorial/29-shoulder-conversation.html",
       "image": "editorial/assets29/29-article.png"
+    },
+    {
+      "number": 30,
+      "publishedOn": "2026-11-21",
+      "title": "平泳ぎは、長く伸びるほどいい？",
+      "href": "editorial/30-breaststroke-glide.html",
+      "image": "editorial/assets30/30-article.png"
     }
   ],
-  "dateSources": "01〜26は既存公開記録、27は2026-11-17公開。 28は2026-11-18公開。 29は2026-11-19公開。"
+  "dateSources": "01〜26は既存公開記録、27は2026-11-17公開。 28は2026-11-18公開。 29は2026-11-19公開。 30は2026-11-21公開。"
 }
