@@ -1,0 +1,18 @@
+/* Native explanatory figures, not modified generated bitmaps. */
+.diagram-extra{box-sizing:border-box;width:100%;max-width:620px;margin:1.4rem auto;padding:clamp(8px,2vw,18px);border:1px solid #c8d8d5;border-radius:10px;background:#fffdf7;color:#203f45;overflow:hidden}
+.diagram-extra h3{margin:0 0 .75rem;font-size:clamp(1rem,2.4vw,1.2rem);line-height:1.6;overflow-wrap:anywhere}
+.diagram-extra .ex-svg{display:block;width:100%;height:auto;max-width:100%;overflow:visible}
+.diagram-extra .ex-svg text{font-family:"Noto Sans JP","Yu Gothic",Meiryo,sans-serif;font-size:17px;fill:#203f45;font-weight:500}
+.diagram-extra .ex-svg .ex-bold{font-weight:750}
+.diagram-extra .ex-svg .ex-formula{font-size:17px;font-weight:700}
+.diagram-extra .ex-line{stroke:#25494e;stroke-width:1.6;fill:none}
+.diagram-extra .ex-teal{fill:#237d82}
+.diagram-extra .ex-coral{fill:#b85f43}
+.diagram-extra .ex-track{fill:#e7eeeb}
+.diagram-extra .ex-head{fill:#f4cb9a;stroke:#25494e;stroke-width:1.5}
+.diagram-extra .ex-gesture{stroke:#25494e;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.diagram-extra .ex-support{fill:#237d82;fill-opacity:.15;stroke:#237d82;stroke-dasharray:5 5;stroke-width:1.5}
+.diagram-extra .ex-foot{fill:#fffdf7;stroke:#25494e;stroke-width:2}
+.diagram-extra figcaption{margin:.75rem 0 0;font-size:.9rem;line-height:1.8;color:#3c5558;overflow-wrap:anywhere}
+@media(max-width:420px){.diagram-extra{padding:8px;border-radius:7px}.diagram-extra figcaption{font-size:.85rem}.diagram-extra h3{font-size:1rem}}
+@media print{.diagram-extra{break-inside:avoid}}

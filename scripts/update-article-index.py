@@ -4,7 +4,8 @@ import json, re, html, sys
 root=Path(__file__).resolve().parents[1]
 p=root/'swim-flow-lab/research-index.html'
 data=json.loads((root/'swim-flow-lab/editorial/articles.json').read_text(encoding='utf-8'))['articles']
-if len({a['number'] for a in data})!=len(data) or len({a['href'] for a in data})!=len(data):
+numbered = [a['number'] for a in data if a['number'] is not None]
+if len(set(numbered)) != len(numbered) or len({a['href'] for a in data})!=len(data):
     raise ValueError('Duplicate article')
 data=sorted(data,key=lambda a:(a['publishedOn'],a['number'] or 0),reverse=True)
 cards=[]
