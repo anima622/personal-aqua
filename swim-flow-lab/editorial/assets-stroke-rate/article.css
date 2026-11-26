@@ -1,0 +1,53 @@
+/* Existing reading-page palette; library styles remain unmodified. */
+:root{color-scheme:light;--ink:#183646;--muted:#53646b;--link:#075e83;--paper:#fff;--soft:#f5f6f5}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:"Yu Gothic",Meiryo,sans-serif;overflow-wrap:break-word}
+.site-header{max-width:840px;margin:auto;padding:20px 24px;display:flex;flex-wrap:wrap;align-items:center;gap:12px 32px;border-bottom:1px solid #d3dfe0}
+.site-header nav{display:flex;flex-wrap:wrap;gap:12px}
+.site-header a{display:inline-flex;align-items:center;min-height:44px;font-size:14px}
+main{max-width:808px;margin:auto;padding:32px 24px 96px}
+main>h1{font-size:clamp(28px,4.5vw,38px);line-height:1.5;margin:20px 0 32px;text-wrap:balance}
+main p,main li{font-size:18px;line-height:1.9}
+.content-section{margin-block:60px}
+.content-section>h2,main>section>h2{font-size:25px;line-height:1.6;margin-block:0 24px;text-wrap:balance}
+h3{font-size:21px;line-height:1.6}
+a{color:var(--link);text-underline-offset:4px;text-decoration-thickness:from-font}
+li{margin-block:10px}
+.status,.template-credit,.figure-kind,figcaption{font-size:14px;line-height:1.8;color:var(--muted)}
+.article-image{margin:24px 0 32px}
+.article-image img{display:block;width:100%;height:auto}
+.image-panel{position:relative;width:100%;aspect-ratio:var(--panel-ratio);overflow:hidden}
+.image-panel img{position:absolute;width:var(--panel-width);max-width:none;height:var(--panel-height);left:var(--panel-left);top:var(--panel-top)}
+.article-image figcaption{margin-top:12px}
+.missing{margin-block:24px;padding:20px;border:1px dashed #91764d;background:#fff9ee}
+.missing strong{font-size:16px;color:#5e4827}
+.missing p{font-size:14px;line-height:1.8;margin-bottom:0}
+.chapter-diagram{margin-block:32px;container-type:inline-size}
+.chapter-diagram .diagram-kit{margin:0;width:100%;max-width:100%}
+.chapter-diagram .dk-heading h3{font-size:25px;line-height:1.5;margin:0;text-wrap:balance}
+.chapter-diagram li{margin-block:0}
+.chapter-diagram .template-credit{margin-block:8px 0}
+details{margin-block:48px 0;padding:20px;background:var(--soft)}
+summary{cursor:pointer;min-height:44px;font-weight:700;line-height:1.8}
+details p,details li{font-size:15px}
+blockquote{border-inline-start:3px solid #789299;padding-inline-start:18px;margin-inline-start:0}
+table{display:block;max-width:100%;overflow-x:auto;border-collapse:collapse}
+th,td{text-align:start;border-bottom:1px solid #d3dfe0;padding:12px;min-width:100px}
+.line-card{position:relative;max-width:320px;margin:24px 0 56px;border:1px solid #d3dfe0;border-radius:12px;overflow:hidden}
+.line-card .article-image{margin:0}
+.line-card img{aspect-ratio:var(--card-ratio,1);object-fit:contain;background:#f5f6f5}
+.line-card figcaption{padding:12px}
+.line-tag{position:absolute;inset-block-start:12px;inset-inline-start:12px;background:#183646;color:white;padding:6px 12px;font-size:13px;line-height:1.5;border-radius:4px;max-width:75%}
+.skip{position:absolute;inset-block-start:-100px;inset-inline-start:16px;padding:12px;background:white;z-index:10}
+.skip:focus{inset-block-start:8px}
+:focus-visible{outline:3px solid #075e83;outline-offset:4px}
+@media(max-width:420px){main{padding-inline:18px}.site-header{padding-inline:18px}.content-section{margin-block:48px}.chapter-diagram .diagram-kit{padding:22px 16px}.chapter-diagram .dk-heading h3{font-size:22px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+@media print{.site-header,.skip{display:none}main{padding:0}.content-section>h2{break-after:avoid}.article-image,.chapter-diagram{break-inside:avoid}}
+
+/* Flat article diagrams retain catalog layout without legacy ceramic sizing. */
+.retake-flat .dk-paired{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.retake-flat .dk-pair-row{display:block!important;min-width:0;padding:16px;background:#fff;border:1px solid #d8dfd8;border-radius:10px}.retake-flat .dk-pair-copy{width:100%;min-width:0;display:block}.retake-flat .dk-letter{margin-bottom:12px}.retake-flat .dk-word{display:inline!important;white-space:normal}.retake-flat strong{word-break:normal;overflow-wrap:normal}.retake-flat .dk-node,.retake-flat .dk-pair-row{box-shadow:none!important}.retake-flat .dk-vertical li>div{min-width:0}
+
+.retake-flat .dk-disc,.retake-flat p:empty{display:none}.retake-flat .dk-vertical li{grid-template-columns:40px minmax(0,1fr)}.retake-flat .dk-heading h3{text-wrap:pretty}
+
+.rate-sequence .bc-sequence-row{max-width:250px;margin:0 auto 24px}.rate-sequence .bc-sequence-label{font-size:17px}
