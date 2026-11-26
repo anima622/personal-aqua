@@ -228,12 +228,12 @@
     },
     {
       "number": null,
-      "label": "泳ぎのテンポ",
+      "label": "姿勢と身体操作",
       "publishedOn": "2026-11-26",
-      "title": "ストロークレートとは？「速く回す」と「速く泳ぐ」を分けて見る",
-      "href": "editorial/stroke-rate.html",
-      "image": "editorial/assets-stroke-rate/stroke-rate-top-chibi.png"
+      "title": "キックは、足首の力を抜くほど速くなる？",
+      "href": "editorial/kick-relaxation.html",
+      "image": "editorial/assets-kick-relaxation/kick-relaxation-top-v9-line.png"
     }
   ],
-  "dateSources": "01〜26は既存公開記録、27は2026-11-17公開。 28は2026-11-18公開。 29は2026-11-19公開。 30は2026-11-21公開。 良い姿勢とは？は未採番記事として2026-11-24公開。 ストロークレートとは？は未採番記事として2026-11-26公開。"
+  "dateSources": "01〜26は既存公開記録、27は2026-11-17公開。 28は2026-11-18公開。 29は2026-11-19公開。 30は2026-11-21公開。 良い姿勢とは？は未採番記事として2026-11-24公開。 キックは、足首の力を抜くほど速くなる？は未採番記事として2026-11-26公開。"
 }
